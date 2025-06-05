@@ -153,11 +153,12 @@ lib/
 lib64/
 parts/
 sdist/
-var/
+var/  
 wheels/
 _.egg-info/
 .installed.cfg
 \*.egg
+Test
 
 # Environment
 

@@ -57,21 +57,6 @@ DEBUG=false
 ALLOWED_ORIGINS=["http://localhost:3000","https://yourfrontend.com"]
 ```
 
-## Project Structure
-
-```
-project_root/
-├── app/
-│   ├── __init__.py
-│   ├── main.py              # FastAPI application
-│   ├── config.py            # Configuration settings
-│   └── routers/
-│       ├── __init__.py
-│       └── health.py        # Health check endpoints
-├── requirements.txt         # Python dependencies
-├── run_server.py           # Development server runner
-├── .env.example            # Environment variables template
-└── README.md              # This file
 ```
 
 ## Verification Checklist

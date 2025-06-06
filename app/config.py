@@ -2,31 +2,22 @@ from pydantic_settings import BaseSettings
 from typing import List
 
 class Settings(BaseSettings):
-    # Application metadata
     app_name: str = "My FastAPI Application"
     app_description: str = "A comprehensive FastAPI application with health checks and documentation"
     app_version: str = "1.0.0"
-    
-    # API configuration
     api_v1_prefix: str = "/api/v1"
-    
-    # CORS settings
     allowed_origins: List[str] = [
-        "http://localhost:3000",  # React default
-        "http://localhost:8080",  # Vue.js default
+        "http://localhost:3000",
+        "http://localhost:8080",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8080",
-        "*"  # Allow all origins (only for development!)
+        "*"  # Allow all origins (development only)
     ]
-    
-    # Development settings
-    debug: bool = True  # Set to False in production
-    
-    # Database settings (for future use)
-   # database_url: str = "sqlite:///./app.db"
-    
+    debug: bool = True
+    database_url: str  # Loaded from .env
+
     class Config:
         env_file = ".env"
+        env_file_encoding = "utf-8"
 
-# Create a global settings instance
 settings = Settings()

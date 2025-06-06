@@ -19,9 +19,6 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-.env/
-# Environment variables
 .env
-
 # Virtual environment
 api_venv/

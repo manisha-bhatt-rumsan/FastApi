@@ -1,0 +1,33 @@
+2025-06-13 15:31:40,790 - __main__ - INFO - Starting text extraction for session: test_session_001
+2025-06-13 15:31:40,803 - __main__ - INFO - Text extracted and saved to: extracted_texts\extracted_text_test_session_001_20250613_153140.txt
+2025-06-13 15:31:40,803 - __main__ - INFO - Extracted text length: 531 characters
+2025-06-13 15:31:40,804 - __main__ - INFO - Starting question generation for session: test_session_001
+2025-06-13 15:31:40,826 - __main__ - INFO - Loaded text from file: extracted_texts\extracted_text_test_session_001_20250613_153140.txt
+2025-06-13 15:31:40,827 - __main__ - INFO - Sending request to LLM for question generation
+2025-06-13 15:31:43,017 - httpx - INFO - HTTP Request: POST http://localhost:11434/api/chat "HTTP/1.1 404 Not Found"
+2025-06-13 15:31:43,017 - __main__ - ERROR - LLM invocation failed: model "llama3.2:latest" not found, try pulling it first (status code: 404)
+2025-06-13 15:31:43,017 - __main__ - WARNING - Using fallback question and answer due to LLM error
+2025-06-13 15:31:43,017 - __main__ - INFO - Storing quiz results for session: test_session_001
+2025-06-13 15:31:43,017 - __main__ - INFO - Quiz generation completed successfully
+2025-06-13 15:31:43,020 - __main__ - INFO - Final question: What is the main topic discussed in the document?
+2025-06-13 15:31:43,020 - __main__ - INFO - Correct Answer: Unknown
+2025-06-13 15:31:43,021 - __main__ - INFO - Text file saved at: extracted_texts\extracted_text_test_session_001_20250613_153140.txt
+2025-06-13 15:31:43,022 - __main__ - INFO - Quiz results saved to: quiz_results_test_session_001.json
+2025-06-13 15:36:31,479 - __main__ - INFO - Starting text extraction for session: test_session_001
+2025-06-13 15:36:31,496 - __main__ - INFO - Text extracted and saved to: extracted_texts\extracted_text_test_session_001_20250613_153631.txt
+2025-06-13 15:36:31,498 - __main__ - INFO - Extracted text length: 531 characters
+2025-06-13 15:36:31,498 - __main__ - INFO - Starting question generation for session: test_session_001
+2025-06-13 15:36:31,498 - __main__ - INFO - Loaded text from file: extracted_texts\extracted_text_test_session_001_20250613_153631.txt
+2025-06-13 15:36:31,498 - __main__ - INFO - Sending request to LLM for question generation
+2025-06-13 15:36:32,972 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/chat "HTTP/1.1 200 OK"
+2025-06-13 15:36:33,843 - __main__ - INFO - Received response from LLM: {"question": "What percentage of the total mass of the Solar System is accounted for by the Sun?", "correct_answer": "99.86%", "explanation": "The correct answer is 99.86% because the document states ...
+2025-06-13 15:36:33,843 - __main__ - INFO - Question generated successfully
+2025-06-13 15:36:33,843 - __main__ - INFO - Question: What percentage of the total mass of the Solar System is accounted for by the Sun?
+2025-06-13 15:36:33,843 - __main__ - INFO - Correct Answer: 99.86%
+2025-06-13 15:36:33,845 - __main__ - INFO - Explanation: The correct answer is 99.86% because the document states that the Sun is the central and most massive object in the Solar System, and it accounts for 99.86% of its total mass.
+2025-06-13 15:36:33,846 - __main__ - INFO - Storing quiz results for session: test_session_001
+2025-06-13 15:36:33,846 - __main__ - INFO - Quiz generation completed successfully
+2025-06-13 15:36:33,846 - __main__ - INFO - Final question: What percentage of the total mass of the Solar System is accounted for by the Sun?
+2025-06-13 15:36:33,846 - __main__ - INFO - Correct Answer: 99.86%
+2025-06-13 15:36:33,846 - __main__ - INFO - Text file saved at: extracted_texts\extracted_text_test_session_001_20250613_153631.txt
+2025-06-13 15:36:33,850 - __main__ - INFO - Quiz results saved to: quiz_results_test_session_001.json

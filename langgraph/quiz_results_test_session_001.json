@@ -1,0 +1,7 @@
+{
+  "session_id": "test_session_001",
+  "question": "What percentage of the total mass of the Solar System is accounted for by the Sun?",
+  "correct_answer": "99.86%",
+  "explanation": "The correct answer is 99.86% because the document states that the Sun is the central and most massive object in the Solar System, and it accounts for 99.86% of its total mass.",
+  "text_file_path": "extracted_texts\\extracted_text_test_session_001_20250613_153631.txt"
+}

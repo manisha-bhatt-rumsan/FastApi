@@ -6,8 +6,24 @@ from sqlalchemy.future import select
 from .config import settings
 from .database import engine, Base, get_db
 from .models import User, Document, Quiz, Question
-from .schemas import UserCreate, User, DocumentCreate, Document, QuizCreate, Quiz, QuestionCreate, Question
+from .schemas import (
+    UserCreate, UserOut,
+    DocumentCreate, DocumentOut,
+    QuizCreate, QuizOut,
+    QuestionCreate, QuestionOut
+)
+from .models import User, Document, Quiz, Question  
+from fastapi import File, UploadFile
+import shutil
+import os
+from uuid import uuid4
+from datetime import datetime
+from .models import Document
+from .schemas import DocumentOut
+from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
+
 
 app = FastAPI(
     title=settings.app_name,
@@ -25,6 +41,10 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
+
+UPLOAD_DIR = "uploaded_files"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
 
 @app.on_event("startup")
 async def startup_event():
@@ -60,7 +80,7 @@ async def health_check():
     )
 
 # CRUD for User
-@app.post(f"{settings.api_v1_prefix}/users/", response_model=User, tags=["Users"])
+@app.post(f"{settings.api_v1_prefix}/users/", response_model=UserOut, tags=["Users"])
 async def create_user(user: UserCreate, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).filter(User.email == user.email))
     if result.scalars().first():
@@ -71,7 +91,7 @@ async def create_user(user: UserCreate, db: AsyncSession = Depends(get_db)):
     await db.refresh(db_user)
     return db_user
 
-@app.get(f"{settings.api_v1_prefix}/users/{{user_id}}", response_model=User, tags=["Users"])
+@app.get(f"{settings.api_v1_prefix}/users/{{user_id}}", response_model=UserOut, tags=["Users"])
 async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).filter(User.id == user_id))
     db_user = result.scalars().first()
@@ -80,7 +100,46 @@ async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
     return db_user
 
 # CRUD for Document
-@app.post(f"{settings.api_v1_prefix}/documents/", response_model=Document, tags=["Documents"])
+ALLOWED_EXTENSIONS = {".pdf", ".docx", ".txt"}
+
+@app.post(f"{settings.api_v1_prefix}/upload/", response_model=DocumentOut, tags=["Documents"])
+async def upload_file(
+    owner_id: int,
+    file: UploadFile = File(...),
+    db: AsyncSession = Depends(get_db)
+):
+    ext = os.path.splitext(file.filename)[1].lower()
+    if ext not in ALLOWED_EXTENSIONS:
+        raise HTTPException(status_code=400, detail="Unsupported file type")
+
+    unique_filename = f"{uuid4().hex}_{file.filename}"
+    file_path = os.path.join(UPLOAD_DIR, unique_filename)
+
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    new_doc = Document(
+        title=file.filename,
+        content=file_path,  # storing path instead of content
+        owner_id=owner_id
+    )
+    db.add(new_doc)
+    await db.commit()
+    await db.refresh(new_doc)
+
+    return new_doc
+
+@app.get(f"{settings.api_v1_prefix}/download/{{document_id}}", tags=["Documents"])
+async def download_file(document_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Document).filter(Document.id == document_id))
+    document = result.scalars().first()
+
+    if not document or not os.path.exists(document.content):
+        raise HTTPException(status_code=404, detail="File not found")
+
+    return FileResponse(path=document.content, filename=document.title)
+
+@app.post(f"{settings.api_v1_prefix}/documents/", response_model=DocumentOut, tags=["Documents"])
 async def create_document(document: DocumentCreate, db: AsyncSession = Depends(get_db)):
     db_document = Document(title=document.title, content=document.content, owner_id=document.owner_id)
     db.add(db_document)
@@ -88,7 +147,7 @@ async def create_document(document: DocumentCreate, db: AsyncSession = Depends(g
     await db.refresh(db_document)
     return db_document
 
-@app.get(f"{settings.api_v1_prefix}/documents/{{document_id}}", response_model=Document, tags=["Documents"])
+@app.get(f"{settings.api_v1_prefix}/documents/{{document_id}}", response_model=DocumentOut, tags=["Documents"])
 async def get_document(document_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Document).filter(Document.id == document_id))
     db_document = result.scalars().first()
@@ -97,7 +156,7 @@ async def get_document(document_id: int, db: AsyncSession = Depends(get_db)):
     return db_document
 
 # CRUD for Quiz
-@app.post(f"{settings.api_v1_prefix}/quizzes/", response_model=Quiz, tags=["Quizzes"])
+@app.post(f"{settings.api_v1_prefix}/quizzes/", response_model=QuizOut, tags=["Quizzes"])
 async def create_quiz(quiz: QuizCreate, db: AsyncSession = Depends(get_db)):
     db_quiz = Quiz(title=quiz.title, owner_id=quiz.owner_id)
     db.add(db_quiz)
@@ -105,7 +164,7 @@ async def create_quiz(quiz: QuizCreate, db: AsyncSession = Depends(get_db)):
     await db.refresh(db_quiz)
     return db_quiz
 
-@app.get(f"{settings.api_v1_prefix}/quizzes/{{quiz_id}}", response_model=Quiz, tags=["Quizzes"])
+@app.get(f"{settings.api_v1_prefix}/quizzes/{{quiz_id}}", response_model=QuizOut, tags=["Quizzes"])
 async def get_quiz(quiz_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Quiz).filter(Quiz.id == quiz_id))
     db_quiz = result.scalars().first()
@@ -114,7 +173,7 @@ async def get_quiz(quiz_id: int, db: AsyncSession = Depends(get_db)):
     return db_quiz
 
 # CRUD for Question
-@app.post(f"{settings.api_v1_prefix}/questions/", response_model=Question, tags=["Questions"])
+@app.post(f"{settings.api_v1_prefix}/questions/", response_model=QuestionOut, tags=["Questions"])
 async def create_question(question: QuestionCreate, db: AsyncSession = Depends(get_db)):
     db_question = Question(text=question.text, quiz_id=question.quiz_id)
     db.add(db_question)
@@ -122,7 +181,7 @@ async def create_question(question: QuestionCreate, db: AsyncSession = Depends(g
     await db.refresh(db_question)
     return db_question
 
-@app.get(f"{settings.api_v1_prefix}/questions/{{question_id}}", response_model=Question, tags=["Questions"])
+@app.get(f"{settings.api_v1_prefix}/questions/{{question_id}}", response_model=QuestionOut, tags=["Questions"])
 async def get_question(question_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Question).filter(Question.id == question_id))
     db_question = result.scalars().first()

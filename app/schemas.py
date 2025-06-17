@@ -1,11 +1,12 @@
 from pydantic import BaseModel
+from sqlalchemy import Column, Integer
 from typing import Optional
 
 class UserCreate(BaseModel):
     name: str
     email: str
 
-class User(BaseModel):
+class UserOut(BaseModel):
     id: int
     name: str
     email: str
@@ -13,11 +14,12 @@ class User(BaseModel):
         orm_mode = True
 
 class DocumentCreate(BaseModel):
+    id = Column(Integer, primary_key=True, index=True)
     title: str
     content: str
     owner_id: int
 
-class Document(BaseModel):
+class DocumentOut(BaseModel):
     id: int
     title: str
     content: str
@@ -29,7 +31,7 @@ class QuizCreate(BaseModel):
     title: str
     owner_id: int
 
-class Quiz(BaseModel):
+class QuizOut(BaseModel):
     id: int
     title: str
     owner_id: int
@@ -40,7 +42,7 @@ class QuestionCreate(BaseModel):
     text: str
     quiz_id: int
 
-class Question(BaseModel):
+class QuestionOut(BaseModel):
     id: int
     text: str
     quiz_id: int

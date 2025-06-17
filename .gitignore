@@ -23,3 +23,5 @@ wheels/
 # Virtual environment
 api_venv/
 env/
+uploaded_files/
+uploads/

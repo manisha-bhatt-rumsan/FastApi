@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 from typing import Optional, List, TypedDict
 from enum import Enum
 
@@ -14,7 +14,7 @@ class Question(BaseModel):
     correct_answer:str
     explanation:str
     
-    @validator('choices', pre=True, check_fields=False)
+    @field_validator('choices', pre=True, check_fields=False)
     def validate_choices(cls, v, values):
         question_type = values.get('type')
         if question_type == 'mcq' and len(v) != 4:
@@ -53,7 +53,7 @@ class AnswerResponse(BaseModel):
 class QuestionTypeRequest(BaseModel):
     question_type: str
 
-    @validator('question_type')
+    @field_validator('question_type')
     def validate_question_type(cls, v):
         valid_types = ['mcq', 'faq', 'boolean']
         if v not in valid_types:

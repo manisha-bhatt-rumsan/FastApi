@@ -25,3 +25,5 @@ api_venv/
 env/
 uploaded_files/
 uploads/
+uploaded_documents/
+.log

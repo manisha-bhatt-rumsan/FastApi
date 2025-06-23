@@ -12,3 +12,8 @@ psutil==5.9.6
 python-multipart==0.0.6
 async_timeout
 uvicorn
+pymupdf4llm
+python-docx
+langchain
+langchain-community
+langchain-ollama

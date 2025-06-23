@@ -1,9 +1,17 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Text
+# app/models.py
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, Enum, ARRAY
 from sqlalchemy.orm import relationship
-from .database import Base
+import enum
+from app.database import Base
+
+class QuestionTypeEnum(enum.Enum):
+    MCQ = "mcq"
+    FAQ = "faq"
+    BOOLEAN = "boolean"
 
 class User(Base):
     __tablename__ = "users"
+    
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
@@ -29,6 +37,10 @@ class Quiz(Base):
 class Question(Base):
     __tablename__ = "questions"
     id = Column(Integer, primary_key=True, index=True)
-    text = Column(Text)
+    question = Column(Text, nullable=False)
+    type = Column(Enum(QuestionTypeEnum, name="question_type"), nullable=False)
+    choices = Column(ARRAY(String), nullable=True)
+    correct_answer = Column(Text, nullable=False)
+    explanation = Column(Text, nullable=True)
     quiz_id = Column(Integer, ForeignKey("quizzes.id"))
     quiz = relationship("Quiz", back_populates="questions")

@@ -11,10 +11,10 @@ class Settings(BaseSettings):
         "http://localhost:8080",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8080",
-        "*"  # Allow all origins (development only)
+        "*"
     ]
     debug: bool = True
-    database_url: str  # Loaded from .env
+    database_url: str
 
     class Config:
         env_file = ".env"

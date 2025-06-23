@@ -1,0 +1,9 @@
+[
+  {
+    "question": "Does the art of war consider the Moral Law as one of its five constant factors?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "True",
+    "explanation": "The Moral Law is indeed one of the five constant factors that Sun Tzu considered important in his treatise on the art of war."
+  }
+]

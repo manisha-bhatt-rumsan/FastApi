@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from sqlalchemy import Column, Integer
+from sqlalchemy import Column, Integer, String
 from typing import Optional
 
 class UserCreate(BaseModel):
@@ -16,7 +16,7 @@ class UserOut(BaseModel):
 class DocumentCreate(BaseModel):
     id = Column(Integer, primary_key=True, index=True)
     title: str
-    content: str
+    file_path = Column(String, nullable=False) 
     owner_id: int
 
 class DocumentOut(BaseModel):

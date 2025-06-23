@@ -1,0 +1,888 @@
+2025-06-20 15:12:55,188 - quiz.routes - INFO - Uploading document: Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf 
+2025-06-20 15:12:55,188 - quiz.service - INFO - Starting text extraction and saving for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:12:55,188 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\1750411675_Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf 
+2025-06-20 15:13:12,910 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf.txt 
+2025-06-20 15:13:12,910 - quiz.service - INFO - Starting text splitting for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:13:12,923 - quiz.service - INFO - Split text into 355 chunks 
+2025-06-20 15:13:12,926 - quiz.routes - ERROR - Error in upload_document for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf': 4 validation errors for UploadResponse
+text_file_fath
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+questions
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+content
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+document_text
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing 
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\routes.py", line 42, in upload_document
+    return UploadResponse(
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 4 validation errors for UploadResponse
+text_file_fath
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+questions
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+content
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+document_text
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+2025-06-20 15:13:31,471 - quiz.routes - INFO - Generating questions for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:13:31,471 - quiz.service - INFO - Starting question generation for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:13:31,471 - quiz.service - ERROR - Error in load_text_and_generate_question for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf':  
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\service.py", line 188, in load_text_and_generate_question
+    response = llm.with_structured_output(List[Question], method="json_schema").invoke(formatted_prompt)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\base.py", line 242, in with_structured_output
+    raise NotImplementedError
+NotImplementedError
+2025-06-20 15:13:31,490 - quiz.service - INFO - Storing quiz results for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:13:31,490 - quiz.service - INFO - Stored 0 questions for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:13:31,490 - quiz.service - WARNING - No questions to store for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:13:31,490 - quiz.routes - ERROR - Error in get_question: list index out of range 
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\routes.py", line 88, in get_question
+    questions=[state["questions"][-1]]
+               ~~~~~~~~~~~~~~~~~~^^^^
+IndexError: list index out of range
+2025-06-20 15:26:24,147 - quiz.routes - INFO - Uploading document: Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf 
+2025-06-20 15:26:24,147 - quiz.service - INFO - Starting text extraction and saving for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:26:24,155 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750412484_Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf 
+2025-06-20 15:26:42,051 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf.txt 
+2025-06-20 15:26:42,051 - quiz.service - INFO - Starting text splitting for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:26:42,061 - quiz.service - INFO - Split text into 355 chunks 
+2025-06-20 15:26:42,064 - quiz.routes - ERROR - Error in upload_document for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf': 3 validation errors for UploadResponse
+questions
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+content
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+document_text
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing 
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\routes.py", line 42, in upload_document
+    return UploadResponse(
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 3 validation errors for UploadResponse
+questions
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+content
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+document_text
+  Field required [type=missing, input_value={'message': 'Document upl..., 'error_message': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+2025-06-20 15:32:57,653 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-20 15:32:57,655 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:32:57,657 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750412877_sample_text_only_5_pages.pdf 
+2025-06-20 15:32:59,038 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-20 15:32:59,039 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:32:59,040 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-20 15:33:16,346 - quiz.routes - INFO - Generating questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:33:16,346 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:33:16,346 - quiz.service - ERROR - Error in load_text_and_generate_question for 'sample_text_only_5_pages.pdf':  
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\service.py", line 196, in load_text_and_generate_question
+    response = llm.with_structured_output(List[Question], method="json_schema").invoke(formatted_prompt)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\base.py", line 242, in with_structured_output
+    raise NotImplementedError
+NotImplementedError
+2025-06-20 15:33:16,355 - quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:33:16,355 - quiz.service - INFO - Stored 0 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:33:16,355 - quiz.service - WARNING - No questions to store for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:33:16,355 - quiz.routes - ERROR - Error in get_question: list index out of range 
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\routes.py", line 88, in get_question
+    questions=[state["questions"][-1]]
+               ~~~~~~~~~~~~~~~~~~^^^^
+IndexError: list index out of range
+2025-06-20 15:44:56,016 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-20 15:44:56,016 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:44:56,016 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750413596_sample_text_only_5_pages.pdf 
+2025-06-20 15:44:57,479 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-20 15:44:57,479 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:44:57,479 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-20 15:45:07,262 - quiz.routes - INFO - Generating questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:45:07,263 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:45:12,593 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 15:45:17,409 - quiz.service - INFO - Generated 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:45:17,409 - quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:45:17,409 - quiz.service - INFO - Stored 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:51:33,205 - quiz.routes - INFO - Uploading document: Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf 
+2025-06-20 15:51:33,205 - quiz.service - INFO - Starting text extraction and saving for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:51:33,205 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750413993_Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf 
+2025-06-20 15:51:50,603 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf.txt 
+2025-06-20 15:51:50,603 - quiz.service - INFO - Starting text splitting for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:51:50,603 - quiz.service - INFO - Split text into 355 chunks 
+2025-06-20 15:51:57,321 - quiz.routes - INFO - Generating questions for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:51:57,330 - quiz.service - INFO - Starting question generation for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:52:02,786 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 15:52:07,919 - quiz.service - INFO - Generated 3 questions for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:52:07,919 - quiz.service - INFO - Storing quiz results for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:52:07,919 - quiz.service - INFO - Stored 3 questions for 'Agentic_AI_Autonomous_Intelligence_for_Complex_GoalsA_Comprehensive_Survey.pdf' 
+2025-06-20 15:53:10,735 - quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf 
+2025-06-20 15:53:10,737 - quiz.service - INFO - Starting text extraction and saving for 'bnhsmonsoon.pdf' 
+2025-06-20 15:53:10,737 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750414090_bnhsmonsoon.pdf 
+2025-06-20 15:53:11,553 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\bnhsmonsoon.pdf.txt 
+2025-06-20 15:53:11,554 - quiz.service - INFO - Starting text splitting for 'bnhsmonsoon.pdf' 
+2025-06-20 15:53:11,554 - quiz.service - INFO - Split text into 58 chunks 
+2025-06-20 15:53:17,097 - quiz.routes - INFO - Generating questions for 'bnhsmonsoon.pdf' 
+2025-06-20 15:53:17,098 - quiz.service - INFO - Starting question generation for 'bnhsmonsoon.pdf' 
+2025-06-20 15:53:21,665 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 15:53:26,032 - quiz.service - INFO - Generated 3 questions for 'bnhsmonsoon.pdf' 
+2025-06-20 15:53:26,032 - quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf' 
+2025-06-20 15:53:26,032 - quiz.service - INFO - Stored 3 questions for 'bnhsmonsoon.pdf' 
+2025-06-20 15:53:45,666 - quiz.routes - INFO - Uploading document: 1_Constitution-of-Nepal.pdf 
+2025-06-20 15:53:45,666 - quiz.service - INFO - Starting text extraction and saving for '1_Constitution-of-Nepal.pdf' 
+2025-06-20 15:53:45,666 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750414125_1_ConstitutionofNepal.pdf 
+2025-06-20 15:54:11,846 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\1_ConstitutionofNepal.pdf.txt 
+2025-06-20 15:54:11,846 - quiz.service - INFO - Starting text splitting for '1_Constitution-of-Nepal.pdf' 
+2025-06-20 15:54:11,858 - quiz.service - INFO - Split text into 850 chunks 
+2025-06-20 15:54:20,436 - quiz.routes - INFO - Generating questions for '1_Constitution-of-Nepal.pdf' 
+2025-06-20 15:54:20,436 - quiz.service - INFO - Starting question generation for '1_Constitution-of-Nepal.pdf' 
+2025-06-20 15:54:25,396 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 15:54:29,768 - quiz.service - INFO - Generated 3 questions for '1_Constitution-of-Nepal.pdf' 
+2025-06-20 15:54:29,768 - quiz.service - INFO - Storing quiz results for '1_Constitution-of-Nepal.pdf' 
+2025-06-20 15:54:29,768 - quiz.service - INFO - Stored 3 questions for '1_Constitution-of-Nepal.pdf' 
+2025-06-20 15:55:15,776 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-20 15:55:15,777 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:55:15,779 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750414215_sample_text_only_5_pages.pdf 
+2025-06-20 15:55:17,097 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-20 15:55:17,097 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:55:17,097 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-20 15:55:23,866 - quiz.routes - INFO - Generating questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:55:23,866 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:55:28,391 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 15:55:31,991 - quiz.service - INFO - Generated 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:55:31,991 - quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 15:55:31,991 - quiz.service - INFO - Stored 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:19:51,570 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-20 16:19:51,570 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:19:51,575 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750415691_sample_text_only_5_pages.pdf 
+2025-06-20 16:19:55,473 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-20 16:19:55,473 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:19:55,475 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-20 16:20:01,910 - quiz.routes - INFO - Generating questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:20:01,910 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:20:07,522 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 16:20:11,932 - quiz.service - INFO - Generated 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:20:11,934 - quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:20:11,936 - quiz.service - INFO - Stored 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:20:11,938 - quiz.routes - INFO - Selected question type: Boolean for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:21:41,766 - quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf 
+2025-06-20 16:21:41,766 - quiz.service - INFO - Starting text extraction and saving for 'bnhsmonsoon.pdf' 
+2025-06-20 16:21:41,774 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750415801_bnhsmonsoon.pdf 
+2025-06-20 16:21:43,351 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\bnhsmonsoon.pdf.txt 
+2025-06-20 16:21:43,351 - quiz.service - INFO - Starting text splitting for 'bnhsmonsoon.pdf' 
+2025-06-20 16:21:43,351 - quiz.service - INFO - Split text into 58 chunks 
+2025-06-20 16:21:48,773 - quiz.routes - INFO - Generating questions for 'bnhsmonsoon.pdf' 
+2025-06-20 16:21:48,773 - quiz.service - INFO - Starting question generation for 'bnhsmonsoon.pdf' 
+2025-06-20 16:21:53,299 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 16:21:58,145 - quiz.service - INFO - Generated 3 questions for 'bnhsmonsoon.pdf' 
+2025-06-20 16:21:58,145 - quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf' 
+2025-06-20 16:21:58,145 - quiz.service - INFO - Stored 3 questions for 'bnhsmonsoon.pdf' 
+2025-06-20 16:21:58,145 - quiz.routes - INFO - Selected question type: FAQ for 'bnhsmonsoon.pdf' 
+2025-06-20 16:22:08,088 - quiz.routes - INFO - Generating questions for 'bnhsmonsoon.pdf' 
+2025-06-20 16:22:08,096 - quiz.service - INFO - Starting question generation for 'bnhsmonsoon.pdf' 
+2025-06-20 16:22:12,682 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 16:22:17,819 - quiz.service - INFO - Generated 3 questions for 'bnhsmonsoon.pdf' 
+2025-06-20 16:22:17,821 - quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf' 
+2025-06-20 16:22:17,821 - quiz.service - INFO - Stored 3 questions for 'bnhsmonsoon.pdf' 
+2025-06-20 16:22:17,821 - quiz.routes - INFO - Selected question type: MCQ for 'bnhsmonsoon.pdf' 
+2025-06-20 16:23:08,042 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-20 16:23:08,043 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:23:08,047 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750415888_sample_text_only_5_pages.pdf 
+2025-06-20 16:23:11,492 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-20 16:23:11,495 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:23:11,495 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-20 16:23:16,527 - quiz.routes - INFO - Generating questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:23:16,528 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:23:21,142 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 16:23:26,609 - quiz.service - INFO - Generated 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:23:26,611 - quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:23:26,611 - quiz.service - INFO - Stored 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:23:26,611 - quiz.routes - INFO - Selected question type: MCQ for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:25:33,981 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-20 16:25:33,981 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:25:33,984 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750416033_sample_text_only_5_pages.pdf 
+2025-06-20 16:25:37,604 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-20 16:25:37,604 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:25:37,606 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-20 16:25:48,139 - quiz.routes - INFO - Generating questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:25:48,140 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:25:48,189 - quiz.service - ERROR - Error in load_text_and_generate_question for 'sample_text_only_5_pages.pdf': [Errno 11001] getaddrinfo failed 
+Traceback (most recent call last):
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection.py", line 101, in handle_request
+    raise exc
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection.py", line 78, in handle_request
+    stream = self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection.py", line 124, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_backends\sync.py", line 207, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\service.py", line 194, in load_text_and_generate_question
+    response = llm.invoke(formatted_prompt)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 389, in invoke
+    self.generate_prompt(
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 766, in generate_prompt
+    return self.generate(prompt_strings, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 973, in generate
+    return self._generate_helper(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 792, in _generate_helper
+    self._generate(
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_ollama\llms.py", line 313, in _generate
+    final_chunk = self._stream_with_aggregation(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_ollama\llms.py", line 281, in _stream_with_aggregation
+    for stream_resp in self._create_generate_stream(prompt, stop, **kwargs):
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_ollama\llms.py", line 236, in _create_generate_stream
+    yield from self._client.generate(
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\ollama\_client.py", line 165, in inner
+    with self._client.stream(*args, **kwargs) as r:
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 868, in stream
+    response = self.send(
+               ^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2025-06-20 16:25:48,737 - quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:25:48,739 - quiz.service - INFO - Stored 0 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:25:48,740 - quiz.service - WARNING - No questions to store for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:26:08,281 - quiz.routes - INFO - Generating questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:26:08,281 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:26:08,288 - quiz.service - ERROR - Error in load_text_and_generate_question for 'sample_text_only_5_pages.pdf': [Errno 11001] getaddrinfo failed 
+Traceback (most recent call last):
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection.py", line 101, in handle_request
+    raise exc
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection.py", line 78, in handle_request
+    stream = self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection.py", line 124, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_backends\sync.py", line 207, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\service.py", line 194, in load_text_and_generate_question
+    response = llm.invoke(formatted_prompt)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 389, in invoke
+    self.generate_prompt(
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 766, in generate_prompt
+    return self.generate(prompt_strings, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 973, in generate
+    return self._generate_helper(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 792, in _generate_helper
+    self._generate(
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_ollama\llms.py", line 313, in _generate
+    final_chunk = self._stream_with_aggregation(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_ollama\llms.py", line 281, in _stream_with_aggregation
+    for stream_resp in self._create_generate_stream(prompt, stop, **kwargs):
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_ollama\llms.py", line 236, in _create_generate_stream
+    yield from self._client.generate(
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\ollama\_client.py", line 165, in inner
+    with self._client.stream(*args, **kwargs) as r:
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 868, in stream
+    response = self.send(
+               ^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2025-06-20 16:26:08,303 - quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:26:08,303 - quiz.service - INFO - Stored 0 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:26:08,304 - quiz.service - WARNING - No questions to store for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:26:20,186 - quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf 
+2025-06-20 16:26:20,186 - quiz.service - INFO - Starting text extraction and saving for 'bnhsmonsoon.pdf' 
+2025-06-20 16:26:20,190 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750416080_bnhsmonsoon.pdf 
+2025-06-20 16:26:22,474 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\bnhsmonsoon.pdf.txt 
+2025-06-20 16:26:22,474 - quiz.service - INFO - Starting text splitting for 'bnhsmonsoon.pdf' 
+2025-06-20 16:26:22,477 - quiz.service - INFO - Split text into 58 chunks 
+2025-06-20 16:26:28,097 - quiz.routes - INFO - Generating questions for 'bnhsmonsoon.pdf' 
+2025-06-20 16:26:28,097 - quiz.service - INFO - Starting question generation for 'bnhsmonsoon.pdf' 
+2025-06-20 16:26:28,103 - quiz.service - ERROR - Error in load_text_and_generate_question for 'bnhsmonsoon.pdf': [Errno 11001] getaddrinfo failed 
+Traceback (most recent call last):
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection.py", line 101, in handle_request
+    raise exc
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection.py", line 78, in handle_request
+    stream = self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection.py", line 124, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_backends\sync.py", line 207, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\service.py", line 194, in load_text_and_generate_question
+    response = llm.invoke(formatted_prompt)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 389, in invoke
+    self.generate_prompt(
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 766, in generate_prompt
+    return self.generate(prompt_strings, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 973, in generate
+    return self._generate_helper(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\llms.py", line 792, in _generate_helper
+    self._generate(
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_ollama\llms.py", line 313, in _generate
+    final_chunk = self._stream_with_aggregation(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_ollama\llms.py", line 281, in _stream_with_aggregation
+    for stream_resp in self._create_generate_stream(prompt, stop, **kwargs):
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_ollama\llms.py", line 236, in _create_generate_stream
+    yield from self._client.generate(
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\ollama\_client.py", line 165, in inner
+    with self._client.stream(*args, **kwargs) as r:
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 868, in stream
+    response = self.send(
+               ^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2025-06-20 16:26:28,112 - quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf' 
+2025-06-20 16:26:28,114 - quiz.service - INFO - Stored 0 questions for 'bnhsmonsoon.pdf' 
+2025-06-20 16:26:28,120 - quiz.service - WARNING - No questions to store for 'bnhsmonsoon.pdf' 
+2025-06-20 16:28:39,749 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-20 16:28:39,759 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:28:39,765 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750416219_sample_text_only_5_pages.pdf 
+2025-06-20 16:28:42,056 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-20 16:28:42,059 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:28:42,061 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-20 16:28:48,952 - quiz.routes - INFO - Generating questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:28:48,953 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:28:54,418 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 16:28:59,451 - quiz.service - INFO - Generated 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:28:59,451 - quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:28:59,451 - quiz.service - INFO - Stored 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:28:59,451 - quiz.routes - INFO - Selected question type: MCQ for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:32:05,643 - quiz.routes - INFO - Generating questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:32:05,648 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:32:10,317 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 16:32:14,674 - quiz.service - INFO - Generated 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:32:14,674 - quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:32:14,674 - quiz.service - INFO - Stored 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:32:14,674 - quiz.routes - INFO - Selected question type: MCQ for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:34:14,029 - quiz.routes - INFO - Generating questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:34:14,032 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:34:18,551 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 16:34:23,149 - quiz.service - INFO - Generated 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:34:23,151 - quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:34:23,151 - quiz.service - INFO - Stored 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 16:34:23,151 - quiz.routes - INFO - Selected question type: Boolean for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:16:26,054 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-20 17:16:26,055 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:16:26,056 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750419086_sample_text_only_5_pages.pdf 
+2025-06-20 17:16:27,043 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-20 17:16:27,043 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:16:27,043 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-20 17:16:39,884 - quiz.routes - INFO - Selecting question type 'MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:16:48,061 - quiz.routes - INFO - Fetching question of type 'MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:16:48,068 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:16:48,069 - quiz.service - ERROR - Error in load_text_and_generate_question for 'sample_text_only_5_pages.pdf': '\n                    "question"' 
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\service.py", line 194, in load_text_and_generate_question
+    formatted_prompt = prompt.format(text=text)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\prompts\prompt.py", line 186, in format
+    return DEFAULT_FORMATTER_MAPPING[self.template_format](self.template, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\string.py", line 190, in format
+    return self.vformat(format_string, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\formatting.py", line 33, in vformat
+    return super().vformat(format_string, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\string.py", line 194, in vformat
+    result, _ = self._vformat(format_string, args, kwargs, used_args, 2)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\string.py", line 234, in _vformat
+    obj, arg_used = self.get_field(field_name, args, kwargs)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\string.py", line 299, in get_field
+    obj = self.get_value(first, args, kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\string.py", line 256, in get_value
+    return kwargs[key]
+           ~~~~~~^^^^^
+KeyError: '\n                    "question"'
+2025-06-20 17:16:48,170 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:16:48,170 - quiz.service - WARNING - No questions to store for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:16:48,170 - quiz.routes - ERROR - Question generation failed for 'sample_text_only_5_pages.pdf': No questions available for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:20:08,629 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-20 17:20:08,629 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:20:08,633 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750419308_sample_text_only_5_pages.pdf 
+2025-06-20 17:20:10,224 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-20 17:20:10,225 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:20:10,226 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-20 17:20:22,124 - quiz.routes - INFO - Selecting question type 'MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:20:26,938 - quiz.routes - INFO - Fetching question of type 'MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:20:26,940 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:20:29,192 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-20 17:20:33,739 - quiz.service - INFO - Generated 3 questions for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:20:33,739 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:20:33,739 - quiz.service - INFO - Saved 3 questions to: uploaded_documents\questions\1750419333_sample_text_only_5_pages.pdf_questions.json 
+2025-06-20 17:20:33,739 - quiz.routes - INFO - Selected question type: MCQ for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:21:00,805 - quiz.routes - INFO - Selecting question type 'FAQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:21:04,777 - quiz.routes - INFO - Fetching question of type 'FAQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:21:04,778 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:21:04,779 - quiz.service - INFO - Saved 3 questions to: uploaded_documents\questions\1750419364_sample_text_only_5_pages.pdf_questions.json 
+2025-06-20 17:21:04,779 - quiz.routes - INFO - Selected question type: FAQ for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:21:37,328 - quiz.routes - INFO - Selecting question type 'Boolean' for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:21:43,717 - quiz.routes - INFO - Fetching question of type 'Boolean' for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:21:43,728 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-20 17:21:43,729 - quiz.service - INFO - Saved 3 questions to: uploaded_documents\questions\1750419403_sample_text_only_5_pages.pdf_questions.json 
+2025-06-20 17:21:43,733 - quiz.routes - INFO - Selected question type: Boolean for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:33:05,608 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-21 16:33:05,611 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:33:05,612 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750502885_sample_text_only_5_pages.pdf 
+2025-06-21 16:33:06,472 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-21 16:33:06,472 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:33:06,473 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-21 16:33:26,771 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:33:26,771 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:33:32,336 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 16:33:36,195 - quiz.service - WARNING - Attempt 1 failed for 'sample_text_only_5_pages.pdf': 1 validation error for Question
+type
+  Input should be 'mcq', 'faq' or 'boolean' [type=enum, input_value='MCQ', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/enum 
+2025-06-21 16:33:36,594 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 16:33:39,945 - quiz.service - WARNING - Attempt 2 failed for 'sample_text_only_5_pages.pdf': 1 validation error for Question
+type
+  Input should be 'mcq', 'faq' or 'boolean' [type=enum, input_value='MCQ', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/enum 
+2025-06-21 16:33:40,014 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 16:33:44,364 - quiz.service - WARNING - Attempt 3 failed for 'sample_text_only_5_pages.pdf': 1 validation error for Question
+type
+  Input should be 'mcq', 'faq' or 'boolean' [type=enum, input_value='MCQ', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/enum 
+2025-06-21 16:33:44,366 - quiz.service - ERROR - All 3 attempts failed for 'sample_text_only_5_pages.pdf': 1 validation error for Question
+type
+  Input should be 'mcq', 'faq' or 'boolean' [type=enum, input_value='MCQ', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/enum 
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\service.py", line 231, in load_text_and_generate_question
+    Question(
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for Question
+type
+  Input should be 'mcq', 'faq' or 'boolean' [type=enum, input_value='MCQ', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/enum
+2025-06-21 16:33:44,369 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:33:44,369 - quiz.service - WARNING - No questions to store for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:33:44,370 - quiz.routes - ERROR - Question generation failed for 'sample_text_only_5_pages.pdf': No questions available for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:33:51,812 - quiz.routes - INFO - Fetching question of type 'QuestionType.FAQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:33:51,812 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:33:52,023 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 16:33:55,471 - quiz.service - WARNING - Attempt 1 failed for 'sample_text_only_5_pages.pdf': 1 validation error for Question
+type
+  Input should be 'mcq', 'faq' or 'boolean' [type=enum, input_value='MCQ', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/enum 
+2025-06-21 16:33:55,872 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 16:33:59,505 - quiz.service - WARNING - Attempt 2 failed for 'sample_text_only_5_pages.pdf': 1 validation error for Question
+type
+  Input should be 'mcq', 'faq' or 'boolean' [type=enum, input_value='MCQ', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/enum 
+2025-06-21 16:33:59,903 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 16:34:03,568 - quiz.service - WARNING - Attempt 3 failed for 'sample_text_only_5_pages.pdf': 1 validation error for Question
+type
+  Input should be 'mcq', 'faq' or 'boolean' [type=enum, input_value='MCQ', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/enum 
+2025-06-21 16:34:03,569 - quiz.service - ERROR - All 3 attempts failed for 'sample_text_only_5_pages.pdf': 1 validation error for Question
+type
+  Input should be 'mcq', 'faq' or 'boolean' [type=enum, input_value='MCQ', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/enum 
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\service.py", line 231, in load_text_and_generate_question
+    Question(
+  File "C:\Users\97798\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for Question
+type
+  Input should be 'mcq', 'faq' or 'boolean' [type=enum, input_value='MCQ', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/enum
+2025-06-21 16:34:03,570 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:34:03,571 - quiz.service - WARNING - No questions to store for 'sample_text_only_5_pages.pdf' 
+2025-06-21 16:34:03,571 - quiz.routes - ERROR - Question generation failed for 'sample_text_only_5_pages.pdf': No questions available for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:04:45,994 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-21 17:04:45,994 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:04:46,003 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750504785_sample_text_only_5_pages.pdf 
+2025-06-21 17:04:49,769 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-21 17:04:49,769 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:04:49,780 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-21 17:04:58,139 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:04:58,139 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:05:01,230 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 17:05:04,368 - quiz.service - WARNING - Attempt 1 failed for 'sample_text_only_5_pages.pdf': Invalid question types: got {'Boolean', 'MCQ', 'FAQ'}, expected {'boolean', 'faq', 'mcq'} 
+2025-06-21 17:05:04,802 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 17:05:08,685 - quiz.service - WARNING - Attempt 2 failed for 'sample_text_only_5_pages.pdf': Invalid question types: got {'Boolean', 'MCQ', 'FAQ'}, expected {'boolean', 'faq', 'mcq'} 
+2025-06-21 17:05:08,755 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 17:05:12,112 - quiz.service - WARNING - Attempt 3 failed for 'sample_text_only_5_pages.pdf': Invalid question types: got {'Boolean', 'MCQ', 'FAQ'}, expected {'boolean', 'faq', 'mcq'} 
+2025-06-21 17:05:12,112 - quiz.service - ERROR - All 3 attempts failed for 'sample_text_only_5_pages.pdf': Invalid question types: got {'Boolean', 'MCQ', 'FAQ'}, expected {'boolean', 'faq', 'mcq'} 
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\service.py", line 219, in load_text_and_generate_question
+    raise ValueError(f"Invalid question types: got {question_types}, expected {expected_types}")
+ValueError: Invalid question types: got {'Boolean', 'MCQ', 'FAQ'}, expected {'boolean', 'faq', 'mcq'}
+2025-06-21 17:05:12,120 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:05:12,120 - quiz.service - WARNING - No questions to store for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:05:12,120 - quiz.routes - ERROR - Question generation failed for 'sample_text_only_5_pages.pdf': No questions available for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:22:03,489 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-21 17:22:03,491 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:22:03,506 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750505823_sample_text_only_5_pages.pdf 
+2025-06-21 17:22:07,129 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-21 17:22:07,129 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:22:07,137 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-21 17:22:16,342 - quiz.routes - INFO - Fetching question of type 'QuestionType.BOOLEAN' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:22:16,342 - quiz.routes - ERROR - Error in get_question: load_text_and_generate_question() missing 1 required positional argument: 'question_type' 
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\routes.py", line 73, in get_question
+    state = load_text_and_generate_question(state)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: load_text_and_generate_question() missing 1 required positional argument: 'question_type'
+2025-06-21 17:25:40,332 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-21 17:25:40,332 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:25:40,336 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750506040_sample_text_only_5_pages.pdf 
+2025-06-21 17:25:44,205 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-21 17:25:44,207 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:25:44,207 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-21 17:25:53,381 - quiz.routes - INFO - Fetching question of type 'QuestionType.BOOLEAN' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:25:53,383 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'boolean' 
+2025-06-21 17:25:55,708 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 17:25:56,773 - quiz.service - INFO - Generated 1 question of type 'boolean' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:25:56,773 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:25:56,781 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750506056_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 17:25:56,781 - quiz.routes - INFO - Selected question type: QuestionType.BOOLEAN for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:04,760 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:04,760 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:04,760 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750506064_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 17:26:10,754 - quiz.routes - INFO - Fetching question of type 'QuestionType.FAQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:10,754 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:10,759 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750506070_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 17:26:13,942 - quiz.routes - INFO - Fetching question of type 'QuestionType.BOOLEAN' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:13,942 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:13,945 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750506073_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 17:26:13,947 - quiz.routes - INFO - Selected question type: QuestionType.BOOLEAN for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:29,655 - quiz.routes - INFO - Fetching question of type 'QuestionType.BOOLEAN' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:29,657 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:29,662 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750506089_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 17:26:29,664 - quiz.routes - INFO - Selected question type: QuestionType.BOOLEAN for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:35,135 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:35,138 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:35,138 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750506095_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 17:26:37,967 - quiz.routes - INFO - Fetching question of type 'QuestionType.BOOLEAN' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:37,969 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:37,971 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750506097_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 17:26:37,974 - quiz.routes - INFO - Selected question type: QuestionType.BOOLEAN for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:26:47,714 - quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf 
+2025-06-21 17:26:47,716 - quiz.service - INFO - Starting text extraction and saving for 'bnhsmonsoon.pdf' 
+2025-06-21 17:26:47,719 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750506107_bnhsmonsoon.pdf 
+2025-06-21 17:26:50,412 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\bnhsmonsoon.pdf.txt 
+2025-06-21 17:26:50,416 - quiz.service - INFO - Starting text splitting for 'bnhsmonsoon.pdf' 
+2025-06-21 17:26:50,432 - quiz.service - INFO - Split text into 58 chunks 
+2025-06-21 17:26:55,411 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'bnhsmonsoon.pdf' 
+2025-06-21 17:26:55,413 - quiz.service - INFO - Starting question generation for 'bnhsmonsoon.pdf' with type 'mcq' 
+2025-06-21 17:26:56,577 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 17:26:58,118 - quiz.service - INFO - Generated 1 question of type 'mcq' for 'bnhsmonsoon.pdf' 
+2025-06-21 17:26:58,118 - quiz.service - INFO - Starting to store quiz results for 'bnhsmonsoon.pdf' 
+2025-06-21 17:26:58,129 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750506118_bnhsmonsoon.pdf_questions.json 
+2025-06-21 17:26:58,129 - quiz.routes - INFO - Selected question type: QuestionType.MCQ for 'bnhsmonsoon.pdf' 
+2025-06-21 17:27:03,414 - quiz.routes - INFO - Fetching question of type 'QuestionType.BOOLEAN' for 'bnhsmonsoon.pdf' 
+2025-06-21 17:27:03,414 - quiz.service - INFO - Starting to store quiz results for 'bnhsmonsoon.pdf' 
+2025-06-21 17:27:03,419 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750506123_bnhsmonsoon.pdf_questions.json 
+2025-06-21 17:27:06,586 - quiz.routes - INFO - Fetching question of type 'QuestionType.FAQ' for 'bnhsmonsoon.pdf' 
+2025-06-21 17:27:06,586 - quiz.service - INFO - Starting to store quiz results for 'bnhsmonsoon.pdf' 
+2025-06-21 17:27:06,592 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750506126_bnhsmonsoon.pdf_questions.json 
+2025-06-21 17:52:11,596 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-21 17:52:11,596 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:52:11,596 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750507631_sample_text_only_5_pages.pdf 
+2025-06-21 17:52:13,139 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-21 17:52:13,139 - quiz.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:52:13,139 - quiz.service - INFO - Split text into 64 chunks 
+2025-06-21 17:52:25,270 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:52:25,272 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'mcq' 
+2025-06-21 17:52:27,111 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 17:52:28,258 - quiz.service - INFO - Generated 1 question of type 'mcq' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:52:28,258 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 17:52:28,258 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750507648_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 17:52:28,258 - quiz.routes - INFO - Selected question type: QuestionType.MCQ for 'sample_text_only_5_pages.pdf' 
+2025-06-21 18:12:59,655 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-21 18:12:59,657 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-21 18:12:59,659 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750508879_sample_text_only_5_pages.pdf 
+2025-06-21 18:13:01,099 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-21 18:13:01,101 - upload.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-21 18:13:01,101 - upload.service - INFO - Split text into 64 chunks 
+2025-06-21 18:13:14,896 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 18:13:14,896 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'mcq' 
+2025-06-21 18:13:17,434 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 18:13:18,393 - quiz.service - INFO - Generated 1 question of type 'mcq' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 18:13:18,393 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 18:13:18,393 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750508898_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 18:13:18,393 - quiz.routes - INFO - Selected question type: QuestionType.MCQ for 'sample_text_only_5_pages.pdf' 
+2025-06-21 18:13:29,045 - quiz.routes - INFO - Fetching question of type 'QuestionType.BOOLEAN' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 18:13:29,045 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 18:13:29,049 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750508909_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 20:26:08,681 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-21 20:26:08,681 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:26:08,681 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750516868_sample_text_only_5_pages.pdf 
+2025-06-21 20:26:10,226 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-21 20:26:10,226 - upload.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:26:10,226 - upload.service - INFO - Split text into 64 chunks 
+2025-06-21 20:26:19,854 - quiz.routes - INFO - Fetching question of type 'QuestionType.BOOLEAN' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:26:19,854 - quiz.routes - INFO - No questions of type 'boolean' found. Regenerating... 
+2025-06-21 20:26:19,854 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'boolean' 
+2025-06-21 20:26:22,010 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 20:26:22,984 - quiz.service - INFO - Generated 1 question of type 'boolean' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:26:22,984 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:26:22,984 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750516882_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 20:26:22,984 - quiz.routes - INFO - Selected question type: QuestionType.BOOLEAN for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:26:28,700 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:26:28,700 - quiz.routes - INFO - No questions of type 'mcq' found. Regenerating... 
+2025-06-21 20:26:28,701 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'mcq' 
+2025-06-21 20:26:29,735 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 20:26:31,443 - quiz.service - INFO - Generated 1 question of type 'mcq' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:26:31,443 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:26:31,443 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750516891_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 20:26:31,443 - quiz.routes - INFO - Selected question type: QuestionType.MCQ for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:28:48,355 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-21 20:28:48,355 - quiz.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:28:48,355 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750517028_sample_text_only_5_pages.pdf 
+2025-06-21 20:28:49,667 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-21 20:28:49,667 - upload.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:28:49,667 - upload.service - INFO - Split text into 64 chunks 
+2025-06-21 20:28:58,657 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:28:58,657 - quiz.routes - INFO - No questions of type 'mcq' found. Regenerating... 
+2025-06-21 20:28:58,657 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'mcq' 
+2025-06-21 20:28:59,686 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 20:29:01,049 - quiz.service - WARNING - Attempt 1 failed for 'sample_text_only_5_pages.pdf': No valid JSON object in LLM response 
+2025-06-21 20:29:01,099 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 20:29:02,230 - quiz.service - WARNING - Attempt 2 failed for 'sample_text_only_5_pages.pdf': No valid JSON object in LLM response 
+2025-06-21 20:29:02,279 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 20:29:03,648 - quiz.service - INFO - Generated 1 question of type 'mcq' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:03,648 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:03,648 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750517043_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 20:29:03,648 - quiz.routes - INFO - Selected question type: QuestionType.MCQ for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:21,679 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:21,680 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:21,680 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750517061_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 20:29:21,680 - quiz.routes - INFO - Selected question type: QuestionType.MCQ for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:27,310 - quiz.routes - INFO - Fetching question of type 'QuestionType.FAQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:27,310 - quiz.routes - INFO - No questions of type 'faq' found. Regenerating... 
+2025-06-21 20:29:27,310 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'faq' 
+2025-06-21 20:29:28,660 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 20:29:30,407 - quiz.service - INFO - Generated 1 question of type 'faq' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:30,407 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:30,419 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750517070_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 20:29:30,419 - quiz.routes - INFO - Selected question type: QuestionType.FAQ for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:37,826 - quiz.routes - INFO - Fetching question of type 'QuestionType.BOOLEAN' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:37,826 - quiz.routes - INFO - No questions of type 'boolean' found. Regenerating... 
+2025-06-21 20:29:37,827 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'boolean' 
+2025-06-21 20:29:38,808 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 20:29:39,824 - quiz.service - WARNING - Attempt 1 failed for 'sample_text_only_5_pages.pdf': No valid JSON object in LLM response 
+2025-06-21 20:29:39,861 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 20:29:40,812 - quiz.service - INFO - Generated 1 question of type 'boolean' for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:40,820 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:29:40,822 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750517080_sample_text_only_5_pages.pdf_questions.json 
+2025-06-21 20:29:40,822 - quiz.routes - INFO - Selected question type: QuestionType.BOOLEAN for 'sample_text_only_5_pages.pdf' 
+2025-06-21 20:31:02,156 - quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf 
+2025-06-21 20:31:02,156 - quiz.service - INFO - Starting text extraction and saving for 'bnhsmonsoon.pdf' 
+2025-06-21 20:31:02,162 - quiz.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750517162_bnhsmonsoon.pdf 
+2025-06-21 20:31:03,023 - quiz.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\bnhsmonsoon.pdf.txt 
+2025-06-21 20:31:03,023 - upload.service - INFO - Starting text splitting for 'bnhsmonsoon.pdf' 
+2025-06-21 20:31:03,023 - upload.service - INFO - Split text into 58 chunks 
+2025-06-21 20:31:28,268 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'bnhsmonsoon.pdf' 
+2025-06-21 20:31:28,269 - quiz.routes - INFO - No questions of type 'mcq' found. Regenerating... 
+2025-06-21 20:31:28,269 - quiz.service - INFO - Starting question generation for 'bnhsmonsoon.pdf' with type 'mcq' 
+2025-06-21 20:31:29,478 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-21 20:31:30,928 - quiz.service - INFO - Generated 1 question of type 'mcq' for 'bnhsmonsoon.pdf' 
+2025-06-21 20:31:30,928 - quiz.service - INFO - Starting to store quiz results for 'bnhsmonsoon.pdf' 
+2025-06-21 20:31:30,945 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750517190_bnhsmonsoon.pdf_questions.json 
+2025-06-21 20:31:30,945 - quiz.routes - INFO - Selected question type: QuestionType.MCQ for 'bnhsmonsoon.pdf' 
+2025-06-23 10:42:07,188 - quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf 
+2025-06-23 10:42:07,189 - upload.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:42:07,191 - upload.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750654627_sample_text_only_5_pages.pdf 
+2025-06-23 10:42:08,903 - upload.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt 
+2025-06-23 10:42:08,903 - upload.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:42:08,904 - upload.service - INFO - Split text into 64 chunks 
+2025-06-23 10:42:22,742 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:42:22,743 - quiz.routes - INFO - No questions of type 'mcq' found. Regenerating... 
+2025-06-23 10:42:22,743 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'mcq' 
+2025-06-23 10:42:24,087 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-23 10:42:25,500 - quiz.service - INFO - Generated 1 question of type 'mcq' for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:42:25,501 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:42:25,502 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750654645_sample_text_only_5_pages.pdf_questions.json 
+2025-06-23 10:42:25,503 - quiz.routes - INFO - Selected question type: QuestionType.MCQ for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:43:45,436 - quiz.routes - INFO - Fetching question of type 'QuestionType.BOOLEAN' for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:43:45,437 - quiz.routes - INFO - No questions of type 'boolean' found. Regenerating... 
+2025-06-23 10:43:45,437 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'boolean' 
+2025-06-23 10:43:46,592 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-23 10:43:47,571 - quiz.service - WARNING - Attempt 1 failed for 'sample_text_only_5_pages.pdf': No valid JSON object in LLM response 
+2025-06-23 10:43:47,780 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-23 10:43:48,930 - quiz.service - INFO - Generated 1 question of type 'boolean' for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:43:48,931 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:43:48,933 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750654728_sample_text_only_5_pages.pdf_questions.json 
+2025-06-23 10:43:48,933 - quiz.routes - INFO - Selected question type: QuestionType.BOOLEAN for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:43:56,762 - quiz.routes - INFO - Fetching question of type 'QuestionType.FAQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:43:56,764 - quiz.routes - INFO - No questions of type 'faq' found. Regenerating... 
+2025-06-23 10:43:56,764 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'faq' 
+2025-06-23 10:43:57,926 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-23 10:43:59,279 - quiz.service - INFO - Generated 1 question of type 'faq' for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:43:59,280 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:43:59,281 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750654739_sample_text_only_5_pages.pdf_questions.json 
+2025-06-23 10:43:59,281 - quiz.routes - INFO - Selected question type: QuestionType.FAQ for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:48:07,435 - quiz.routes - INFO - Fetching question of type 'QuestionType.MCQ' for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:48:07,436 - quiz.routes - INFO - No questions of type 'mcq' found. Regenerating... 
+2025-06-23 10:48:07,437 - quiz.service - INFO - Starting question generation for 'sample_text_only_5_pages.pdf' with type 'mcq' 
+2025-06-23 10:48:08,848 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-23 10:48:10,352 - quiz.service - WARNING - Attempt 1 failed for 'sample_text_only_5_pages.pdf': MCQ must have exactly 4 options, got 5 
+2025-06-23 10:48:10,498 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK" 
+2025-06-23 10:48:11,892 - quiz.service - INFO - Generated 1 question of type 'mcq' for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:48:11,893 - quiz.service - INFO - Starting to store quiz results for 'sample_text_only_5_pages.pdf' 
+2025-06-23 10:48:11,897 - quiz.service - INFO - Saved 1 questions to: uploaded_documents\questions\1750654991_sample_text_only_5_pages.pdf_questions.json 
+2025-06-23 10:48:11,898 - quiz.routes - INFO - Selected question type: QuestionType.MCQ for 'sample_text_only_5_pages.pdf' 
+2025-06-23 12:29:23,463 - quiz.routes - ERROR - Error in get_question: name 'current_state' is not defined 
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\routes.py", line 24, in get_question
+    if current_state is None or not current_state.get("document_text"):
+       ^^^^^^^^^^^^^
+NameError: name 'current_state' is not defined

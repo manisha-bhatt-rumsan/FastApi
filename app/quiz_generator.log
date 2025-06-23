@@ -1,0 +1,24 @@
+2025-06-23 12:01:59,960 - upload.routes - INFO - Uploading document: sample_text_only_5_pages.pdf
+2025-06-23 12:01:59,961 - upload.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf'
+2025-06-23 12:01:59,962 - upload.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750659419_sample_text_only_5_pages.pdf
+2025-06-23 12:02:01,510 - upload.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt
+2025-06-23 12:02:01,512 - upload.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf'
+2025-06-23 12:02:01,512 - upload.service - INFO - Split text into 64 chunks
+2025-06-23 12:02:12,076 - quiz.routes - ERROR - Error in get_question: name 'current_state' is not defined
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\routes.py", line 24, in get_question
+    if current_state is None or not current_state.get("document_text"):
+       ^^^^^^^^^^^^^
+NameError: name 'current_state' is not defined
+2025-06-23 12:23:46,716 - upload.routes - INFO - Uploading document: sample_text_only_5_pages.pdf
+2025-06-23 12:23:46,718 - upload.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf'
+2025-06-23 12:23:46,721 - upload.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750660726_sample_text_only_5_pages.pdf
+2025-06-23 12:23:51,184 - upload.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt
+2025-06-23 12:23:51,185 - upload.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf'
+2025-06-23 12:23:51,187 - upload.service - INFO - Split text into 64 chunks
+2025-06-23 12:33:22,397 - upload.routes - INFO - Uploading document: sample_text_only_5_pages.pdf
+2025-06-23 12:33:22,398 - upload.service - INFO - Starting text extraction and saving for 'sample_text_only_5_pages.pdf'
+2025-06-23 12:33:22,401 - upload.service - INFO - Saved uploaded file to: uploaded_documents\uploaded_files\1750661302_sample_text_only_5_pages.pdf
+2025-06-23 12:33:24,404 - upload.service - INFO - Saved extracted text to: uploaded_documents\extracted_text\sample_text_only_5_pages.pdf.txt
+2025-06-23 12:33:24,405 - upload.service - INFO - Starting text splitting for 'sample_text_only_5_pages.pdf'
+2025-06-23 12:33:24,406 - upload.service - INFO - Split text into 64 chunks

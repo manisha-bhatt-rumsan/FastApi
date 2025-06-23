@@ -1,0 +1,14 @@
+[
+  {
+    "question": "What is the primary factor among Sun Tzu's five constant factors that causes people to be in complete accord with their ruler?",
+    "type": "mcq",
+    "choices": [
+      "The Commander",
+      "Heaven",
+      "Earth",
+      "Method and discipline"
+    ],
+    "correct_answer": "The Moral Law",
+    "explanation": "The Moral Law is the factor that causes people to be in complete accord with their ruler, so they will follow him regardless of their lives, undismayed by any danger."
+  }
+]

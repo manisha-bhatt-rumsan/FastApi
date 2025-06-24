@@ -1,9 +1,9 @@
+#quiz/routes.py
 from fastapi import File, HTTPException, APIRouter, UploadFile
 import logging
-from upload.service import split_text
-from quiz.service import load_text_and_generate_question, store_quiz_results
-from upload.service import extract_and_save_text, split_text
-from quiz.schemas import  QuizSessionResponse, AnswerRequest, AnswerResponse, QuestionType, UploadResponse
+from app.upload.service import split_text,extract_and_save_text
+from app.quiz.service import load_text_and_generate_question, store_quiz_results
+from app.quiz.schemas import  QuizSessionResponse, AnswerRequest, AnswerResponse, QuestionType, UploadResponse
 
 logging.basicConfig(
     level=logging.INFO,
@@ -75,7 +75,7 @@ async def get_question(question_type: QuestionType):
             logger.info(f"No questions of type '{question_type.value}' found. Regenerating...")
             state = load_text_and_generate_question(state, question_type.value)
 
-        state = store_quiz_results(state)
+        state = await store_quiz_results(state)
 
         if state.get('error_message'):
             logger.error(f"Question generation failed for '{filename}': {state['error_message']}")
@@ -91,10 +91,19 @@ async def get_question(question_type: QuestionType):
 
         current_state = state
 
-        return QuizSessionResponse(
-            original_file_name=state["original_filename"],
-            questions=[selected_question]
-        )
+        # Add database storage info to response if available
+        response_data = {
+            "original_file_name": state["original_filename"],
+            "questions": [selected_question]
+        }
+        
+        # Log database storage status
+        if state.get('database_stored'):
+            logger.info(f"Questions stored in database with quiz ID: {state.get('quiz_id')}")
+        elif state.get('database_error'):
+            logger.warning(f"Database storage failed: {state.get('database_error')}")
+
+        return QuizSessionResponse(**response_data)
 
     except HTTPException:
         raise

@@ -3,8 +3,8 @@ import json
 from openai import OpenAI
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends
-from app.database import get_db
-from app.models import Document, Quiz, Question
+from app.db.database import get_db
+from app.db.models import Document, Quiz, Question
 from app.schemas import QuestionCreate
 from app.config import settings
 

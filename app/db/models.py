@@ -1,8 +1,8 @@
-# app/models.py
+# db/models.py
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, Enum, ARRAY
 from sqlalchemy.orm import relationship
 import enum
-from app.database import Base
+from app.db.database import Base
 
 class QuestionTypeEnum(enum.Enum):
     MCQ = "mcq"

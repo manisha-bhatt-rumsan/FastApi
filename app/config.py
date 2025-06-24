@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     ]
     debug: bool = True
     database_url: str
+    ollama_host: str  # Added to allow ollama_host in settings
 
     class Config:
         env_file = ".env"

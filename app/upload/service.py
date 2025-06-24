@@ -5,7 +5,7 @@ import pymupdf4llm
 import os
 import logging
 from datetime import datetime
-from upload.schemas import QuizGenerationState
+from app.upload.schemas import QuizGenerationState
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 logger = logging.getLogger(__name__)

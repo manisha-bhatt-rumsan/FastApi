@@ -17,6 +17,7 @@ python-docx
 langchain
 langchain-community
 langchain-ollama
+langgraph
 psycopg[binary]
-psycopg2
 greenlet
+openai

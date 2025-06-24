@@ -1,3 +1,4 @@
+#quiz/schemas.py
 from pydantic import BaseModel, field_validator
 from typing import Optional, List, TypedDict
 from enum import Enum
@@ -75,3 +76,47 @@ class QuizGenerationState(TypedDict):
     error_message: Optional[str]
     filename: str
     chunks: List[str]
+
+
+class QuizSummary(BaseModel):
+    """Basic quiz information for listing"""
+    id: int
+    title: str
+    owner_id: Optional[int] = None
+
+class QuestionDetail(BaseModel):
+    """Detailed question information from database"""
+    id: int
+    question: str
+    type: str
+    choices: List[str]
+    correct_answer: str
+    explanation: str
+
+class QuizDetail(BaseModel):
+    """Detailed quiz information including questions"""
+    id: int
+    title: str
+    owner_id: Optional[int] = None
+    questions: List[QuestionDetail]
+
+class QuizListResponse(BaseModel):
+    """Response for listing quizzes"""
+    message: str
+    quizzes: List[QuizSummary]
+    count: int
+
+class QuizDetailResponse(BaseModel):
+    """Response for getting quiz details"""
+    message: str
+    quiz: QuizDetail
+
+class DatabaseHealthResponse(BaseModel):
+    """Response for database health check"""
+    status: str
+    message: str
+    quiz_count: Optional[int] = None
+
+class DeleteQuizResponse(BaseModel):
+    """Response for quiz deletion"""
+    message: str

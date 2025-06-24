@@ -26,5 +26,5 @@ env/
 uploaded_files/
 uploads/
 uploaded_documents/
-.log
-extracted_texts
+*.log
+extracted_texts/

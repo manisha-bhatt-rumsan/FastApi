@@ -1,17 +1,18 @@
+#quiz/service.py
 from langchain_ollama import OllamaLLM
-import os, json
+import os
+import json
 from dotenv import load_dotenv
-from quiz.schemas import QuizGenerationState, Question
+from app.quiz.schemas import QuizGenerationState, Question
 import logging
 from datetime import datetime
-
-from quiz.prompts.mcq_prompt import  mcq_prompt
-from quiz.prompts.faq_prompt import  faq_prompt
-from quiz.prompts.boolean_prompt import boolean_prompt
-
+from app.quiz.prompts.mcq_prompt import  mcq_prompt
+from app.quiz.prompts.faq_prompt import  faq_prompt
+from app.quiz.prompts.boolean_prompt import boolean_prompt
+from app.quiz.utils import store_questions
 load_dotenv()
 
-llm = OllamaLLM(base_url = os.getenv('OLLAMA_HOST',"https://jo3m4y06rnnwhaz.askbhunte.com/"),model="llama3.2:latest")
+llm = OllamaLLM(base_url = os.getenv('OLLAMA_HOST'),model="llama3.2:latest")
 
 os.makedirs("uploaded_documents", exist_ok=True)
 os.makedirs("uploaded_documents/extracted_text", exist_ok=True)
@@ -115,7 +116,11 @@ def load_text_and_generate_question(state: QuizGenerationState, question_type: s
     return state
     
 
-def store_quiz_results(state: dict) -> dict:
+async def store_quiz_results(state: dict) -> dict:
+    """
+    Store quiz results both to file and database.
+    Now includes database storage using the utils function.
+    """
     filename = state['original_filename']
     logger.info(f"Starting to store quiz results for '{filename}'")
 
@@ -125,6 +130,7 @@ def store_quiz_results(state: dict) -> dict:
             state['error_message'] = f"No questions available for '{filename}'"
             return state
 
+        # Store to file (existing functionality)
         questions_dir = os.path.join("uploaded_documents", "questions")
         os.makedirs(questions_dir, exist_ok=True)
 
@@ -137,14 +143,38 @@ def store_quiz_results(state: dict) -> dict:
         with open(questions_file_path, 'w', encoding='utf-8') as f:
             json.dump(questions_data, f, indent=2)
 
-        logger.info(f"Saved {len(state['questions'])} questions to: {questions_file_path}")
-
+        logger.info(f"Saved {len(state['questions'])} questions to file: {questions_file_path}")
         state['questions_file_path'] = questions_file_path
+
+        try:
+            # Create a quiz title from the filename
+            quiz_title = f"Quiz from {safe_filename}"
+            
+            # Store in database
+            db_result = await store_questions(state, quiz_title=quiz_title)
+            
+            if db_result['success']:
+                logger.info(f"Successfully stored quiz in database with ID: {db_result['quiz_id']}")
+                state['quiz_id'] = db_result['quiz_id']
+                state['question_ids'] = db_result['question_ids']
+                state['database_stored'] = True
+            else:
+                logger.error(f"Failed to store questions in database: {db_result['error_message']}")
+                # Don't fail the entire operation if database storage fails
+                state['database_error'] = db_result['error_message']
+                state['database_stored'] = False
+                
+        except Exception as db_error:
+            logger.error(f"Database storage failed for '{filename}': {str(db_error)}", exc_info=True)
+            state['database_error'] = f"Database storage failed: {str(db_error)}"
+            state['database_stored'] = False
+
         state['error_message'] = None
 
     except Exception as e:
         logger.error(f"Error storing quiz results for '{filename}': {str(e)}", exc_info=True)
         state['error_message'] = f"Failed to store quiz results for '{filename}': {str(e)}"
         state['questions_file_path'] = ""
+        state['database_stored'] = False
 
     return state

@@ -24,7 +24,7 @@ from fastapi import FastAPI
 # from pydantic import BaseModel
 
 # from upload.routes import upload_routes
-from quiz.routes import quiz_routes
+from app.quiz.routes import quiz_routes
 import uvicorn
 import logging
 

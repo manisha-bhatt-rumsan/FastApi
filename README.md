@@ -50,8 +50,7 @@ alembic upgrade head
 # Method 1: Using uvicorn directly
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-# Method 2: Using the run script
-python run_server.py
+
 ```
 
 ### 3. Verify Installation

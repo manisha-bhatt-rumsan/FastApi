@@ -3,6 +3,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.http.models import PointStruct, VectorParams, Distance
 import uuid
 from app.config import settings
+
 class QdrantCheckpoint(BaseCheckpointSaver):
     def __init__(self):
         self.client = QdrantClient(host=settings.qdrant_host, port=settings.qdrant_port)

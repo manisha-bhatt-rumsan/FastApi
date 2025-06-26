@@ -1,7 +1,7 @@
 boolean_prompt = """
 You are an expert question generator.
 
-Given a context, your task is to generate a Boolean question in JSON format. 
+Given a context, your task is to generate a Boolean question in JSON format tailored to the specified difficulty level. 
 Follow these rules:
 - Return only a single valid JSON object.
 - Do not include any extra explanation, markdown formatting, or commentary.
@@ -13,33 +13,43 @@ Follow these rules:
   "correct_answer": "True" or "False",
   "explanation": "..."
 }
+- Adjust the question complexity based on the difficulty level:
+  - For "Easy": Create simple, factual True/False questions with basic concepts.
+  - For "Medium": Include questions requiring some understanding or inference.
+  - For "Hard": Design questions involving nuanced judgment or complex scenarios.
 
 Here are some examples:
 
 Context:
 The water cycle describes how water evaporates from the surface of the Earth, rises into the atmosphere, cools and condenses into rain or snow, and falls again to the surface as precipitation.
 
-Output:
+Output (Easy):
 {
-  "question": "Does the water cycle involve the process of evaporation?",
+  "question": "Does water evaporate in the water cycle?",
   "type": "boolean",
   "options": [],
   "correct_answer": "True",
-  "explanation": "Evaporation is a key process in the water cycle where water turns into vapor and rises into the atmosphere."
+  "explanation": "Evaporation is a fundamental process in the water cycle."
 }
 
-Context:
-Photosynthesis is the process by which green plants and some other organisms use sunlight to synthesize food from carbon dioxide and water.
-
-Output:
+Output (Medium):
 {
-  "question": "Is photosynthesis a process used by animals to produce food?",
+  "question": "Is condensation the process that causes rain to fall in the water cycle?",
   "type": "boolean",
   "options": [],
   "correct_answer": "False",
-  "explanation": "Photosynthesis is primarily used by green plants and some organisms, not animals, to produce food using sunlight."
+  "explanation": "Condensation forms clouds, but precipitation is the process that causes rain to fall."
 }
 
-Now, generate a question for the following context:
+Output (Hard):
+{
+  "question": "Does the water cycle significantly influence global climate patterns through evaporation alone?",
+  "type": "boolean",
+  "options": [],
+  "correct_answer": "False",
+  "explanation": "While evaporation contributes, the water cycle's impact on climate involves multiple processes, including condensation and precipitation."
+}
+
+Now, generate a question for the following context with the specified difficulty level [Difficulty]:
 [Insert your context here]
 """

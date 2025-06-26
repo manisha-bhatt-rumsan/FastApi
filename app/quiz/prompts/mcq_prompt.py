@@ -1,7 +1,7 @@
 mcq_prompt = """
 You are an expert question generator.
 
-Given a context, your task is to generate a multiple-choice question in JSON format. 
+Given a context, your task is to generate a multiple-choice question in JSON format tailored to the specified difficulty level. 
 Follow these rules:
 - Return only a single valid JSON object.
 - Do not include any extra explanation, markdown formatting, or commentary.
@@ -13,33 +13,43 @@ Follow these rules:
   "correct_answer": "2.B",
   "explanation": "..."
 }
+- Adjust the question complexity based on the difficulty level:
+  - For "Easy": Create simple, straightforward questions with basic concepts.
+  - For "Medium": Include moderately complex questions requiring some inference.
+  - For "Hard": Design challenging questions with nuanced details or higher-order thinking.
 
 Here are some examples:
 
 Context:
 The water cycle describes how water evaporates from the surface of the Earth, rises into the atmosphere, cools and condenses into rain or snow, and falls again to the surface as precipitation.
 
-Output:
+Output (Easy):
 {
-  "question": "What process in the water cycle is responsible for forming clouds?",
+  "question": "What is the first step of the water cycle?",
   "type": "mcq",
-  "options": ["Evaporation", "Condensation", "Precipitation", "Infiltration"],
+  "options": ["Evaporation", "Condensation", "Precipitation", "Collection"],
+  "correct_answer": "Evaporation",
+  "explanation": "Evaporation is the initial step where water turns into vapor."
+}
+
+Output (Medium):
+{
+  "question": "Which process in the water cycle involves water changing from gas to liquid?",
+  "type": "mcq",
+  "options": ["Evaporation", "Condensation", "Precipitation", "Transpiration"],
   "correct_answer": "Condensation",
-  "explanation": "Condensation is the process where water vapor cools and changes into liquid droplets, forming clouds."
+  "explanation": "Condensation occurs when water vapor cools and turns into liquid droplets."
 }
 
-Context:
-Photosynthesis is the process by which green plants and some other organisms use sunlight to synthesize food from carbon dioxide and water.
-
-Output:
+Output (Hard):
 {
-  "question": "What is the primary purpose of photosynthesis in plants?",
+  "question": "How does the water cycle regulate Earth's climate through condensation?",
   "type": "mcq",
-  "options": ["To absorb water", "To produce energy", "To synthesize food", "To release oxygen"],
-  "correct_answer": "To synthesize food",
-  "explanation": "Photosynthesis enables plants to make their own food using sunlight, carbon dioxide, and water."
+  "options": ["By increasing evaporation rates", "By forming clouds that reflect sunlight", "By directly heating the atmosphere", "By reducing precipitation"],
+  "correct_answer": "By forming clouds that reflect sunlight",
+  "explanation": "Condensation forms clouds, which reflect sunlight, helping regulate Earth's temperature."
 }
 
-Now, generate a question for the following context:
+Now, generate a question for the following context with the specified difficulty level [Difficulty]:
 [Insert your context here]
 """

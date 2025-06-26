@@ -1,4 +1,3 @@
-#quiz/service.py
 from langchain_ollama import OllamaLLM
 import os
 import json
@@ -10,9 +9,10 @@ from app.quiz.prompts.mcq_prompt import  mcq_prompt
 from app.quiz.prompts.faq_prompt import  faq_prompt
 from app.quiz.prompts.boolean_prompt import boolean_prompt
 from app.quiz.utils import store_questions
+import random
 load_dotenv()
 
-llm = OllamaLLM(base_url = os.getenv('OLLAMA_HOST'),model="llama3.2:latest")
+llm = OllamaLLM(base_url = os.getenv('OLLAMA_HOST'), model="llama3.2:latest")
 
 os.makedirs("uploaded_documents", exist_ok=True)
 os.makedirs("uploaded_documents/extracted_text", exist_ok=True)
@@ -29,93 +29,128 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
     
-def load_text_and_generate_question(state: QuizGenerationState, question_type: str) -> QuizGenerationState:
-    filename = state['original_filename']
-    logger.info(f"Starting question generation for '{filename}' with type '{question_type}'")
+def load_text_and_generate_question(
+    state: QuizGenerationState,
+    question_type: str,
+    num_questions: int = 3,
+    difficulty: str = "Medium"
+) -> QuizGenerationState:
+    """
+    Generate questions of the specified type with strict validation to prevent hallucination.
+    """
+    filename = state.get('original_filename', 'unknown')
+    logger.info(f"Starting generation of {num_questions} '{question_type}' questions for '{filename}' with difficulty '{difficulty}'")
 
     try:
-        if not state['chunks']:
-            raise ValueError("No chunks available for question generation")
+        if not state.get('chunks'):
+            raise ValueError("No chunks provided for question generation")
 
-        text = "\n---\n".join(state['chunks'][:5])
-        if not text.strip():
-            raise ValueError("Combined chunks are empty")
+        if 'questions' not in state:
+            state['questions'] = []
+        state['questions'] = [q for q in state['questions'] if q.type.lower() == question_type.lower()]  # Keep only matching type
+        if 'chunk_indices_used' not in state:
+            state['chunk_indices_used'] = []
+        if 'error_message' not in state:
+            state['error_message'] = None
 
-        prompt_dict = {
-            "mcq": mcq_prompt,
-            "faq": faq_prompt,
-            "boolean": boolean_prompt
-        }
+        existing_questions = {q.question for q in state['questions']}
+
+        prompt_dict = {"mcq": mcq_prompt, "faq": faq_prompt, "boolean": boolean_prompt}
         if question_type not in prompt_dict:
-            raise ValueError(f"Invalid question type: {question_type}. Must be 'mcq', 'faq', or 'boolean'")
+            raise ValueError(f"Invalid question type: {question_type}")
 
-        prompt_text = prompt_dict[question_type]
-        formatted_prompt = prompt_text.replace("[Insert your context here]", text)
-
+        prompt_text = prompt_dict[question_type].replace("[Difficulty]", difficulty)
+        generated_questions = []
+        chunk_indices_used = []
         max_retries = 3
-        for attempt in range(max_retries):
-            try:
-                response = llm.invoke(formatted_prompt)
-                response_text = str(response.content if hasattr(response, 'content') else response)
-                logger.debug(f"LLM raw response for '{filename}' (attempt {attempt + 1}): {response_text}")
 
-                start_idx = response_text.find('{')
-                end_idx = response_text.rfind('}') + 1
-                if start_idx == -1 or end_idx == 0:
-                    raise ValueError("No valid JSON object in LLM response")
+        available_indices = [i for i in range(len(state['chunks'])) if i not in state['chunk_indices_used']]
+        if not available_indices:
+            available_indices = list(range(len(state['chunks'])))
+        random.shuffle(available_indices)
 
-                result = json.loads(response_text[start_idx:end_idx])
-                logger.debug(f"Parsed LLM result: {result}")
-                if not isinstance(result, dict):
-                    raise ValueError("Expected a single JSON object")
-
-                if 'type' not in result:
-                    result['type'] = question_type
-                result['type'] = result['type'].lower()
-                if result.get('type') != question_type:
-                    logger.warning(f"Type mismatch: got {result['type']}, expected {question_type}. Forcing {question_type}")
-                    result['type'] = question_type
-
-                if not all(key in result for key in ['question', 'type', 'options', 'correct_answer', 'explanation']):
-                    raise ValueError(f"Missing required fields in question: {result}")
-                if question_type == 'mcq' and len(result.get('options', [])) != 4:
-                    raise ValueError(f"MCQ must have exactly 4 options, got {len(result.get('options', []))}")
-                if question_type in ['faq', 'boolean'] and result.get('options', []):
-                    raise ValueError(f"{question_type} must have empty options")
-                if question_type == 'boolean' and result['correct_answer'] not in ['True', 'False']:
-                    raise ValueError(f"Boolean question must have 'True' or 'False' as correct_answer, got {result['correct_answer']}")
-
-                state['questions'] = [
-                    Question(
-                        question=result['question'],
-                        type=result['type'],
-                        choices=result.get('options', []),
-                        correct_answer=result['correct_answer'],
-                        explanation=result['explanation']
-                    )
-                ]
-
-                logger.info(f"Generated 1 question of type '{question_type}' for '{filename}'")
-                state['error_message'] = None
+        for i in range(0, len(available_indices), 2):
+            if len(generated_questions) >= num_questions:
                 break
 
-            except Exception as e:
-                logger.warning(f"Attempt {attempt + 1} failed for '{filename}': {str(e)}")
-                if attempt == max_retries - 1:
-                    logger.error(f"All {max_retries} attempts failed for '{filename}': {str(e)}", exc_info=True)
-                    state['error_message'] = f"Failed to generate valid question for '{filename}' after {max_retries} attempts: {str(e)}"
-                    state['questions'] = []
-                    return state
+            batch_indices = available_indices[i:i + 2]
+            batch_chunks = [state['chunks'][idx] for idx in batch_indices]
+            text = "\n---\n".join(batch_chunks)
+            if not text.strip():
+                logger.warning(f"Empty batch for chunks {batch_indices}")
                 continue
 
+            formatted_prompt = prompt_text.replace("[Insert your context here]", text)
+
+            for attempt in range(max_retries):
+                try:
+                    response = llm.invoke(formatted_prompt)
+                    response_text = str(response.content if hasattr(response, 'content') else response)
+                    start_idx = response_text.find('{')
+                    end_idx = response_text.rfind('}') + 1
+                    if start_idx == -1 or end_idx == 0:
+                        raise ValueError("No valid JSON object in LLM response")
+
+                    result = json.loads(response_text[start_idx:end_idx])
+                    if not isinstance(result, dict):
+                        raise ValueError("Expected a single JSON object")
+
+                    # Enforce strict type-specific validation
+                    if 'type' not in result:
+                        result['type'] = question_type
+                    result['type'] = result['type'].lower()
+                    if result['type'] != question_type.lower():
+                        raise ValueError(f"Generated type '{result['type']}' does not match requested '{question_type}'")
+
+                    if question_type == 'mcq':
+                        if len(result.get('options', [])) != 4 or not all(isinstance(opt, str) for opt in result.get('options', [])):
+                            raise ValueError("MCQ must have exactly 4 string options")
+                    elif question_type == 'boolean':
+                        if result.get('options', []):
+                            raise ValueError("Boolean questions must have no options")
+                        if result['correct_answer'] not in ['True', 'False']:
+                            raise ValueError("Boolean correct_answer must be 'True' or 'False'")
+                    elif question_type == 'faq':
+                        if result.get('options', []):
+                            raise ValueError("FAQ questions must have no options")
+
+                    if 'question' not in result or 'correct_answer' not in result or 'explanation' not in result:
+                        raise ValueError("Missing required fields: 'question', 'correct_answer', or 'explanation'")
+
+                    if result['question'] in existing_questions:
+                        logger.warning(f"Duplicate question detected: {result['question']}")
+                        continue
+
+                    question = Question(
+                        question=result['question'],
+                        type=question_type,
+                        choices=result.get('options', []),
+                        correct_answer=result['correct_answer'],
+                        explanation=result.get('explanation', '')
+                    )
+                    generated_questions.append(question)
+                    existing_questions.add(result['question'])
+                    chunk_indices_used.extend(batch_indices)
+                    logger.info(f"Generated question {len(generated_questions)} of type '{question_type}' for '{filename}' using chunks {batch_indices}")
+                    break
+
+                except Exception as e:
+                    logger.warning(f"Attempt {attempt + 1} failed for batch {batch_indices}: {str(e)}")
+                    if attempt == max_retries - 1:
+                        logger.error(f"All retries failed for batch {batch_indices}: {str(e)}")
+                        continue
+
+        state['questions'].extend(generated_questions)
+        state['chunk_indices_used'].extend(chunk_indices_used)
+        state['error_message'] = None if generated_questions else f"Failed to generate {num_questions} '{question_type}' questions for '{filename}'"
+        logger.info(f"Completed generation with {len(generated_questions)} '{question_type}' questions for '{filename}'")
+        return state
+
     except Exception as e:
-        logger.error(f"Error in load_text_and_generate_question for '{filename}': {str(e)}", exc_info=True)
+        logger.error(f"Error in question generation for '{filename}': {str(e)}", exc_info=True)
         state['error_message'] = f"Failed to generate questions for '{filename}': {str(e)}"
-        state['questions'] = []
-
-    return state
+        return state
     
-
 async def store_quiz_results(state: dict) -> dict:
     """
     Store quiz results both to file and database.

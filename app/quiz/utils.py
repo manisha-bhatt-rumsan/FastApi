@@ -1,4 +1,3 @@
-#quiz/utils.py
 from app.db.models import Quiz, Question as DBQuestion
 from app.quiz.schemas import QuizGenerationState
 from app.db.database import AsyncSessionLocal

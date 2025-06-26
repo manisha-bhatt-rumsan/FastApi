@@ -3,7 +3,7 @@ from fastapi import File, HTTPException, APIRouter, UploadFile
 import logging
 from app.upload.service import split_text,extract_and_save_text
 from app.quiz.service import load_text_and_generate_question, store_quiz_results
-from app.quiz.schemas import  QuizSessionResponse, AnswerRequest, AnswerResponse, QuestionType, UploadResponse
+from app.quiz.schemas import  QuizSessionResponse, AnswerRequest, AnswerResponse, QuestionType, UploadResponse, QuestionCount, DifficultyLevel
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,6 +18,8 @@ logger = logging.getLogger(__name__)
 quiz_routes=APIRouter()
 
 current_state = None
+
+upload_store = {"latest": None}
 
 @quiz_routes.post("/upload_document", response_model=UploadResponse)
 async def upload_document(file: UploadFile = File(...)):
@@ -39,6 +41,7 @@ async def upload_document(file: UploadFile = File(...)):
 
         # Update global state
         current_state = state
+        upload_store["latest"] = state
 
         return UploadResponse(
             message="Document uploaded, text saved, and text split into chunks",
@@ -55,14 +58,22 @@ async def upload_document(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Something went wrong: {str(e)}")
 
 @quiz_routes.get("/get_question", response_model=QuizSessionResponse)
-async def get_question(question_type: QuestionType):
-    global current_state
+async def get_question(
+    question_type: QuestionType,
+    num_questions: QuestionCount = QuestionCount.THREE,
+    difficulty_level: DifficultyLevel = DifficultyLevel.MEDIUM
+):
     try:
-        if current_state is None or not current_state.get("document_text"):
-            raise HTTPException(status_code=404, detail="No document available. Upload a document first.")
+        if "latest" not in upload_store or upload_store["latest"] is None:
+            raise HTTPException(status_code=404, detail="No document uploaded. Please upload a document first.")
 
-        filename = current_state["original_filename"]
-        logger.info(f"Fetching question of type '{question_type}' for '{filename}'")
+        state = upload_store["latest"].copy()  # Work with a copy to avoid modifying the original
+        filename = state["original_filename"]
+        logger.info(f"Fetching {num_questions.value} questions of type '{question_type.value}' with difficulty '{difficulty_level.value}' for '{filename}'")
+
+        # Clear existing questions if the type changes
+        if state.get("questions") and any(q.type.lower() != question_type.value.lower() for q in state["questions"]):
+            state["questions"] = []
 
         current_state["selected_question_type"] = question_type.value
 
@@ -70,34 +81,29 @@ async def get_question(question_type: QuestionType):
         if not state.get("chunks"):
             state = split_text(state)
 
-        # Regenerate questions if none exist or no questions match the requested type
         if not state.get("questions") or not any(q.type.lower() == question_type.value.lower() for q in state["questions"]):
-            logger.info(f"No questions of type '{question_type.value}' found. Regenerating...")
-            state = load_text_and_generate_question(state, question_type.value)
+            logger.info(f"No questions of type '{question_type.value}' found. Regenerating {num_questions.value} questions...")
+            state = load_text_and_generate_question(state, question_type.value, num_questions=num_questions.value, difficulty=difficulty_level.value)
 
         state = await store_quiz_results(state)
 
         if state.get('error_message'):
-            logger.error(f"Question generation failed for '{filename}': {state['error_message']}")
-            raise HTTPException(status_code=400, detail=f"Failed to generate questions for '{filename}': {state['error_message']}")
+            raise HTTPException(status_code=400, detail=state['error_message'])
 
-        matching_questions = [q for q in state["questions"] if q.type.lower() == question_type.value.lower()]
-        if not matching_questions:
-            logger.error(f"No matching questions found for type '{question_type.value}' after generation")
-            raise HTTPException(status_code=400, detail=f"No questions of type '{question_type}' generated for the document.")
+        upload_store["latest"] = state  # Update with new state
 
-        selected_question = matching_questions[0]
-        logger.info(f"Selected question type: {selected_question.type} for '{filename}'")
+        if state["questions"]:
+            # Ensure we return exactly num_questions of the requested type
+            questions_of_type = [q for q in state["questions"] if q.type.lower() == question_type.value.lower()]
+            response_data = {
+                "original_filename": state["original_filename"],
+                "questions": questions_of_type[:num_questions.value]
+            }
+            if len(response_data["questions"]) < num_questions.value:
+                logger.warning(f"Only {len(response_data['questions'])} questions available, requested {num_questions.value}")
+        else:
+            raise HTTPException(status_code=400, detail="No questions generated")
 
-        current_state = state
-
-        # Add database storage info to response if available
-        response_data = {
-            "original_file_name": state["original_filename"],
-            "questions": [selected_question]
-        }
-        
-        # Log database storage status
         if state.get('database_stored'):
             logger.info(f"Questions stored in database with quiz ID: {state.get('quiz_id')}")
         elif state.get('database_error'):
@@ -110,6 +116,7 @@ async def get_question(question_type: QuestionType):
     except Exception as e:
         logger.error(f"Error in get_question: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Something went wrong: {str(e)}")
+    
     
 @quiz_routes.post("/submit_answer", response_model=AnswerResponse)
 async def submit_answer(request: AnswerRequest):

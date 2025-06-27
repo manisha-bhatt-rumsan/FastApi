@@ -1,5 +1,5 @@
 #quiz/schemas.py
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, ValidationInfo
 from typing import Optional, List, TypedDict
 from enum import Enum
 
@@ -23,20 +23,33 @@ class QuestionCount(int, Enum):
 class Question(BaseModel):
     question: str
     type: QuestionType
-    choices: List[str]
+    choices: List[str] = []
     correct_answer: str
     explanation: str
+    difficulty: Optional[str] = None
+    
+    @field_validator('difficulty', mode='before')
+    @classmethod
+    def set_default_difficulty(cls, v, info: ValidationInfo):
+        if v is None:
+            return info.context.get('default_difficulty')  # Rely on context, no fallback to avoid ambiguity
+        return v
     
     @field_validator('choices')
     @classmethod
-    def validate_choices(cls, v, info):
-        # Access other field values using info.data
+    def validate_choices(cls, v: List[str], info: ValidationInfo):
         question_type = info.data.get('type')
+        if not isinstance(question_type, QuestionType):
+            raise ValueError(f"Invalid question type: {question_type}. Must be a QuestionType enum.")
         
-        if question_type == QuestionType.MCQ and len(v) != 4:
-            raise ValueError('MCQ must have exactly 4 choices')
-        if question_type in [QuestionType.FAQ, QuestionType.BOOLEAN] and v:
-            raise ValueError(f'{question_type.value} must have empty choices')
+        if question_type == QuestionType.MCQ:
+            if len(v) != 4:
+                raise ValueError('MCQ must have exactly 4 choices')
+            if not all(isinstance(choice, str) and choice.strip() for choice in v):
+                raise ValueError('MCQ choices must be non-empty strings')
+        elif question_type in [QuestionType.FAQ, QuestionType.BOOLEAN]:
+            if v:
+                raise ValueError(f'{question_type.value} must have empty choices')
         return v
     
     

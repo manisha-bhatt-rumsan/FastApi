@@ -67,13 +67,19 @@ async def get_question(
         if "latest" not in upload_store or upload_store["latest"] is None:
             raise HTTPException(status_code=404, detail="No document uploaded. Please upload a document first.")
 
-        state = upload_store["latest"].copy()  # Work with a copy to avoid modifying the original
+        state = upload_store["latest"].copy()  # Work with a copy
         filename = state["original_filename"]
         logger.info(f"Fetching {num_questions.value} questions of type '{question_type.value}' with difficulty '{difficulty_level.value}' for '{filename}'")
 
-        # Clear existing questions if the type changes
-        if state.get("questions") and any(q.type.lower() != question_type.value.lower() for q in state["questions"]):
-            state["questions"] = []
+        # Clear existing questions if type or difficulty changes
+        current_questions = state.get("questions", [])
+        if current_questions:
+            last_type = current_questions[0].type.lower() if current_questions else None
+            last_difficulty = state.get("last_difficulty", None)
+            if last_type != question_type.value.lower() or last_difficulty != difficulty_level.value:
+                state["questions"] = []
+                state["chunk_indices_used"] = []  # Reset used chunks for new generation
+                state["last_difficulty"] = difficulty_level.value  # Track last used difficulty
 
         current_state["selected_question_type"] = question_type.value
 
@@ -82,7 +88,7 @@ async def get_question(
             state = split_text(state)
 
         if not state.get("questions") or not any(q.type.lower() == question_type.value.lower() for q in state["questions"]):
-            logger.info(f"No questions of type '{question_type.value}' found. Regenerating {num_questions.value} questions...")
+            logger.info(f"No matching questions found. Regenerating {num_questions.value} questions...")
             state = load_text_and_generate_question(state, question_type.value, num_questions=num_questions.value, difficulty=difficulty_level.value)
 
         state = await store_quiz_results(state)
@@ -93,8 +99,12 @@ async def get_question(
         upload_store["latest"] = state  # Update with new state
 
         if state["questions"]:
-            # Ensure we return exactly num_questions of the requested type
             questions_of_type = [q for q in state["questions"] if q.type.lower() == question_type.value.lower()]
+            if len(questions_of_type) < num_questions.value:
+                logger.warning(f"Regenerating due to insufficient questions: found {len(questions_of_type)}, need {num_questions.value}")
+                state = load_text_and_generate_question(state, question_type.value, num_questions=num_questions.value, difficulty=difficulty_level.value)
+                questions_of_type = [q for q in state["questions"] if q.type.lower() == question_type.value.lower()]
+
             response_data = {
                 "original_filename": state["original_filename"],
                 "questions": questions_of_type[:num_questions.value]
@@ -103,6 +113,62 @@ async def get_question(
                 logger.warning(f"Only {len(response_data['questions'])} questions available, requested {num_questions.value}")
         else:
             raise HTTPException(status_code=400, detail="No questions generated")
+
+        if state.get('database_stored'):
+            logger.info(f"Questions stored in database with quiz ID: {state.get('quiz_id')}")
+        elif state.get('database_error'):
+            logger.warning(f"Database storage failed: {state.get('database_error')}")
+
+        return QuizSessionResponse(**response_data)
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in get_question: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Something went wrong: {str(e)}")@quiz_routes.get("/get_question", response_model=QuizSessionResponse)
+async def get_question(
+    question_type: QuestionType,
+    num_questions: QuestionCount = QuestionCount.THREE,
+    difficulty_level: DifficultyLevel = DifficultyLevel.MEDIUM
+):
+    try:
+        if "latest" not in upload_store or upload_store["latest"] is None:
+            raise HTTPException(status_code=404, detail="No document uploaded. Please upload a document first.")
+
+        state = upload_store["latest"].copy()  # Work with a copy
+        filename = state["original_filename"]
+        logger.info(f"Fetching {num_questions.value} questions of type '{question_type.value}' with difficulty '{difficulty_level.value}' for '{filename}'")
+
+        # Regenerate questions if type or difficulty changes
+        current_questions = [q for q in state.get("questions", []) if q.type.lower() == question_type.value.lower()]
+        last_difficulty = state.get("difficulty_by_type", {}).get(question_type.value.lower(), None)
+        if len(current_questions) < num_questions.value or last_difficulty != difficulty_level.value:
+            logger.info(f"Regenerating questions due to type/difficulty change or insufficient questions.")
+            state = load_text_and_generate_question(
+                state,
+                question_type=question_type.value,
+                num_questions=num_questions.value,
+                difficulty=difficulty_level.value
+            )
+
+        state = await store_quiz_results(state)
+
+        if state.get('error_message'):
+            raise HTTPException(status_code=400, detail=state['error_message'])
+
+        upload_store["latest"] = state  # Update with new state
+        current_state = state  # Sync global state
+
+        questions_of_type = [q for q in state["questions"] if q.type.lower() == question_type.value.lower()]
+        if not questions_of_type:
+            raise HTTPException(status_code=400, detail="No questions generated")
+
+        response_data = {
+            "original_filename": state["original_filename"],
+            "questions": questions_of_type[:num_questions.value]
+        }
+        if len(response_data["questions"]) < num_questions.value:
+            logger.warning(f"Only {len(response_data['questions'])} questions available, requested {num_questions.value}")
 
         if state.get('database_stored'):
             logger.info(f"Questions stored in database with quiz ID: {state.get('quiz_id')}")

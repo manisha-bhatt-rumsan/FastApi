@@ -6,10 +6,69 @@ import os
 import logging
 from datetime import datetime
 from app.upload.schemas import QuizGenerationState
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from qdrant_client import QdrantClient
+from qdrant_client.http.models import PointStruct, VectorParams, Distance
+import uuid
+from app.config import settings
+import requests
 
+# Configure logging
 logger = logging.getLogger(__name__)
 
+# Get configuration from settings
+QDRANT_HOST = settings.qdrant_host
+QDRANT_PORT = settings.qdrant_port
+OLLAMA_HOST = settings.ollama_host
+collection_name = "quiz_chunks"
+
+# Log configuration for debugging
+logger.info(f"Qdrant configuration: host={QDRANT_HOST}, port={QDRANT_PORT}, collection={collection_name}")
+logger.info(f"Ollama configuration: base_url={OLLAMA_HOST}")
+
+# Initialize Qdrant client
+try:
+    qdrant_client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
+    logger.info("Successfully initialized Qdrant client")
+except Exception as e:
+    logger.error(f"Failed to initialize Qdrant client: {str(e)}")
+    raise
+
+# Function to generate embeddings using Ollama
+def get_ollama_embeddings(texts: list[str], model: str = "nomic-embed-text") -> list[list[float]]:
+    """
+    Generate embeddings for a list of texts using Ollama's embedding API.
+    """
+    try:
+        embeddings = []
+        for text in texts:
+            response = requests.post(
+                f"{OLLAMA_HOST}/api/embeddings",
+                json={"model": model, "prompt": text}
+            )
+            response.raise_for_status()  # Raise an exception for HTTP errors
+            embedding = response.json().get("embedding")
+            if not embedding or not isinstance(embedding, list):
+                raise ValueError(f"Invalid embedding response for text: {text[:50]}...")
+            embeddings.append(embedding)
+        logger.info(f"Generated {len(embeddings)} embeddings using Ollama {model}")
+        return embeddings
+    except Exception as e:
+        logger.error(f"Failed to generate embeddings with Ollama: {str(e)}")
+        raise
+
+def initialize_qdrant_collection():
+    """Create a Qdrant collection if it doesn't exist."""
+    try:
+        collections = qdrant_client.get_collections()
+        if collection_name not in [c.name for c in collections.collections]:
+            qdrant_client.create_collection(
+                collection_name=collection_name,
+                vectors_config=VectorParams(size=768, distance=Distance.COSINE)  # nomic-embed-text uses 768 dimensions
+            )
+            logger.info(f"Created Qdrant collection '{collection_name}'")
+    except Exception as e:
+        logger.error(f"Failed to initialize Qdrant collection: {str(e)}")
+        raise
 
 async def extract_and_save_text(file: UploadFile) -> dict:
     filename = file.filename or "unknown_file"
@@ -94,29 +153,53 @@ async def extract_and_save_text(file: UploadFile) -> dict:
             "questions_file_path": "",
             "error_message": f"Failed to extract or save text for '{filename}': {str(e)}"
         }
-        
 
 def split_text(state: QuizGenerationState) -> QuizGenerationState:
     filename = state['original_filename']
     logger.info(f"Starting text splitting for '{filename}'")
 
     try:
-        # Check if document_text is available
-        if not state['document_text']:
-            raise ValueError("No document text available to split")
+        text = state.get("document_text", "")
+        if not text:
+            state["error_message"] = "No text available to split"
+            return state
 
-        # Split text into chunks
-        splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=100)
-        chunks = splitter.split_text(state['document_text'])
-        logger.info(f"Split text into {len(chunks)} chunks")
+        # Split text into chunks (e.g., by paragraph or fixed length)
+        chunks = text.split("\n\n")  # Example: split by paragraphs
+        chunks = [chunk.strip() for chunk in chunks if chunk.strip()]
+        if not chunks:
+            state["error_message"] = "No valid chunks generated from text"
+            return state
 
-        # Update state
-        state['chunks'] = chunks
-        state['error_message'] = None
+        # Generate embeddings for chunks using Ollama
+        embeddings = get_ollama_embeddings(chunks, model="nomic-embed-text")
+
+        # Initialize Qdrant collection
+        initialize_qdrant_collection()
+
+        # Store chunks and embeddings in Qdrant
+        points = [
+            PointStruct(
+                id=str(uuid.uuid4()),  # Unique ID for each chunk
+                vector=embedding,
+                payload={
+                    "text": chunk,
+                    "filename": state["original_filename"],
+                    "chunk_index": idx
+                }
+            )
+            for idx, (chunk, embedding) in enumerate(zip(chunks, embeddings))
+        ]
+        qdrant_client.upsert(collection_name=collection_name, points=points)
+        logger.info(f"Stored {len(points)} chunks in Qdrant for '{state['original_filename']}'")
+
+        # Update state with chunk metadata
+        state["chunks"] = chunks
+        state["chunk_ids"] = [point.id for point in points]  # Store Qdrant point IDs
+        state["error_message"] = None
+        return state
 
     except Exception as e:
-        logger.error(f"Error in split_text for '{filename}': {e}", exc_info=True)
-        state['error_message'] = f"Failed to split text for '{filename}': {str(e)}"
-        state['chunks'] = []
-
-    return state
+        logger.error(f"Error in split_text: {str(e)}", exc_info=True)
+        state["error_message"] = f"Failed to split text or store in Qdrant: {str(e)}"
+        return state

@@ -9,7 +9,10 @@ from app.quiz.prompts.mcq_prompt import  mcq_prompt
 from app.quiz.prompts.faq_prompt import  faq_prompt
 from app.quiz.prompts.boolean_prompt import boolean_prompt
 from app.quiz.utils import store_questions
+from qdrant_client.http.models import Filter, FieldCondition, MatchValue
+from app.upload.service import qdrant_client, collection_name
 import random
+
 load_dotenv()
 
 llm = OllamaLLM(base_url = os.getenv('OLLAMA_HOST'), model="llama3.2:latest")
@@ -34,21 +37,42 @@ def load_text_and_generate_question(
     num_questions: int = 3,
     difficulty: str = "Medium"
 ) -> QuizGenerationState:
-    
+    """
+    Generate questions of the specified type with regeneration based on difficulty changes.
+    Uses Qdrant to retrieve chunks if not available in state.
+    """
     filename = state.get('original_filename', 'unknown')
     logger.info(f"Starting generation of {num_questions} '{question_type}' questions for '{filename}' with difficulty '{difficulty}'")
 
     try:
+        # Retrieve chunks from Qdrant if not in state
         if not state.get('chunks'):
-            raise ValueError("No chunks provided for question generation")
+            search_filter = Filter(
+                must=[FieldCondition(key="filename", match=MatchValue(value=filename))]
+            )
+            search_result = qdrant_client.scroll(
+                collection_name="quiz_chunks",
+                scroll_filter=search_filter,
+                limit=1000  # Adjust based on expected number of chunks
+            )
+            chunks = [hit.payload["text"] for hit in search_result[0]]
+            chunk_ids = [hit.id for hit in search_result[0]]
+            if not chunks:
+                raise ValueError(f"No chunks found in Qdrant for filename '{filename}'")
+            state["chunks"] = chunks
+            state["chunk_ids"] = chunk_ids
+            logger.info(f"Retrieved {len(chunks)} chunks from Qdrant for '{filename}'")
 
         # Initialize state if necessary
-        state.setdefault('questions', [])
-        state.setdefault('chunk_indices_used', [])
-        state.setdefault('error_message', None)
+        if 'questions' not in state:
+            state['questions'] = []
+        if 'chunk_indices_used' not in state:
+            state['chunk_indices_used'] = []
+        if 'error_message' not in state:
+            state['error_message'] = None
         state.setdefault('difficulty_by_type', {})
 
-        # Handle difficulty change for this type
+        # Force regeneration if difficulty changes for the same question type
         current_difficulty = state['difficulty_by_type'].get(question_type.lower(), None)
         if current_difficulty and current_difficulty != difficulty:
             state['questions'] = [q for q in state['questions'] if q.type.lower() != question_type.lower()]
@@ -56,7 +80,7 @@ def load_text_and_generate_question(
             logger.info(f"Difficulty changed from '{current_difficulty}' to '{difficulty}'. Regenerating questions.")
         state['difficulty_by_type'][question_type.lower()] = difficulty
 
-        # Determine how many new questions are needed
+        # Filter existing questions of the same type
         existing_questions = {q.question for q in state['questions'] if q.type.lower() == question_type.lower()}
         questions_needed = num_questions - len(existing_questions)
 
@@ -64,11 +88,9 @@ def load_text_and_generate_question(
             logger.info(f"Enough '{question_type}' questions already exist for '{filename}'")
             return state
 
-        # Select the right prompt
         prompt_dict = {"mcq": mcq_prompt, "faq": faq_prompt, "boolean": boolean_prompt}
         if question_type.lower() not in prompt_dict:
             raise ValueError(f"Invalid question type: {question_type}")
-        prompt_template = prompt_dict[question_type.lower()]
 
         generated_questions = []
         chunk_indices_used = []
@@ -89,13 +111,13 @@ def load_text_and_generate_question(
                 available_indices = [i for i in available_indices if i not in batch_indices]
                 continue
 
-            # 🟡 Format the prompt with context and difficulty
-            formatted_prompt = prompt_template.format(context=text, difficulty=difficulty)
+            # Format the prompt using PromptTemplate's format method
+            formatted_prompt = prompt_dict[question_type.lower()].format(difficulty=difficulty, context=text)
 
             for attempt in range(max_retries):
                 try:
                     response = llm.invoke(formatted_prompt)
-                    response_text = str(response.content if hasattr(response, 'content') else response)
+                    response_text = response if isinstance(response, str) else response.content
                     start_idx = response_text.find('{')
                     end_idx = response_text.rfind('}') + 1
                     if start_idx == -1 or end_idx == 0:
@@ -109,7 +131,6 @@ def load_text_and_generate_question(
                     if result['type'] != question_type.lower():
                         raise ValueError(f"Generated type '{result['type']}' does not match requested '{question_type}'")
 
-                    # Validate structure per type
                     if question_type.lower() == 'mcq':
                         if len(result.get('options', [])) != 4 or not all(isinstance(opt, str) for opt in result.get('options', [])):
                             raise ValueError("MCQ must have exactly 4 string options")
@@ -122,16 +143,13 @@ def load_text_and_generate_question(
                         if result.get('options', []):
                             raise ValueError("FAQ questions must have no options")
 
-                    # Required fields check
                     if 'question' not in result or 'correct_answer' not in result or 'explanation' not in result:
                         raise ValueError("Missing required fields: 'question', 'correct_answer', or 'explanation'")
 
-                    # Check duplicates
                     if result['question'] in existing_questions:
                         logger.warning(f"Duplicate question detected: {result['question']}")
                         continue
 
-                    # Save the question
                     question = Question(
                         question=result['question'],
                         type=question_type.lower(),

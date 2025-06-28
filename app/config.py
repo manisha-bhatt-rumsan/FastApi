@@ -16,8 +16,8 @@ class Settings(BaseSettings):
     debug: bool = True
     database_url: str
     ollama_host: str  
-    # qdrant_host: str 
-    # qdrant_port: int
+    qdrant_host: str 
+    qdrant_port: int
 
     class Config:
         env_file = ".env"

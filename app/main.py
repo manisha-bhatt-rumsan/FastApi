@@ -26,18 +26,6 @@ from fastapi import FastAPI
 # from upload.routes import upload_routes
 from app.quiz.routes import quiz_routes
 import uvicorn
-import logging
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('quiz_generator.log'),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(__name__)
-
 
 app = FastAPI(
     # title=settings.app_name,
@@ -209,5 +197,4 @@ app.include_router(quiz_routes)
 #     return db_question
 
 if __name__ == "__main__":
-    logger.info("Starting Quiz Generator API server on http://127.0.0.1:8000")
     uvicorn.run(app, host="127.0.0.1", port=8000)

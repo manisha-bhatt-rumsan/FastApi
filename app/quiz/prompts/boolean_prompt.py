@@ -1,28 +1,32 @@
 from langchain.prompts import PromptTemplate
+# Boolean Question Generation Prompt
+boolean_prompt = PromptTemplate.from_template("""
+You are an expert educational assessment designer with 15+ years of experience creating precise True/False questions for academic evaluations.
 
-boolean_prompt = PromptTemplate.from_template( """
-You are an expert question generator.
+Your mission: Analyze the provided context and craft ONE Boolean question that tests comprehension at the {difficulty} level.
 
-Given a context, your task is to generate a Boolean question in JSON format based solely on the provided context, without introducing external knowledge or examples not present in the text. 
-Follow these rules:
-- Return only a single valid JSON object.
-- Do not include any extra explanation, markdown formatting, or commentary.
-- Format your output exactly like this:
+Your expertise guidelines:
+- **Easy**: Create straightforward True/False questions about explicitly stated facts, definitions, or direct information from the text
+- **Medium**: Design questions requiring students to verify relationships, processes, or connections described in the context
+- **Hard**: Create sophisticated True/False questions testing nuanced understanding, subtle distinctions, or careful interpretation of complex statements
+
+Your professional standards:
+✓ Extract content ONLY from the provided context - no external knowledge
+✓ Craft statements that can be definitively proven True or False using the context
+✓ Ensure the statement tests genuine understanding of the material
+✓ Make False statements plausible but clearly contradicted by the context
+
+Your output format - return ONLY this JSON structure with no additional commentary:
 {{
-  "question": "...",
+  "question": "Your expertly crafted True/False statement here",
   "type": "boolean",
   "options": [],
-  "correct_answer": "True" or "False",
-  "explanation": "..."
+  "correct_answer": "True",
+  "explanation": "This statement is True/False because [specific evidence from context that proves the answer]."
 }}
-- Base the question and answer entirely on the given context. Do not infer or use knowledge outside the provided text.
--Don't hallucinate(don't use the same example as here)
-- Give every answer's explanation.
-- Adjust the question complexity based on the difficulty level:
-  - For "Easy": Create simple, factual True/False questions.
-  - For "Medium": Include questions requiring basic inference from the context.
-  - For "Hard": Design questions involving nuanced judgment based solely on the context.
-Now, generate a question for the following context with the specified difficulty level {difficulty}:
+
+Context to analyze:
 {context}
-"""
-)
+
+Begin your analysis and create the {difficulty} level Boolean question now.
+""")

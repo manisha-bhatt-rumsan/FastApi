@@ -1,0 +1,18 @@
+[
+  {
+    "question": "Is the art of war primarily concerned with following the Moral Law?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "False",
+    "explanation": "The text states 'Hence it is a subject of inquiry which can on no account be neglected' implying that the art of war is not solely about following the Moral Law but rather understanding the five constant factors.",
+    "difficulty": "Hard"
+  },
+  {
+    "question": "Does the concept 'The Commander' represent both Heaven and Earth simultaneously?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "False",
+    "explanation": "...",
+    "difficulty": "Hard"
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "question": "Which factor from Sun Tzu's five constant factors in 'The Art of War' is associated with 'times and seasons'?",
+    "type": "mcq",
+    "choices": [
+      "1.A",
+      "2.B",
+      "3.C",
+      "4.D"
+    ],
+    "correct_answer": "2.B",
+    "explanation": "Heaven signifies night and day, cold and heat, times and seasons.",
+    "difficulty": "Medium"
+  },
+  {
+    "question": "What is the significance of 'Heaven' according to the provided context?",
+    "type": "mcq",
+    "choices": [
+      "1. The ruler's virtues",
+      "2. Times and seasons",
+      "3. Moral Law",
+      "4. Earth"
+    ],
+    "correct_answer": "2. Times and seasons",
+    "explanation": "...",
+    "difficulty": "Medium"
+  }
+]

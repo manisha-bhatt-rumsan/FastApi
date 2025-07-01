@@ -1,0 +1,18 @@
+[
+  {
+    "question": "According to Sun Tzu, what are some key factors that determine the outcome of military operations?",
+    "type": "faq",
+    "choices": [],
+    "correct_answer": "distances, great and small; danger and security; open ground and narrow passes",
+    "explanation": "These factors refer to the various elements that affect the success or failure of a military campaign.",
+    "difficulty": "Hard"
+  },
+  {
+    "question": "What does Sun Tzu mean by stating that 'he who knows them not will fail' in his quote on the art of war?",
+    "type": "faq",
+    "choices": [],
+    "correct_answer": "The correct answer is 'The Five Elements' or 'The Five Disciplines'.",
+    "explanation": "Sun Tzu's statement refers to the five elements (wood, fire, earth, metal, and water) and the five disciplines of war: discipline, strategy, tactics, logistics, and morale.",
+    "difficulty": "Hard"
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "question": "What is notable about the flowers of Blue Ipomoea?",
+    "type": "mcq",
+    "choices": [
+      "They are highly fragrant",
+      "They form showy clusters",
+      "The petals are brightly colored",
+      "None of the above"
+    ],
+    "correct_answer": "3.The petals are brightly colored",
+    "explanation": "Although the flowers bear five pale yellow petals, they do not make an attractive show as they are partly hidden by the leaves."
+  },
+  {
+    "question": "What do European scientists use to classify plant species?",
+    "type": "mcq",
+    "choices": [
+      "Latin words",
+      "Greek words",
+      "Local names",
+      "A combination of all"
+    ],
+    "correct_answer": "3.Local names",
+    "explanation": "European scientists often used local names as scientific names for plants, with the first part referring to the genus and the second to the species."
+  },
+  {
+    "question": "What is a benefit of using scientific names for plants across different regions?",
+    "type": "mcq",
+    "choices": [
+      "2. Facilitates communication among scientists",
+      "1. Ensures unique identification",
+      "3. Reduces confusion due to regional variations",
+      "4. Enhances aesthetic appeal"
+    ],
+    "correct_answer": "1. Ensures unique identification",
+    "explanation": "Using scientific names ensures that each plant species has a distinct and universally recognized name, regardless of its common name or appearance."
+  },
+  {
+    "question": "What is the primary means by which Wild Balsam spreads and colonizes new areas?",
+    "type": "mcq",
+    "choices": [
+      "By seeds dispersed by animals",
+      "Through underground stem fragments",
+      "By wind-borne spores",
+      "By human activity"
+    ],
+    "correct_answer": "Through underground stem fragments",
+    "explanation": "Wild Balsam can spread through underground stem fragments, allowing it to quickly colonize new areas."
+  }
+]

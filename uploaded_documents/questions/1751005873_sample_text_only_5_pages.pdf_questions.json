@@ -1,0 +1,41 @@
+[
+  {
+    "question": "What is the primary purpose of Sun Tzu's statement about the art of war being 'a matter of life and death'?",
+    "type": "mcq",
+    "choices": [
+      "1. To provide a strategic plan for victory",
+      "2. To emphasize the importance of morale in battle",
+      "3. The art of war is vital to the State because it can lead to safety or ruin",
+      "4. War should only be fought when all other options are exhausted"
+    ],
+    "correct_answer": "3. The art of war is vital to the State because it can lead to safety or ruin",
+    "explanation": "This answer choice explains that Sun Tzu's statement highlights the high stakes and critical nature of the art of war, emphasizing its importance for the State's survival.",
+    "difficulty": "Medium"
+  },
+  {
+    "question": "The Commander's virtues can also be seen in how he _______",
+    "type": "mcq",
+    "choices": [
+      "1. Maintains a balance between fear and hope",
+      "2. Shows unwavering determination",
+      "3. Seeks harmony with nature",
+      "4. Puts aside emotions for the greater good"
+    ],
+    "correct_answer": "2. Shows unwavering determination",
+    "explanation": "Answer 2 is correct because the passage describes the Commander as having virtues of wisdom, sincerity, benevolence, courage and strictness, which includes being firm and resolute.",
+    "difficulty": "Medium"
+  },
+  {
+    "question": "What does 'Heaven' signify according to Sun Tzu?",
+    "type": "mcq",
+    "choices": [
+      "1. Peace and prosperity",
+      "2. Night and day, cold and heat, times and seasons",
+      "3. War and defeat",
+      "4. Wealth and power"
+    ],
+    "correct_answer": "2. Night and day, cold and heat, times and seasons",
+    "explanation": "This phrase refers to the cyclical nature of life and the inevitability of change.",
+    "difficulty": "Medium"
+  }
+]

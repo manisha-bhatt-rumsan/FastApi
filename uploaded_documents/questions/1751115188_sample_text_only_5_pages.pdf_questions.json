@@ -1,0 +1,18 @@
+[
+  {
+    "question": "What is the fifth element in the list of fields related to the moral law?",
+    "type": "faq",
+    "choices": [],
+    "correct_answer": "Method and discipline",
+    "explanation": "The correct answer is 'Method and discipline' because it is explicitly listed as the fifth field.",
+    "difficulty": "Easy"
+  },
+  {
+    "question": "What two things does earth comprise according to the text?",
+    "type": "faq",
+    "choices": [],
+    "correct_answer": "danger and security, open ground and narrow passes",
+    "explanation": "The passage describes Earth as having both dangerous and secure aspects, as well as open and narrow areas.",
+    "difficulty": "Easy"
+  }
+]

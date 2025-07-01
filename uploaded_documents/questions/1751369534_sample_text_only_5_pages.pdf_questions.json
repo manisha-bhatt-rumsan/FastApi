@@ -1,0 +1,41 @@
+[
+  {
+    "question": "What do the 'five heads' refer to in relation to the Military Commissar's duties?",
+    "type": "mcq",
+    "choices": [
+      "A. The Five Points of Moral Law",
+      "B. Supplies and control of military expenditure as per the five heads (Method and discipline) mentioned earlier",
+      "C. The Commander-in-Chief's authority over military operations",
+      "D. The administrative functions of the Military Commissar"
+    ],
+    "correct_answer": "B. Supplies and control of military expenditure as per the five heads (Method and discipline) mentioned earlier",
+    "explanation": "The correct answer is B because the context explicitly mentions 'the five heads' in relation to supplies and control of military expenditure. A is incorrect because it's one of the five heads, but not what they refer to in this context. C is incorrect because it's unrelated to the 'five heads'. D is incorrect because it's an administrative function, not a specific head.",
+    "difficulty": "Medium"
+  },
+  {
+    "question": "According to the text, what consequence can be expected when someone does not understand the Moral Law?",
+    "type": "mcq",
+    "choices": [
+      "A. They will be victorious",
+      "B. The people will be in complete accord with their ruler",
+      "C. He who knows them will succeed",
+      "D. Failure is inevitable"
+    ],
+    "correct_answer": "D. Failure is inevitable",
+    "explanation": "The correct answer is D because the text states 'he who knows them not will fail...'. A is incorrect because it contradicts the statement. B is incorrect because the Moral Law causes people to be in accord with their ruler, making this option false in context. C is incorrect because knowing someone implies understanding and therefore success, contrary to the stated consequence.",
+    "difficulty": "Medium"
+  },
+  {
+    "question": "According to Sun Tzu, what is considered crucial for a general to know in order to achieve victory?",
+    "type": "mcq",
+    "choices": [
+      "A. The art of war itself",
+      "B. The strategies and tactics described in The Art of War",
+      "C. The state's military resources",
+      "D. The enemy's strengths and weaknesses"
+    ],
+    "correct_answer": "B. The strategies and tactics described in The Art of War",
+    "explanation": "The correct answer is B because Sun Tzu emphasizes the importance of understanding the content of his own work to achieve victory. A is incorrect because while knowing the art of war is essential, it's not enough on its own; C is incorrect because military resources are important but not the primary factor; D is incorrect because knowing only the enemy's strengths and weaknesses is insufficient without understanding Sun Tzu's strategies.",
+    "difficulty": "Medium"
+  }
+]

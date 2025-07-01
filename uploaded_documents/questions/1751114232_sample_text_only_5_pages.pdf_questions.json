@@ -1,0 +1,41 @@
+[
+  {
+    "question": "What is the term used to describe the proper alignment of an army?",
+    "type": "mcq",
+    "choices": [
+      "1.Method",
+      "2.Discipline",
+      "3.Marshalment",
+      "4.Strategy"
+    ],
+    "correct_answer": "3.Marshalment",
+    "explanation": "Marshalment refers to the method and discipline required for arranging an army in a proper formation.",
+    "difficulty": "Easy"
+  },
+  {
+    "question": "What does the passage imply about the nature of Heaven?",
+    "type": "mcq",
+    "choices": [
+      "1. A place of great joy",
+      "2. A matter of life and death",
+      "3. A constant and unchanging state",
+      "4. A choice between good and evil"
+    ],
+    "correct_answer": "2. A matter of life and death",
+    "explanation": "The passage describes Heaven as a 'road either to safety or to ruin', emphasizing its connection to the speaker's journey and the consequences of their actions.",
+    "difficulty": "Easy"
+  },
+  {
+    "question": "Is heaven a place that can be safely reached?",
+    "type": "mcq",
+    "choices": [
+      "1.A",
+      "2.B",
+      "3.C",
+      "4.D"
+    ],
+    "correct_answer": "2.B",
+    "explanation": "Heaven signifies night and day, cold and heat, times and seasons. Earth comprises road either to safety or to ruin.",
+    "difficulty": "Easy"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "question": "Which virtue does the phrase 'the Commander' suggest is the most important?",
+    "type": "mcq",
+    "choices": [
+      "A. Wisdom",
+      "B. Courage",
+      "C. Benevolence",
+      "D. Strictness"
+    ],
+    "correct_answer": "B. Courage",
+    "explanation": "The correct answer is B because the phrase 'the Commander' suggests someone who takes risks and faces challenges head-on, which aligns with the virtue of courage. A is incorrect because while wisdom is important, it's not directly implied by the term 'Commander'. C is incorrect because benevolence doesn't necessarily imply taking bold action. D is incorrect because strictness is the opposite of what a commander would typically represent.",
+    "difficulty": "Easy"
+  },
+  {
+    "question": "According to the text, what effect does law have on the people's relationship with their ruler?",
+    "type": "mcq",
+    "choices": [
+      "A. The people are indifferent towards their ruler",
+      "B. The people are in complete accord with their ruler",
+      "C. The people do not know their ruler's identity",
+      "D. The people are unaware of the ruler's rule"
+    ],
+    "correct_answer": "B. The people are in complete accord with their ruler",
+    "explanation": "The correct answer is B because the text states that law causes the people to be in complete accord with their ruler. A is incorrect because it contradicts the stated effect of law. C and D are incorrect because they misrepresent the relationship described in the text.",
+    "difficulty": "Easy"
+  },
+  {
+    "question": "What does 'Heaven' represent in this text?",
+    "type": "mcq",
+    "choices": [
+      "A. A place",
+      "B. A state of being",
+      "C. The Commander",
+      "D. Narrow passes"
+    ],
+    "correct_answer": "B. A state of being",
+    "explanation": "The correct answer is B because the text describes Heaven as 'night and day, cold and heat', suggesting it represents a state or condition rather than a physical location. A is incorrect because there's no mention of a place. C is incorrect because The Commander is a separate concept. D is incorrect because narrow passes are also described as part of Heaven.",
+    "difficulty": "Easy"
+  }
+]

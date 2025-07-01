@@ -1,0 +1,26 @@
+[
+  {
+    "question": "What is the fifth constant factor to be taken into account when seeking to determine the conditions obtaining in the field, according to Sun Tzu's art of war?",
+    "type": "faq",
+    "choices": [],
+    "correct_answer": "Method and discipline",
+    "explanation": "",
+    "difficulty": "Medium"
+  },
+  {
+    "question": "What are the five key components that every general should know in order to achieve victory, according to Sun Tzu?",
+    "type": "faq",
+    "choices": [],
+    "correct_answer": "wisdom, sincerity, benevolence, courage and strictness",
+    "explanation": "These five heads represent the fundamental principles of effective military leadership as outlined by Sun Tzu.",
+    "difficulty": "Medium"
+  },
+  {
+    "question": "What is the term that signifies night and day, cold and heat, times and seasons, according to Sun Tzu's Five Constant Factors?",
+    "type": "faq",
+    "choices": [],
+    "correct_answer": "Heaven",
+    "explanation": "",
+    "difficulty": "Medium"
+  }
+]

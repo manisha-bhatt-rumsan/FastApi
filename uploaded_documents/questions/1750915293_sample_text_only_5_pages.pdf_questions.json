@@ -1,0 +1,52 @@
+[
+  {
+    "question": "Does war involve consideration of factors such as the Moral Law, Heaven, Earth, the Commander, and method and discipline?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "True",
+    "explanation": "War is governed by these five constant factors to be taken into account in one's deliberations."
+  },
+  {
+    "question": "Is the Moral Law a fundamental consideration in Sun Tzu's art of war?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "True",
+    "explanation": "The Moral Law, as stated by Sun Tzu, is essential for achieving unity and loyalty among the people, which is crucial for military success."
+  },
+  {
+    "question": "What is often referred to as the 'Moral Law' in Sun Tzu's Art of War?",
+    "type": "mcq",
+    "choices": [
+      "The Commander",
+      "Heaven",
+      "Earth",
+      "Method and discipline"
+    ],
+    "correct_answer": "Heaven",
+    "explanation": "Heaven refers to the moral and ethical principles that guide a leader's decisions, ensuring that the people follow him willingly."
+  },
+  {
+    "question": "Which of the following constant factors from Sun Tzu's 'The Art of War' should not be neglected when determining the conditions obtaining in the field?",
+    "type": "mcq",
+    "choices": [
+      "1.The Moral Law",
+      "2.Heaven",
+      "3.Earth",
+      "4.The Commander"
+    ],
+    "correct_answer": "4.The Commander",
+    "explanation": "The Commander refers to the leader or commander of a military unit, and is not as crucial in understanding the conditions obtaining in the field"
+  },
+  {
+    "question": "What are the five constant factors to be taken into account in one's deliberations when seeking to determine conditions in the field?",
+    "type": "mcq",
+    "choices": [
+      "The Moral Law",
+      "Heaven",
+      "Earth and Commander",
+      "Method and discipline"
+    ],
+    "correct_answer": "5.Method and discipline",
+    "explanation": "This is a reference from Sun Tzu's 'The Art of War'"
+  }
+]

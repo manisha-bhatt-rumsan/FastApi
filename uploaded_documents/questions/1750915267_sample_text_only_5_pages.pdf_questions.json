@@ -1,0 +1,16 @@
+[
+  {
+    "question": "Does war involve consideration of factors such as the Moral Law, Heaven, Earth, the Commander, and method and discipline?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "True",
+    "explanation": "War is governed by these five constant factors to be taken into account in one's deliberations."
+  },
+  {
+    "question": "Is the Moral Law a fundamental consideration in Sun Tzu's art of war?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "True",
+    "explanation": "The Moral Law, as stated by Sun Tzu, is essential for achieving unity and loyalty among the people, which is crucial for military success."
+  }
+]

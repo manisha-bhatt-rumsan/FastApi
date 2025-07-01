@@ -1,0 +1,18 @@
+[
+  {
+    "question": "What are the five heads that a general should know in order to be victorious according to Sun Tzu's teachings?",
+    "type": "faq",
+    "choices": [],
+    "correct_answer": "wisdom, sincerity, benevolence, courage and strictness",
+    "explanation": "",
+    "difficulty": "Easy"
+  },
+  {
+    "question": "What is one of the five constant factors according to Sun Tzu that should be taken into account in one's deliberations about war?",
+    "type": "faq",
+    "choices": [],
+    "correct_answer": "Heaven",
+    "explanation": "",
+    "difficulty": "Easy"
+  }
+]

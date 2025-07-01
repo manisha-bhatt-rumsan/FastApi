@@ -1,0 +1,61 @@
+[
+  {
+    "question": "What is the botanical classification of Celosia argentea, commonly known as Vine-leaved Hibiscus?",
+    "type": "mcq",
+    "choices": [
+      "A. Family Amaranthaceae; Genus Celosia",
+      "B. Family Malvaceae; Genus Hibiscus",
+      "C. Family Brassicaceae; Genus Celosia",
+      "D. Family Asteraceae; Genus Hibiscus"
+    ],
+    "correct_answer": "A. Family Amaranthaceae; Genus Celosia",
+    "explanation": "Celosia argentea belongs to the family Amaranthaceae and genus Celosia."
+  },
+  {
+    "question": "What is the primary role of the monsoons in shaping the ecosystem of a region?",
+    "type": "mcq",
+    "choices": [
+      "Creating dry and barren landscapes",
+      "Bringing fertility to the soil through nutrient-rich rainwater",
+      "Promoting the growth of drought-resistant plants",
+      "Encouraging the spread of invasive species"
+    ],
+    "correct_answer": "Bringing fertility to the soil through nutrient-rich rainwater",
+    "explanation": "Monsoons bring much-needed rainfall, which enriches the soil and supports a diverse range of plant life."
+  },
+  {
+    "question": "Is yellow bladder wort a type of gourd?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "False",
+    "explanation": "Yellow bladder wort belongs to the Cucumber family, which includes pumpkins and gourds, but it is not a type of gourd itself."
+  },
+  {
+    "question": "Is turmeric commonly found in gardens during the rainy season?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "False",
+    "explanation": "Turmeric is often cultivated and harvested during dry seasons, as it requires well-drained soil."
+  },
+  {
+    "question": "Is Indian borage commonly found on dry ground?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "False",
+    "explanation": "It thrives in damp environments, such as damp ground and along the roadside, as well as in small depressions."
+  },
+  {
+    "question": "Explain how Wild Sesame adapts to its environment by altering leaf shape, despite growing on the same stem.",
+    "type": "faq",
+    "choices": [],
+    "correct_answer": "Some stems may have leaves with different shapes, while others on the same stem can have varying forms, showing adaptability in response to environmental factors and demonstrating the plant's ability to thrive in diverse conditions.",
+    "explanation": "The variation in leaf shape among Wild Sesame plants suggests an adaptation mechanism allowing the plant to optimize its growth and survival across different environments."
+  },
+  {
+    "question": "What benefits do scientific names of plants offer in terms of communication and identification across different regions?",
+    "type": "faq",
+    "choices": [],
+    "correct_answer": "Scientific names provide a universal language for plant identification, allowing scientists and botanists to communicate precisely about species regardless of geographical location.",
+    "explanation": "The use of binomial nomenclature enables clear distinction between species, facilitating global collaboration in botanical research and conservation efforts."
+  }
+]

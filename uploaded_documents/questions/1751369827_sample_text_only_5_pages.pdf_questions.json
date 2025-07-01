@@ -1,0 +1,41 @@
+[
+  {
+    "question": "Sun Tzu's concept of 'The Art of War' is often associated with which one of the following elements, which he believed was crucial for success in battle?",
+    "type": "mcq",
+    "choices": [
+      "A. The Moral Law",
+      "B. Heaven",
+      "C. The Commander",
+      "D. Method and Discipline"
+    ],
+    "correct_answer": "D. Method and Discipline",
+    "explanation": "The correct answer is D because Sun Tzu emphasized the importance of mastering various methods and disciplines, such as strategy, tactics, and logistics, in order to achieve victory on the battlefield. A is incorrect because while The Moral Law was considered essential by Sun Tzu, it was not the primary focus of 'The Art of War'. B is incorrect because Heaven, or divine intervention, was seen as unpredictable and unreliable by Sun Tzu. C is incorrect because The Commander, or leadership, was important but not the central aspect of Sun Tzu's philosophy.",
+    "difficulty": "Hard"
+  },
+  {
+    "question": "What strategic consideration does Sun Tzu's 'Commander stands' phrase imply about the importance of inquiry in warfare?",
+    "type": "mcq",
+    "choices": [
+      "A. That the Commander is always prepared to take action, but must first gather information.",
+      "B. That the art of war requires thorough preparation and planning to minimize uncertainty.",
+      "C. That Sun Tzu values intuition over empirical evidence in his military strategy.",
+      "D. That the Commander's inquiry is merely a formality, with actual decisions made by other officers."
+    ],
+    "correct_answer": "B. That the art of war requires thorough preparation and planning to minimize uncertainty.",
+    "explanation": "The correct answer is B because Sun Tzu's emphasis on 'Commander stands' suggests that he values careful consideration and strategic planning, which are essential for minimizing uncertainty and maximizing chances of success in warfare. A is incorrect because while gathering information is important, it is not the primary focus of the Commander's inquiry. C is incorrect because intuition is actually discouraged by Sun Tzu, who instead advocates for a more empirical approach to military strategy. D is incorrect because the Commander's inquiry is a crucial step in the decision-making process, rather than a mere formality.",
+    "difficulty": "Hard"
+  },
+  {
+    "question": "When considering the marshaling of an army, what implicit assumption must be made about the hierarchical structure of its command chain in order to justify the equal treatment of troops from different social classes?",
+    "type": "mcq",
+    "choices": [
+      "A. That the king's own soldiers hold a strategic advantage over commoners",
+      "B. That the social standing of an individual does not affect their martial prowess",
+      "C. That the army's discipline is solely dependent on the rank of the officer",
+      "D. That the merit-based promotion system overrides social background"
+    ],
+    "correct_answer": "B. That the social standing of an individual does not affect their martial prowess",
+    "explanation": "The correct answer is B because the text implies that the army's organization and command structure should be based on military performance, rather than social status. A is incorrect because it assumes a strategic advantage for the king's soldiers, which is not mentioned in the context. C is incorrect because the text does not suggest that discipline is solely dependent on officer rank. D is incorrect because while merit-based promotion might exist, it is not explicitly stated as overriding social background.",
+    "difficulty": "Hard"
+  }
+]

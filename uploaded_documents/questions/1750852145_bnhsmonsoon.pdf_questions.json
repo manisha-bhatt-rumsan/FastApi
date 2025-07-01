@@ -1,0 +1,38 @@
+[
+  {
+    "question": "What is the characteristic color of the flowers of Talimkhana (Asteracantha longifolia)?",
+    "type": "mcq",
+    "choices": [
+      "White and pink",
+      "Violet and reddish-purple",
+      "Only white",
+      "Only purple"
+    ],
+    "correct_answer": "Violet and reddish-purple",
+    "explanation": "Talimkhana (Asteracantha longifolia) is known for its unique flowers that have a range of colors including violet, pink, and reddish-purple."
+  },
+  {
+    "question": "Which of the following is NOT a family in the classification of flower-bearing plants?",
+    "type": "mcq",
+    "choices": [
+      "Leguminosae",
+      "Commelinaceae",
+      "Amaranthaceae",
+      "Sida acuta"
+    ],
+    "correct_answer": "Amaranthaceae",
+    "explanation": "Amaranthaceae is a family of flowering plants, but the other three options are valid families."
+  },
+  {
+    "question": "What is the common name for the plant with a vine-like habit and large showy flowers?",
+    "type": "mcq",
+    "choices": [
+      "Indian Mallow",
+      "Celosia",
+      "Hibiscus Vitilolius",
+      "Marathi Flower"
+    ],
+    "correct_answer": "Indian Mallow",
+    "explanation": "The plant with a vine-like habit and large showy flowers is commonly known as Indian Mallow."
+  }
+]

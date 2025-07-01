@@ -1,0 +1,59 @@
+[
+  {
+    "question": "What is the primary factor that enables a ruler to achieve unity among their people?",
+    "type": "mcq",
+    "choices": [
+      "Heaven",
+      "Earth",
+      "The Commander",
+      "Method and discipline"
+    ],
+    "correct_answer": "The Moral Law",
+    "explanation": "The Moral Law refers to the importance of a ruler having a strong moral compass, which allows them to inspire loyalty and obedience in their people."
+  },
+  {
+    "question": "What is the first of the five constant factors that should be taken into account when determining the conditions in the field, according to Sun Tzu?",
+    "type": "mcq",
+    "choices": [
+      "The Moral Law",
+      "Heaven",
+      "Earth",
+      "Method and Discipline"
+    ],
+    "correct_answer": "1.The Moral Law",
+    "explanation": "The Moral Law refers to the inherent principles of justice, righteousness, and morality that should guide an army's actions."
+  },
+  {
+    "question": "What concept is associated with the virtues embodied by the Commander in a military context?",
+    "type": "mcq",
+    "choices": [
+      "Law",
+      "Morals",
+      "Discipline",
+      "Etiquette"
+    ],
+    "correct_answer": "Law",
+    "explanation": "In a military setting, law refers to the set of rules and regulations that govern the behavior of soldiers, promoting order and discipline."
+  },
+  {
+    "question": "Does the field consider The Commander to be an important factor in decision-making?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "False",
+    "explanation": "The Commander is mentioned as one of five elements that should be taken into account, but it does not have a central role in determining the conditions in the field."
+  },
+  {
+    "question": "Does Sun Tzu believe that knowing the five heads is crucial for military victory?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "True",
+    "explanation": "Sun Tzu emphasizes the importance of understanding the five heads (methods, discipline, subdivisions, rank, and military expenditure) to achieve success in war."
+  },
+  {
+    "question": "Is The Moral Law a fundamental factor in determining the conditions obtaining in the field according to Sun Tzu's art of war?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "True",
+    "explanation": "The Moral Law is one of the five constant factors that should be taken into account when seeking to determine the conditions obtaining in the field, as it causes people to follow their ruler without question."
+  }
+]

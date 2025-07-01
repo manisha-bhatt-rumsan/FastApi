@@ -1,0 +1,41 @@
+[
+  {
+    "question": "According to the context, what is one of the reasons people should follow their ruler?",
+    "type": "mcq",
+    "choices": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct_answer": "2 Heaven",
+    "explanation": "Heaven is mentioned as one of the reasons to be in complete accord with their ruler.",
+    "difficulty": "Easy"
+  },
+  {
+    "question": "What are the two things that heaven signifies?",
+    "type": "mcq",
+    "choices": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct_answer": "2, 3",
+    "explanation": "Heaven signifies night and day. Heaven is familiar to every general: he who knows them will be victorious; he who knows them not",
+    "difficulty": "Easy"
+  },
+  {
+    "question": "Which virtue is most likely to cause the people to follow a ruler without question?",
+    "type": "mcq",
+    "choices": [
+      "1. Wisdom",
+      "2. Sincerity",
+      "3. Benevolence",
+      "4. Courage"
+    ],
+    "correct_answer": "2, 4",
+    "explanation": "Sincerity and courage both encourage people to be honest and brave, which can lead to following a ruler without question.",
+    "difficulty": "Easy"
+  }
+]

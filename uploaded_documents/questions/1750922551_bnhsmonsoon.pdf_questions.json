@@ -1,0 +1,16 @@
+[
+  {
+    "question": "Is Celosia argentea considered a menace in India due to its rapid spread?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "True",
+    "explanation": "Its rapid growth and spread have obstructed the flow of water, causing environmental harm."
+  },
+  {
+    "question": "Does the genus name 'Sida' refer to the shape of its leaves?",
+    "type": "boolean",
+    "choices": [],
+    "correct_answer": "False",
+    "explanation": "The genus name 'Sida' actually comes from the Latin word for the 'shoe', not a reference to leaf shape."
+  }
+]

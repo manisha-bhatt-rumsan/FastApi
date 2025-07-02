@@ -1,4 +1,4 @@
-from app.db.models import Quiz, Question as DBQuestion
+from app.db.models import Quiz, Question as DBQuestion, QuestionTypeEnum
 from app.quiz.schemas import QuizGenerationState
 from app.db.database import AsyncSessionLocal
 import logging
@@ -14,7 +14,6 @@ async def store_questions(
     filename = state.get('original_filename', 'unknown_file')
     logger.info(f"Starting to store questions for '{filename}' in database")
     
-    # Initialize return values
     result = {
         'quiz_id': None,
         'question_ids': [],
@@ -31,11 +30,10 @@ async def store_questions(
 
         async with AsyncSessionLocal() as db:
             try:
-                # Create a new quiz
                 quiz_title = quiz_title or f"Quiz from {filename}"
                 new_quiz = Quiz(
                     title=quiz_title,
-                    owner_id=user_id  # Will be None for now
+                    owner_id=user_id
                 )
                 db.add(new_quiz)
                 await db.flush()
@@ -43,22 +41,24 @@ async def store_questions(
                 logger.info(f"Created quiz with ID: {new_quiz.id}")
                 result['quiz_id'] = new_quiz.id
                 
-                # Store each question
                 question_ids = []
                 for question in state['questions']:
                     try:
-                        # Create database question
+                        # Convert type to QuestionTypeEnum safely using lowercase
+                        q_type = QuestionTypeEnum(question.type.lower())
+
                         db_question = DBQuestion(
                             question=question.question,
-                            type=question.type.lower(),
+                            type=q_type,
                             choices=question.choices if question.choices else [],
                             correct_answer=question.correct_answer,
                             explanation=question.explanation,
+                            difficulty=question.difficulty,
                             quiz_id=new_quiz.id
                         )
                         
                         db.add(db_question)
-                        await db.flush()  # Flush to get the question ID
+                        await db.flush()
                         question_ids.append(db_question.id)
                         
                         logger.info(f"Stored question with ID: {db_question.id}")
@@ -77,7 +77,6 @@ async def store_questions(
                         await db.rollback()
                         return result
                 
-                # Commit all changes
                 await db.commit()
                 
                 result['question_ids'] = question_ids

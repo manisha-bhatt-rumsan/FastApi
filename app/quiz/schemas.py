@@ -26,7 +26,7 @@ class Question(BaseModel):
     choices: List[str] = []
     correct_answer: str
     explanation: str
-    difficulty: Optional[str] = None
+    difficulty:str
     
     @field_validator('difficulty', mode='before')
     @classmethod

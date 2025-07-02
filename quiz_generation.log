@@ -5367,3 +5367,747 @@ sqlalchemy.exc.DBAPIError: (sqlalchemy.dialects.postgresql.asyncpg.Error) <class
 [SQL: INSERT INTO questions (question, type, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::VARCHAR[], $4::VARCHAR, $5::VARCHAR, $6::INTEGER) RETURNING questions.id]
 [parameters: ("The Commander's virtues are wisdom, sincerity, benevolence, courage, and strictness.", 'boolean', [], 'True', "This statement is True because the text explicitly states that 'the Commander stands for the virtues of wisdom, sincerity, benevolence, courage and strictness' on page 10.", 13)]
 (Background on this error at: https://sqlalche.me/e/20/dbapi)
+2025-07-02 11:03:50,849 - app.quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf
+2025-07-02 11:03:52,053 - app.upload.service - INFO - Extracted 49 chunks from 'sample_text_only_5_pages.pdf' with per-page splitting
+2025-07-02 11:03:52,054 - app.upload.service - INFO - Generating embeddings for 49 chunks
+2025-07-02 11:04:03,563 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-02 11:04:03,583 - app.upload.service - INFO - Creating Qdrant collection: quiz_chunks
+2025-07-02 11:04:04,045 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks "HTTP/1.1 200 OK"
+2025-07-02 11:04:04,053 - app.upload.service - INFO - Uploading 49 points to Qdrant collection 'quiz_chunks'
+2025-07-02 11:04:04,265 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-02 11:04:04,273 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-02 11:04:24,026 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 11:04:24,027 - app.quiz.routes - INFO - Generating 3 questions of type 'mcq'...
+2025-07-02 11:04:24,031 - app.quiz.service - INFO - Starting generation of 3 'mcq' questions for 'sample_text_only_5_pages.pdf' with difficulty 'Medium'
+2025-07-02 11:04:25,699 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 11:04:29,060 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 11:04:29,417 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 11:04:31,819 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 11:04:32,153 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 11:04:34,778 - app.quiz.service - WARNING - Retry 1 failed: No valid JSON found in response.
+2025-07-02 11:04:34,945 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 11:04:37,077 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 11:04:37,078 - app.quiz.service - INFO - Finished generation of 3 questions.
+2025-07-02 11:04:37,078 - app.quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf'
+2025-07-02 11:04:37,078 - app.quiz.utils - INFO - Starting to store questions for 'sample_text_only_5_pages.pdf' in database
+2025-07-02 11:04:37,408 - app.quiz.utils - INFO - Created quiz with ID: 14
+2025-07-02 11:04:37,460 - app.quiz.utils - ERROR - Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.InvalidTextRepresentationError'>: invalid input value for enum question_type: "mcq"
+[SQL: INSERT INTO questions (question, type, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::VARCHAR[], $4::VARCHAR, $5::VARCHAR, $6::INTEGER) RETURNING questions.id]
+[parameters: ("Sun Tzu emphasized that understanding the five heads (method, discipline, marshaling of the army, graduations of rank, and maintenance of roads) is crucial for a general's victory. What are two ways in which these elements can be understood to achieve military success?", 'mcq', ['A. By focusing solely on physical strength and numbers', 'B. By analyzing the interconnections between method, discipline, marshaling of the army, g ... (47 characters truncated) ... 'C. By ignoring the role of morale and diplomacy in military strategy', 'D. By relying solely on intuition and instinct rather than careful planning'], 'B. By analyzing the interconnections between method, discipline, marshaling of the army, graduations of rank, and maintenance of roads', "The correct answer is B because Sun Tzu's emphasis on understanding these five heads suggests that they are interconnected and must be analyzed toget ... (205 characters truncated) ... tary strategy, as emphasized by Sun Tzu. D is incorrect because relying solely on intuition and instinct can lead to poor decision-making and defeat.", 14)]
+(Background on this error at: https://sqlalche.me/e/20/dbapi)
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 545, in _prepare_and_execute
+    self._rows = deque(await prepared_stmt.fetch(*parameters))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\prepared_stmt.py", line 176, in fetch
+    data = await self.__bind_execute(args, 0, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\prepared_stmt.py", line 267, in __bind_execute
+    data, status, _ = await self.__do_execute(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\prepared_stmt.py", line 256, in __do_execute
+    return await executor(protocol)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\\protocol\\protocol.pyx", line 206, in bind_execute
+asyncpg.exceptions.InvalidTextRepresentationError: invalid input value for enum question_type: "mcq"
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.Error: <class 'asyncpg.exceptions.InvalidTextRepresentationError'>: invalid input value for enum question_type: "mcq"
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\utils.py", line 61, in store_questions
+    await db.flush()  # Flush to get the question ID
+    ^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 801, in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 203, in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4345, in flush
+    self._flush(objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4480, in _flush
+    with util.safe_reraise():
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4441, in _flush
+    flush_context.execute()
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1415, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1637, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1842, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1982, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 2351, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.DBAPIError: (sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.InvalidTextRepresentationError'>: invalid input value for enum question_type: "mcq"
+[SQL: INSERT INTO questions (question, type, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::VARCHAR[], $4::VARCHAR, $5::VARCHAR, $6::INTEGER) RETURNING questions.id]
+[parameters: ("Sun Tzu emphasized that understanding the five heads (method, discipline, marshaling of the army, graduations of rank, and maintenance of roads) is crucial for a general's victory. What are two ways in which these elements can be understood to achieve military success?", 'mcq', ['A. By focusing solely on physical strength and numbers', 'B. By analyzing the interconnections between method, discipline, marshaling of the army, g ... (47 characters truncated) ... 'C. By ignoring the role of morale and diplomacy in military strategy', 'D. By relying solely on intuition and instinct rather than careful planning'], 'B. By analyzing the interconnections between method, discipline, marshaling of the army, graduations of rank, and maintenance of roads', "The correct answer is B because Sun Tzu's emphasis on understanding these five heads suggests that they are interconnected and must be analyzed toget ... (205 characters truncated) ... tary strategy, as emphasized by Sun Tzu. D is incorrect because relying solely on intuition and instinct can lead to poor decision-making and defeat.", 14)]
+(Background on this error at: https://sqlalche.me/e/20/dbapi)
+2025-07-02 11:04:37,820 - app.quiz.routes - WARNING - Database storage failed: Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.InvalidTextRepresentationError'>: invalid input value for enum question_type: "mcq"
+[SQL: INSERT INTO questions (question, type, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::VARCHAR[], $4::VARCHAR, $5::VARCHAR, $6::INTEGER) RETURNING questions.id]
+[parameters: ("Sun Tzu emphasized that understanding the five heads (method, discipline, marshaling of the army, graduations of rank, and maintenance of roads) is crucial for a general's victory. What are two ways in which these elements can be understood to achieve military success?", 'mcq', ['A. By focusing solely on physical strength and numbers', 'B. By analyzing the interconnections between method, discipline, marshaling of the army, g ... (47 characters truncated) ... 'C. By ignoring the role of morale and diplomacy in military strategy', 'D. By relying solely on intuition and instinct rather than careful planning'], 'B. By analyzing the interconnections between method, discipline, marshaling of the army, graduations of rank, and maintenance of roads', "The correct answer is B because Sun Tzu's emphasis on understanding these five heads suggests that they are interconnected and must be analyzed toget ... (205 characters truncated) ... tary strategy, as emphasized by Sun Tzu. D is incorrect because relying solely on intuition and instinct can lead to poor decision-making and defeat.", 14)]
+(Background on this error at: https://sqlalche.me/e/20/dbapi)
+2025-07-02 12:10:57,168 - app.quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf
+2025-07-02 12:10:58,226 - app.upload.service - INFO - Extracted 26 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-02 12:10:58,228 - app.upload.service - INFO - Generating embeddings for 26 chunks
+2025-07-02 12:11:05,951 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-02 12:11:05,967 - app.upload.service - INFO - Uploading 26 points to Qdrant collection 'quiz_chunks'
+2025-07-02 12:11:06,166 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-02 12:11:06,169 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-02 12:11:12,034 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 12:11:12,034 - app.quiz.routes - INFO - Generating 3 questions of type 'mcq'...
+2025-07-02 12:11:12,035 - app.quiz.service - INFO - Starting generation of 3 'mcq' questions for 'bnhsmonsoon.pdf' with difficulty 'Medium'
+2025-07-02 12:11:13,762 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:11:17,143 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 12:11:17,763 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:11:20,194 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 12:11:20,779 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:11:24,023 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 12:11:24,024 - app.quiz.service - INFO - Finished generation of 3 questions.
+2025-07-02 12:11:24,025 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 12:11:24,025 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 12:11:24,273 - app.quiz.utils - INFO - Created quiz with ID: 15
+2025-07-02 12:11:24,321 - app.quiz.utils - INFO - Stored question with ID: 1
+2025-07-02 12:11:24,325 - app.quiz.utils - INFO - Stored question with ID: 2
+2025-07-02 12:11:24,327 - app.quiz.utils - INFO - Stored question with ID: 3
+2025-07-02 12:11:24,331 - app.quiz.utils - INFO - Successfully stored 3 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 15)
+2025-07-02 12:11:24,333 - app.quiz.routes - INFO - Questions stored in DB with quiz ID: 15
+2025-07-02 12:27:01,790 - app.quiz.routes - INFO - Uploading document: sample_text_only_5_pages.pdf
+2025-07-02 12:27:02,011 - app.upload.service - INFO - Extracted 49 chunks from 'sample_text_only_5_pages.pdf' with per-page splitting
+2025-07-02 12:27:02,012 - app.upload.service - INFO - Generating embeddings for 49 chunks
+2025-07-02 12:27:15,203 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-02 12:27:15,223 - app.upload.service - INFO - Uploading 49 points to Qdrant collection 'quiz_chunks'
+2025-07-02 12:27:15,425 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-02 12:27:15,428 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-02 12:27:26,086 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 12:27:26,086 - app.quiz.routes - INFO - Generating 2 questions of type 'mcq'...
+2025-07-02 12:27:26,088 - app.quiz.service - INFO - Starting generation of 2 'mcq' questions for 'sample_text_only_5_pages.pdf' with difficulty 'Hard'
+2025-07-02 12:27:27,821 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:27:30,791 - app.quiz.service - WARNING - Retry 1 failed: MCQ must have 4 options.
+2025-07-02 12:27:30,946 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:27:34,780 - app.quiz.service - WARNING - Retry 2 failed: Expecting ',' delimiter: line 6 column 5 (char 327)
+2025-07-02 12:27:34,979 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:27:38,417 - app.quiz.service - WARNING - Retry 3 failed: No valid JSON found in response.
+2025-07-02 12:27:38,419 - app.quiz.service - ERROR - All retries failed for chunks [10, 43]: No valid JSON found in response.
+2025-07-02 12:27:38,929 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:27:42,450 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 12:27:42,977 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:27:47,732 - app.quiz.service - WARNING - Retry 1 failed: Expecting ',' delimiter: line 6 column 5 (char 704)
+2025-07-02 12:27:47,882 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:27:51,005 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 12:27:51,006 - app.quiz.service - INFO - Finished generation of 2 questions.
+2025-07-02 12:27:51,007 - app.quiz.service - INFO - Storing quiz results for 'sample_text_only_5_pages.pdf'
+2025-07-02 12:27:51,008 - app.quiz.utils - INFO - Starting to store questions for 'sample_text_only_5_pages.pdf' in database
+2025-07-02 12:27:51,122 - app.quiz.utils - INFO - Created quiz with ID: 16
+2025-07-02 12:27:51,134 - app.quiz.utils - INFO - Stored question with ID: 4
+2025-07-02 12:27:51,136 - app.quiz.utils - INFO - Stored question with ID: 5
+2025-07-02 12:27:51,139 - app.quiz.utils - INFO - Successfully stored 2 questions for quiz 'Quiz from sample_text_only_5_pages.pdf' (ID: 16)
+2025-07-02 12:27:51,140 - app.quiz.routes - INFO - Questions stored in DB with quiz ID: 16
+2025-07-02 12:30:08,298 - app.quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf
+2025-07-02 12:30:08,519 - app.upload.service - INFO - Extracted 26 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-02 12:30:08,520 - app.upload.service - INFO - Generating embeddings for 26 chunks
+2025-07-02 12:30:20,715 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-02 12:30:20,719 - app.upload.service - INFO - Uploading 26 points to Qdrant collection 'quiz_chunks'
+2025-07-02 12:30:20,941 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-02 12:30:20,951 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-02 12:30:36,862 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 12:30:36,863 - app.quiz.routes - INFO - Generating 2 questions of type 'boolean'...
+2025-07-02 12:30:36,866 - app.quiz.service - INFO - Starting generation of 2 'boolean' questions for 'bnhsmonsoon.pdf' with difficulty 'Hard'
+2025-07-02 12:30:37,632 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:30:38,990 - app.quiz.service - INFO - Generated 'boolean' question.
+2025-07-02 12:30:39,369 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:30:40,680 - app.quiz.service - INFO - Generated 'boolean' question.
+2025-07-02 12:30:40,680 - app.quiz.service - INFO - Finished generation of 2 questions.
+2025-07-02 12:30:40,681 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 12:30:40,681 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 12:30:40,756 - app.quiz.utils - INFO - Created quiz with ID: 17
+2025-07-02 12:30:40,773 - app.quiz.utils - INFO - Stored question with ID: 6
+2025-07-02 12:30:40,775 - app.quiz.utils - INFO - Stored question with ID: 7
+2025-07-02 12:30:40,777 - app.quiz.utils - INFO - Successfully stored 2 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 17)
+2025-07-02 12:30:40,779 - app.quiz.routes - INFO - Questions stored in DB with quiz ID: 17
+2025-07-02 12:31:54,915 - app.quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf
+2025-07-02 12:31:55,445 - app.upload.service - INFO - Extracted 26 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-02 12:31:55,445 - app.upload.service - INFO - Generating embeddings for 26 chunks
+2025-07-02 12:32:03,870 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-02 12:32:03,872 - app.upload.service - INFO - Uploading 26 points to Qdrant collection 'quiz_chunks'
+2025-07-02 12:32:03,970 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-02 12:32:03,972 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-02 12:32:10,636 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 12:32:10,637 - app.quiz.routes - INFO - Generating 2 questions of type 'faq'...
+2025-07-02 12:32:10,637 - app.quiz.service - INFO - Starting generation of 2 'faq' questions for 'bnhsmonsoon.pdf' with difficulty 'Easy'
+2025-07-02 12:32:12,185 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:32:13,577 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 12:32:14,082 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:32:15,237 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 12:32:15,237 - app.quiz.service - INFO - Finished generation of 2 questions.
+2025-07-02 12:32:15,237 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 12:32:15,237 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 12:32:15,406 - app.quiz.utils - INFO - Created quiz with ID: 18
+2025-07-02 12:32:15,424 - app.quiz.utils - ERROR - Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('What is the typical color of the fruit of the BITTER WILD CUCUMBER plant when it is ripe?', 'FAQ', 'Easy', [], 'pale yellow', "This answer is correct because according to the text, the fruit of the BITTER WILD CUCUMBER plant has 'bitter pulp' and is described as 'pale yellow when ripe'. This information directly addresses the question, demonstrating a basic understanding of the context.", 18)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 521, in _prepare_and_execute
+    prepared_stmt, attributes = await adapt_connection._prepare(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 768, in _prepare
+    prepared_stmt = await self._connection.prepare(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 635, in prepare
+    return await self._prepare(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 653, in _prepare
+    stmt = await self._get_statement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 432, in _get_statement
+    statement = await self._protocol.prepare(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\\protocol\\protocol.pyx", line 165, in prepare
+asyncpg.exceptions.UndefinedObjectError: type "difficulty_level" does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.ProgrammingError: <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\utils.py", line 61, in store_questions
+    await db.flush()
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 801, in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 203, in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4345, in flush
+    self._flush(objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4480, in _flush
+    with util.safe_reraise():
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4441, in _flush
+    flush_context.execute()
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1415, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1637, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1842, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1982, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 2351, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.ProgrammingError: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('What is the typical color of the fruit of the BITTER WILD CUCUMBER plant when it is ripe?', 'FAQ', 'Easy', [], 'pale yellow', "This answer is correct because according to the text, the fruit of the BITTER WILD CUCUMBER plant has 'bitter pulp' and is described as 'pale yellow when ripe'. This information directly addresses the question, demonstrating a basic understanding of the context.", 18)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-07-02 12:32:16,026 - app.quiz.routes - WARNING - Database storage failed: Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('What is the typical color of the fruit of the BITTER WILD CUCUMBER plant when it is ripe?', 'FAQ', 'Easy', [], 'pale yellow', "This answer is correct because according to the text, the fruit of the BITTER WILD CUCUMBER plant has 'bitter pulp' and is described as 'pale yellow when ripe'. This information directly addresses the question, demonstrating a basic understanding of the context.", 18)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-07-02 12:33:25,674 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 12:33:25,675 - app.quiz.routes - INFO - Generating 2 questions of type 'faq'...
+2025-07-02 12:33:25,675 - app.quiz.service - INFO - Starting generation of 2 'faq' questions for 'bnhsmonsoon.pdf' with difficulty 'Hard'
+2025-07-02 12:33:29,853 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:33:29,877 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 12:33:30,589 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 12:33:32,947 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 12:33:32,948 - app.quiz.service - INFO - Finished generation of 2 questions.
+2025-07-02 12:33:32,948 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 12:33:32,950 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 12:33:32,958 - app.quiz.utils - INFO - Created quiz with ID: 19
+2025-07-02 12:33:32,963 - app.quiz.utils - ERROR - Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('Analyze the growth habit of Wild Sesame (Sesamum Indicum) in relation to its seed production, and explain how this characteristic contributes to its historical significance as a source of oil.', 'FAQ', 'Hard', [], "Wild Sesame's unbranched stems growing up to four feet high support its long sprays of tubular flowers, which produce pods with four compartments ful ... (56 characters truncated) ... e plant to efficiently seed itself, making it an attractive and potentially valuable resource for early harvesters, including ancient oil extractors.", "This answer is correct because it addresses the relationship between Wild Sesame's growth habit and its seed production, highlighting how this charac ... (54 characters truncated) ...  a source of oil. The response should include specific details from the text about the plant's growth habit and its potential value as an oil source.", 19)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 521, in _prepare_and_execute
+    prepared_stmt, attributes = await adapt_connection._prepare(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 768, in _prepare
+    prepared_stmt = await self._connection.prepare(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 635, in prepare
+    return await self._prepare(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 653, in _prepare
+    stmt = await self._get_statement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 432, in _get_statement
+    statement = await self._protocol.prepare(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\\protocol\\protocol.pyx", line 165, in prepare
+asyncpg.exceptions.UndefinedObjectError: type "difficulty_level" does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.ProgrammingError: <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\utils.py", line 61, in store_questions
+    await db.flush()
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 801, in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 203, in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4345, in flush
+    self._flush(objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4480, in _flush
+    with util.safe_reraise():
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4441, in _flush
+    flush_context.execute()
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1415, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1637, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1842, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1982, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 2351, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.ProgrammingError: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('Analyze the growth habit of Wild Sesame (Sesamum Indicum) in relation to its seed production, and explain how this characteristic contributes to its historical significance as a source of oil.', 'FAQ', 'Hard', [], "Wild Sesame's unbranched stems growing up to four feet high support its long sprays of tubular flowers, which produce pods with four compartments ful ... (56 characters truncated) ... e plant to efficiently seed itself, making it an attractive and potentially valuable resource for early harvesters, including ancient oil extractors.", "This answer is correct because it addresses the relationship between Wild Sesame's growth habit and its seed production, highlighting how this charac ... (54 characters truncated) ...  a source of oil. The response should include specific details from the text about the plant's growth habit and its potential value as an oil source.", 19)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-07-02 12:33:32,977 - app.quiz.routes - WARNING - Database storage failed: Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('Analyze the growth habit of Wild Sesame (Sesamum Indicum) in relation to its seed production, and explain how this characteristic contributes to its historical significance as a source of oil.', 'FAQ', 'Hard', [], "Wild Sesame's unbranched stems growing up to four feet high support its long sprays of tubular flowers, which produce pods with four compartments ful ... (56 characters truncated) ... e plant to efficiently seed itself, making it an attractive and potentially valuable resource for early harvesters, including ancient oil extractors.", "This answer is correct because it addresses the relationship between Wild Sesame's growth habit and its seed production, highlighting how this charac ... (54 characters truncated) ...  a source of oil. The response should include specific details from the text about the plant's growth habit and its potential value as an oil source.", 19)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-07-02 14:24:43,864 - app.quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf
+2025-07-02 14:24:45,021 - app.upload.service - INFO - Extracted 26 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-02 14:24:45,024 - app.upload.service - INFO - Generating embeddings for 26 chunks
+2025-07-02 14:24:51,974 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-02 14:24:51,991 - app.upload.service - INFO - Uploading 26 points to Qdrant collection 'quiz_chunks'
+2025-07-02 14:24:52,216 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-02 14:24:52,222 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-02 14:26:14,983 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 14:26:14,985 - app.quiz.routes - INFO - Generating 3 questions of type 'mcq'...
+2025-07-02 14:26:14,987 - app.quiz.service - INFO - Starting generation of 3 'mcq' questions for 'bnhsmonsoon.pdf' with difficulty 'Medium'
+2025-07-02 14:26:16,946 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 14:26:19,282 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 14:26:20,011 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 14:26:22,553 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 14:26:23,019 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 14:26:25,975 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 14:26:25,976 - app.quiz.service - INFO - Finished generation of 3 questions.
+2025-07-02 14:26:25,977 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 14:26:25,978 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 14:26:26,397 - app.quiz.utils - INFO - Created quiz with ID: 20
+2025-07-02 14:26:26,415 - app.quiz.utils - ERROR - Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('How are flower-bearing plants classified in science, according to the text?', 'MCQ', 'Medium', ['A. By their shape and color', 'B. Based on the arrangement of different parts of the flower', 'C. By their habitat and climate', 'D. By their size and lifespan'], 'B. Based on the arrangement of different parts of the flower', 'The correct answer is B because the text states that in the case of flower-bearing plants, the division or classification is mainly based on the arra ... (205 characters truncated) ... tion of habitat and climate as a basis for classification. D is incorrect because size and lifespan are not considered in this classification system.', 20)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 521, in _prepare_and_execute
+    prepared_stmt, attributes = await adapt_connection._prepare(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 768, in _prepare
+    prepared_stmt = await self._connection.prepare(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 635, in prepare
+    return await self._prepare(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 653, in _prepare
+    stmt = await self._get_statement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 432, in _get_statement
+    statement = await self._protocol.prepare(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\\protocol\\protocol.pyx", line 165, in prepare
+asyncpg.exceptions.UndefinedObjectError: type "difficulty_level" does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.ProgrammingError: <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\utils.py", line 61, in store_questions
+    await db.flush()
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 801, in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 203, in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4345, in flush
+    self._flush(objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4480, in _flush
+    with util.safe_reraise():
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4441, in _flush
+    flush_context.execute()
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1415, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1637, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1842, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1982, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 2351, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.ProgrammingError: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('How are flower-bearing plants classified in science, according to the text?', 'MCQ', 'Medium', ['A. By their shape and color', 'B. Based on the arrangement of different parts of the flower', 'C. By their habitat and climate', 'D. By their size and lifespan'], 'B. Based on the arrangement of different parts of the flower', 'The correct answer is B because the text states that in the case of flower-bearing plants, the division or classification is mainly based on the arra ... (205 characters truncated) ... tion of habitat and climate as a basis for classification. D is incorrect because size and lifespan are not considered in this classification system.', 20)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-07-02 14:26:26,450 - app.quiz.routes - WARNING - Database storage failed: Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('How are flower-bearing plants classified in science, according to the text?', 'MCQ', 'Medium', ['A. By their shape and color', 'B. Based on the arrangement of different parts of the flower', 'C. By their habitat and climate', 'D. By their size and lifespan'], 'B. Based on the arrangement of different parts of the flower', 'The correct answer is B because the text states that in the case of flower-bearing plants, the division or classification is mainly based on the arra ... (205 characters truncated) ... tion of habitat and climate as a basis for classification. D is incorrect because size and lifespan are not considered in this classification system.', 20)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-07-02 16:03:07,785 - app.quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf
+2025-07-02 16:03:08,511 - app.upload.service - INFO - Extracted 26 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-02 16:03:08,512 - app.upload.service - INFO - Generating embeddings for 26 chunks
+2025-07-02 16:03:14,711 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-02 16:03:14,715 - app.upload.service - INFO - Uploading 26 points to Qdrant collection 'quiz_chunks'
+2025-07-02 16:03:14,856 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-02 16:03:14,858 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-02 16:03:30,345 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 16:03:30,345 - app.quiz.routes - INFO - Generating 2 questions of type 'faq'...
+2025-07-02 16:03:30,347 - app.quiz.service - INFO - Starting generation of 2 'faq' questions for 'bnhsmonsoon.pdf' with difficulty 'Hard'
+2025-07-02 16:03:31,912 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 16:03:34,104 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 16:03:34,436 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 16:03:36,977 - app.quiz.service - WARNING - Retry 1 failed: No valid JSON found in response.
+2025-07-02 16:03:37,111 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 16:03:39,876 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 16:03:39,876 - app.quiz.service - INFO - Finished generation of 2 questions.
+2025-07-02 16:03:39,877 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 16:03:39,878 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 16:03:40,080 - app.quiz.utils - INFO - Created quiz with ID: 21
+2025-07-02 16:03:40,091 - app.quiz.utils - ERROR - Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ("How does the Bitter Wild Cucumber's fruit having 'bitter pulp' relate to its classification within the Cucumber family, and what characteristic is shared with other plants in this family?", 'FAQ', 'Hard', [], "The Bitter Wild Cucumber's fruit has bitter pulp due to its classification within the Cucumber family, which also includes pumpkins and gourds. Like  ... (56 characters truncated) ... ms and bears separate male flowers in small clusters along with a solitary female flower, demonstrating a shared characteristic of this plant family.", "This answer is correct because it addresses the relationship between the fruit's bitter pulp and its classification within the Cucumber family. The response should include the mention of other plants in the family having succulent stems as an example of the shared characteristic.", 21)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 521, in _prepare_and_execute
+    prepared_stmt, attributes = await adapt_connection._prepare(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 768, in _prepare
+    prepared_stmt = await self._connection.prepare(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 635, in prepare
+    return await self._prepare(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 653, in _prepare
+    stmt = await self._get_statement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 432, in _get_statement
+    statement = await self._protocol.prepare(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\\protocol\\protocol.pyx", line 165, in prepare
+asyncpg.exceptions.UndefinedObjectError: type "difficulty_level" does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.ProgrammingError: <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\utils.py", line 61, in store_questions
+    await db.flush()
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 801, in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 203, in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4345, in flush
+    self._flush(objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4480, in _flush
+    with util.safe_reraise():
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4441, in _flush
+    flush_context.execute()
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1415, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1637, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1842, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1982, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 2351, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.ProgrammingError: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ("How does the Bitter Wild Cucumber's fruit having 'bitter pulp' relate to its classification within the Cucumber family, and what characteristic is shared with other plants in this family?", 'FAQ', 'Hard', [], "The Bitter Wild Cucumber's fruit has bitter pulp due to its classification within the Cucumber family, which also includes pumpkins and gourds. Like  ... (56 characters truncated) ... ms and bears separate male flowers in small clusters along with a solitary female flower, demonstrating a shared characteristic of this plant family.", "This answer is correct because it addresses the relationship between the fruit's bitter pulp and its classification within the Cucumber family. The response should include the mention of other plants in the family having succulent stems as an example of the shared characteristic.", 21)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-07-02 16:03:40,346 - app.quiz.routes - WARNING - Database storage failed: Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ("How does the Bitter Wild Cucumber's fruit having 'bitter pulp' relate to its classification within the Cucumber family, and what characteristic is shared with other plants in this family?", 'FAQ', 'Hard', [], "The Bitter Wild Cucumber's fruit has bitter pulp due to its classification within the Cucumber family, which also includes pumpkins and gourds. Like  ... (56 characters truncated) ... ms and bears separate male flowers in small clusters along with a solitary female flower, demonstrating a shared characteristic of this plant family.", "This answer is correct because it addresses the relationship between the fruit's bitter pulp and its classification within the Cucumber family. The response should include the mention of other plants in the family having succulent stems as an example of the shared characteristic.", 21)]
+(Background on this error at: https://sqlalche.me/e/20/f405)

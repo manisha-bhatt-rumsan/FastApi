@@ -8,6 +8,11 @@ class QuestionTypeEnum(enum.Enum):
     MCQ = "mcq"
     FAQ = "faq"
     BOOLEAN = "boolean"
+    
+class DifficultyLevelEnum(enum.Enum):
+    EASY = "Easy"
+    MEDIUM = "Medium"
+    HARD = "Hard"    
 
 class User(Base):
     __tablename__ = "users"
@@ -39,6 +44,7 @@ class Question(Base):
     id = Column(Integer, primary_key=True, index=True)
     question = Column(Text, nullable=False)
     type = Column(Enum(QuestionTypeEnum, name="question_type"), nullable=False)
+    difficulty = Column(Enum(DifficultyLevelEnum, name="difficulty_level"), nullable=False)  
     choices = Column(ARRAY(String), nullable=True)
     correct_answer = Column(Text, nullable=False)
     explanation = Column(Text, nullable=True)

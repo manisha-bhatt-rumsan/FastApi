@@ -1,4 +1,4 @@
-from fastapi import File, HTTPException, APIRouter, UploadFile
+from fastapi import File, HTTPException, APIRouter, UploadFile, Query
 import logging
 from app.upload.service import extract_chunks_with_metadata, store_chunks_in_qdrant
 from app.quiz.service import load_text_and_generate_question, store_quiz_results
@@ -24,8 +24,8 @@ logger = logging.getLogger(__name__)
 
 quiz_routes = APIRouter()
 
-# Holds the current state across requests
-upload_store = {"latest": None}
+# Stores session data by document ID
+upload_store = {}
 current_state = None
 
 
@@ -37,28 +37,34 @@ async def upload_document(file: UploadFile = File(...)):
 
     try:
         # Step 1: Extract chunks and metadata
-        chunks, metadata = await extract_chunks_with_metadata(file)
+        chunks, metadata, doc_id = await extract_chunks_with_metadata(file)
 
         # Step 2: Store in Qdrant
         store_chunks_in_qdrant(chunks, metadata)
 
-        # Step 3: Store state
-        current_state = {
+        doc_id = metadata[0]["doc_id"]
+
+        # Step 3: Store session state using doc_id
+        state = {
+            "doc_id": doc_id,
             "original_filename": filename,
             "chunks": chunks,
             "chunk_metadata": metadata,
             "questions": [],
             "chunk_indices_used": [],
+            "difficulty_by_type": {},
             "error_message": None,
         }
-        upload_store["latest"] = current_state
+        upload_store[doc_id] = state
+        current_state = state
 
         return UploadResponse(
             message="Document uploaded and chunks stored in Qdrant",
             original_filename=filename,
-            uploaded_file_path="",  # Optional: path info
-            text_file_path="",      # Optional: text output file path
+            uploaded_file_path="",
+            text_file_path="",
             error_message=None,
+            document_id=doc_id
         )
 
     except HTTPException:
@@ -67,17 +73,19 @@ async def upload_document(file: UploadFile = File(...)):
         logger.error(f"Error in upload_document for '{filename}': {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Something went wrong: {str(e)}")
 
+
 @quiz_routes.get("/get_question", response_model=QuizSessionResponse)
 async def get_question(
     question_type: QuestionType,
+    document_id: str = Query(..., description="Unique document ID returned after upload"),
     num_questions: QuestionCount = QuestionCount.THREE,
     difficulty_level: DifficultyLevel = DifficultyLevel.MEDIUM,
 ):
     try:
-        if not upload_store.get("latest"):
-            raise HTTPException(status_code=404, detail="No document uploaded. Please upload one first.")
+        if document_id not in upload_store:
+            raise HTTPException(status_code=404, detail="Document ID not found. Upload first.")
 
-        state = upload_store["latest"].copy()
+        state = upload_store[document_id].copy()
         filename = state["original_filename"]
 
         state.setdefault("questions", [])
@@ -114,7 +122,7 @@ async def get_question(
         if state.get("error_message"):
             raise HTTPException(status_code=400, detail=state["error_message"])
 
-        upload_store["latest"] = state  # Update global store
+        upload_store[document_id] = state  # Update global store
 
         matching = [q for q in state["questions"] if q.type.lower() == question_type.value.lower()]
         if not matching:

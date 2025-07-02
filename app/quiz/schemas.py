@@ -56,9 +56,10 @@ class Question(BaseModel):
 class UploadResponse(BaseModel):
     message: str
     original_filename: str
-    uploaded_file_path: str
-    text_file_path: str
-    error_message: Optional[str]
+    uploaded_file_path: Optional[str] = None
+    text_file_path: Optional[str] = None
+    error_message: Optional[str] = None
+    document_id: Optional[str] = None
     
     
 class QuizSessionResponse(BaseModel):

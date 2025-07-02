@@ -11,6 +11,7 @@ from app.quiz.prompts.boolean_prompt import boolean_prompt
 from app.quiz.utils import store_questions
 from qdrant_client.http.models import Filter, FieldCondition, MatchValue
 from app.upload.service import qdrant_client, COLLECTION_NAME
+
 load_dotenv()
 
 llm = OllamaLLM(base_url=os.getenv('OLLAMA_HOST'), model="llama3.2:latest")
@@ -32,14 +33,16 @@ def load_text_and_generate_question(
     num_questions: int = 3,
     difficulty: str = "Medium"
 ) -> QuizGenerationState:
-    filename = state.get('original_filename', 'unknown')
-    logger.info(f"Starting generation of {num_questions} '{question_type}' questions for '{filename}' with difficulty '{difficulty}'")
+    doc_id = state.get("doc_id")
+    if not doc_id:
+        raise ValueError("Missing document ID in state.")
+    logger.info(f"Starting generation of {num_questions} '{question_type}' questions for doc_id '{doc_id}' with difficulty '{difficulty}'")
 
     try:
-        # Step 1: Retrieve chunks with metadata from Qdrant
+        # Step 1: Retrieve chunks with metadata from Qdrant using doc_id
         if not state.get('chunks') or not state.get('chunk_metadata'):
             search_filter = Filter(
-                must=[FieldCondition(key="filename", match=MatchValue(value=filename))]
+                must=[FieldCondition(key="doc_id", match=MatchValue(value=doc_id))]
             )
             search_result = qdrant_client.scroll(
                 collection_name=COLLECTION_NAME,
@@ -57,11 +60,11 @@ def load_text_and_generate_question(
                 })
 
             if not chunks:
-                raise ValueError(f"No chunks found in Qdrant for '{filename}'")
+                raise ValueError(f"No chunks found in Qdrant for doc_id '{doc_id}'")
 
             state["chunks"] = chunks
             state["chunk_metadata"] = metadata
-            logger.info(f"Retrieved {len(chunks)} chunks from Qdrant for '{filename}'")
+            logger.info(f"Retrieved {len(chunks)} chunks from Qdrant for doc_id '{doc_id}'")
 
         # Step 2: Initialize state
         state.setdefault("questions", [])

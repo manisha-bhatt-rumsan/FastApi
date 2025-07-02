@@ -26,6 +26,7 @@ class User(Base):
 class Document(Base):
     __tablename__ = "documents"
     id = Column(Integer, primary_key=True, index=True)
+    document_id = Column(String, unique=True, index=True) 
     title = Column(String, index=True)
     content = Column(Text)
     owner_id = Column(Integer, ForeignKey("users.id"))

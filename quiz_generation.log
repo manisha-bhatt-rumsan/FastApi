@@ -6111,3 +6111,173 @@ sqlalchemy.exc.ProgrammingError: (sqlalchemy.dialects.postgresql.asyncpg.Program
 [SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
 [parameters: ("How does the Bitter Wild Cucumber's fruit having 'bitter pulp' relate to its classification within the Cucumber family, and what characteristic is shared with other plants in this family?", 'FAQ', 'Hard', [], "The Bitter Wild Cucumber's fruit has bitter pulp due to its classification within the Cucumber family, which also includes pumpkins and gourds. Like  ... (56 characters truncated) ... ms and bears separate male flowers in small clusters along with a solitary female flower, demonstrating a shared characteristic of this plant family.", "This answer is correct because it addresses the relationship between the fruit's bitter pulp and its classification within the Cucumber family. The response should include the mention of other plants in the family having succulent stems as an example of the shared characteristic.", 21)]
 (Background on this error at: https://sqlalche.me/e/20/f405)
+2025-07-02 16:12:48,820 - app.quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf
+2025-07-02 16:12:49,263 - app.upload.service - INFO - Extracted 26 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-02 16:12:49,264 - app.upload.service - INFO - Generating embeddings for 26 chunks
+2025-07-02 16:12:55,518 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-02 16:12:55,522 - app.upload.service - INFO - Uploading 26 points to Qdrant collection 'quiz_chunks'
+2025-07-02 16:12:55,699 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-02 16:12:55,702 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-02 16:13:07,289 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 16:13:07,289 - app.quiz.routes - INFO - Generating 2 questions of type 'faq'...
+2025-07-02 16:13:07,289 - app.quiz.service - INFO - Starting generation of 2 'faq' questions for 'bnhsmonsoon.pdf' with difficulty 'Hard'
+2025-07-02 16:13:08,957 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 16:13:11,784 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 16:13:12,205 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 16:13:15,121 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 16:13:15,121 - app.quiz.service - INFO - Finished generation of 2 questions.
+2025-07-02 16:13:15,122 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 16:13:15,122 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 16:13:15,268 - app.quiz.utils - INFO - Created quiz with ID: 22
+2025-07-02 16:13:15,277 - app.quiz.utils - ERROR - Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('How do the unique features of Indian Mallow, such as its fibrous nature and distinctive flower arrangements, relate to other plants within the same group, and what implications does this have for their growth habits and distribution?', 'FAQ', 'Hard', [], "This answer is correct because it explains how the plant's characteristics, such as its fibrous nature and flower arrangements, are similar to those  ... (200 characters truncated) ... rse hair cover may contribute to its presence along roadside and railway tracks, while its fibrous nature may aid in its establishment on waste land.", 'The response should demonstrate an understanding of how the specific traits of Indian Mallow relate to those of other plants within the same group, a ... (131 characters truncated) ... ny differences between the plant and others in the group, and discuss how these variations contribute to their distinct characteristics and habitats.', 22)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 521, in _prepare_and_execute
+    prepared_stmt, attributes = await adapt_connection._prepare(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 768, in _prepare
+    prepared_stmt = await self._connection.prepare(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 635, in prepare
+    return await self._prepare(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 653, in _prepare
+    stmt = await self._get_statement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\asyncpg\connection.py", line 432, in _get_statement
+    statement = await self._protocol.prepare(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\\protocol\\protocol.pyx", line 165, in prepare
+asyncpg.exceptions.UndefinedObjectError: type "difficulty_level" does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.ProgrammingError: <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\utils.py", line 61, in store_questions
+    await db.flush()
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 801, in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 203, in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4345, in flush
+    self._flush(objects)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4480, in _flush
+    with util.safe_reraise():
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\session.py", line 4441, in _flush
+    flush_context.execute()
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1415, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1637, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1842, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1982, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 2351, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\base.py", line 1963, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\engine\default.py", line 943, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 580, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 558, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 508, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\env\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 792, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.ProgrammingError: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('How do the unique features of Indian Mallow, such as its fibrous nature and distinctive flower arrangements, relate to other plants within the same group, and what implications does this have for their growth habits and distribution?', 'FAQ', 'Hard', [], "This answer is correct because it explains how the plant's characteristics, such as its fibrous nature and flower arrangements, are similar to those  ... (200 characters truncated) ... rse hair cover may contribute to its presence along roadside and railway tracks, while its fibrous nature may aid in its establishment on waste land.", 'The response should demonstrate an understanding of how the specific traits of Indian Mallow relate to those of other plants within the same group, a ... (131 characters truncated) ... ny differences between the plant and others in the group, and discuss how these variations contribute to their distinct characteristics and habitats.', 22)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-07-02 16:13:15,309 - app.quiz.routes - WARNING - Database storage failed: Error storing individual question: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedObjectError'>: type "difficulty_level" does not exist
+[SQL: INSERT INTO questions (question, type, difficulty, choices, correct_answer, explanation, quiz_id) VALUES ($1::VARCHAR, $2::question_type, $3::difficulty_level, $4::VARCHAR[], $5::VARCHAR, $6::VARCHAR, $7::INTEGER) RETURNING questions.id]
+[parameters: ('How do the unique features of Indian Mallow, such as its fibrous nature and distinctive flower arrangements, relate to other plants within the same group, and what implications does this have for their growth habits and distribution?', 'FAQ', 'Hard', [], "This answer is correct because it explains how the plant's characteristics, such as its fibrous nature and flower arrangements, are similar to those  ... (200 characters truncated) ... rse hair cover may contribute to its presence along roadside and railway tracks, while its fibrous nature may aid in its establishment on waste land.", 'The response should demonstrate an understanding of how the specific traits of Indian Mallow relate to those of other plants within the same group, a ... (131 characters truncated) ... ny differences between the plant and others in the group, and discuss how these variations contribute to their distinct characteristics and habitats.', 22)]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-07-02 16:42:45,099 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 16:42:45,113 - app.quiz.routes - INFO - Generating 2 questions of type 'faq'...
+2025-07-02 16:42:45,115 - app.quiz.service - INFO - Starting generation of 2 'faq' questions for 'bnhsmonsoon.pdf' with difficulty 'Easy'
+2025-07-02 16:42:47,051 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 16:42:48,025 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 16:42:48,658 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 16:42:50,268 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 16:42:50,269 - app.quiz.service - INFO - Finished generation of 2 questions.
+2025-07-02 16:42:50,270 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 16:42:50,270 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 16:42:50,362 - app.quiz.utils - INFO - Created quiz with ID: 23
+2025-07-02 16:42:50,407 - app.quiz.utils - INFO - Stored question with ID: 8
+2025-07-02 16:42:50,409 - app.quiz.utils - INFO - Stored question with ID: 9
+2025-07-02 16:42:50,413 - app.quiz.utils - INFO - Successfully stored 2 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 23)
+2025-07-02 16:42:50,414 - app.quiz.routes - INFO - Questions stored in DB with quiz ID: 23
+2025-07-02 22:32:52,220 - app.quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf
+2025-07-02 22:32:53,133 - app.upload.service - INFO - Extracted 26 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-02 22:32:53,134 - app.quiz.routes - ERROR - Error in upload_document for 'bnhsmonsoon.pdf': too many values to unpack (expected 2)
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\routes.py", line 40, in upload_document
+    chunks, metadata = await extract_chunks_with_metadata(file)
+    ^^^^^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 2)
+2025-07-02 22:43:43,068 - app.quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf
+2025-07-02 22:43:43,538 - app.upload.service - INFO - Extracted 26 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-02 22:43:43,538 - app.upload.service - INFO - Generating embeddings for 36 chunks
+2025-07-02 22:43:48,233 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-02 22:43:48,236 - app.upload.service - INFO - Creating Qdrant collection: quiz_chunks
+2025-07-02 22:43:48,714 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks "HTTP/1.1 200 OK"
+2025-07-02 22:43:48,717 - app.quiz.routes - ERROR - Error in upload_document for 'bnhsmonsoon.pdf': 'str' object is not a mapping
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\routes.py", line 43, in upload_document
+    store_chunks_in_qdrant(chunks, metadata)
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\upload\service.py", line 128, in store_chunks_in_qdrant
+    payload={**meta, "text": chunk}
+            ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'str' object is not a mapping

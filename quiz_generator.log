@@ -1,0 +1,69 @@
+2025-07-03 14:36:37,555 - app.quiz.routes - INFO - Uploading bnhsmonsoon.pdf
+2025-07-03 14:36:39,706 - app.upload.service - INFO - Extracted 37 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-03 14:36:39,706 - app.upload.service - INFO - Returning 37 chunks with metadata keys: dict_keys(['doc_id', 'filename', 'page_number', 'chunk_number']) and doc_id: f6d6256f-9101-4b98-83dd-1380fd700237
+2025-07-03 14:36:39,709 - app.quiz.routes - ERROR - Upload failed: too many values to unpack (expected 2)
+Traceback (most recent call last):
+  File "C:\Users\97798\OneDrive\Desktop\FastApi\app\quiz\routes.py", line 37, in upload_document
+    chunks, metadata = await extract_chunks_with_metadata(file)
+    ^^^^^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 2)
+2025-07-03 14:39:14,811 - app.quiz.routes - INFO - Uploading bnhsmonsoon.pdf
+2025-07-03 14:39:15,039 - app.upload.service - INFO - Extracted 37 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-03 14:39:15,040 - app.upload.service - INFO - Returning 37 chunks with metadata keys: dict_keys(['doc_id', 'filename', 'page_number', 'chunk_number']) and doc_id: c410db11-569a-414f-aac6-902d1d6a0eee
+2025-07-03 14:39:15,040 - app.upload.service - INFO - Generating embeddings for 37 chunks
+2025-07-03 14:39:15,040 - app.upload.service - INFO - Metadata sample: [{'doc_id': 'c410db11-569a-414f-aac6-902d1d6a0eee', 'filename': 'bnhsmonsoon.pdf', 'page_number': 1, 'chunk_number': 0}, {'doc_id': 'c410db11-569a-414f-aac6-902d1d6a0eee', 'filename': 'bnhsmonsoon.pdf', 'page_number': 2, 'chunk_number': 0}]
+2025-07-03 14:39:26,643 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-03 14:39:26,647 - app.upload.service - INFO - Uploading 37 points to Qdrant collection 'quiz_chunks'
+2025-07-03 14:39:26,885 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-03 14:39:26,888 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-03 14:39:56,833 - httpx - INFO - HTTP Request: POST http://localhost:6333/collections/quiz_chunks/points/scroll "HTTP/1.1 200 OK"
+2025-07-03 14:40:01,834 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 14:40:04,829 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 14:40:07,636 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 14:40:10,315 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-03 14:40:10,518 - app.quiz.utils - INFO - Created quiz with ID: 30
+2025-07-03 14:40:10,556 - app.quiz.utils - INFO - Stored question with ID: 23
+2025-07-03 14:40:10,559 - app.quiz.utils - INFO - Stored question with ID: 24
+2025-07-03 14:40:10,561 - app.quiz.utils - INFO - Stored question with ID: 25
+2025-07-03 14:40:10,565 - app.quiz.utils - INFO - Successfully stored 3 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 30)
+2025-07-03 14:40:38,514 - httpx - INFO - HTTP Request: POST http://localhost:6333/collections/quiz_chunks/points/scroll "HTTP/1.1 200 OK"
+2025-07-03 14:40:39,369 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 14:40:42,088 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 14:40:43,738 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-03 14:40:43,751 - app.quiz.utils - INFO - Created quiz with ID: 31
+2025-07-03 14:40:43,754 - app.quiz.utils - INFO - Stored question with ID: 26
+2025-07-03 14:40:43,757 - app.quiz.utils - INFO - Stored question with ID: 27
+2025-07-03 14:40:43,760 - app.quiz.utils - INFO - Successfully stored 2 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 31)
+2025-07-03 14:46:18,543 - httpx - INFO - HTTP Request: POST http://localhost:6333/collections/quiz_chunks/points/scroll "HTTP/1.1 200 OK"
+2025-07-03 14:46:20,168 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 14:46:21,522 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 14:46:22,869 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-03 14:46:22,886 - app.quiz.utils - INFO - Created quiz with ID: 32
+2025-07-03 14:46:22,892 - app.quiz.utils - INFO - Stored question with ID: 28
+2025-07-03 14:46:22,896 - app.quiz.utils - INFO - Stored question with ID: 29
+2025-07-03 14:46:22,900 - app.quiz.utils - INFO - Successfully stored 2 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 32)
+2025-07-03 14:49:24,994 - httpx - INFO - HTTP Request: POST http://localhost:6333/collections/quiz_chunks/points/scroll "HTTP/1.1 200 OK"
+2025-07-03 14:49:25,952 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 14:49:27,955 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 14:49:29,102 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-03 14:49:29,153 - app.quiz.utils - INFO - Created quiz with ID: 33
+2025-07-03 14:49:29,158 - app.quiz.utils - INFO - Stored question with ID: 30
+2025-07-03 14:49:29,159 - app.quiz.utils - INFO - Stored question with ID: 31
+2025-07-03 14:49:29,160 - app.quiz.utils - INFO - Successfully stored 2 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 33)
+2025-07-03 15:53:49,586 - app.quiz.routes - INFO - Uploading bnhsmonsoon.pdf
+2025-07-03 15:53:50,064 - app.upload.service - INFO - Extracted 37 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-03 15:53:50,064 - app.upload.service - INFO - Returning 37 chunks with metadata keys: dict_keys(['doc_id', 'filename', 'page_number', 'chunk_number']) and doc_id: aecf91d5-7927-4df5-98e9-5609fd628047
+2025-07-03 15:53:50,064 - app.upload.service - INFO - Generating embeddings for 37 chunks
+2025-07-03 15:53:50,065 - app.upload.service - INFO - Metadata sample: [{'doc_id': 'aecf91d5-7927-4df5-98e9-5609fd628047', 'filename': 'bnhsmonsoon.pdf', 'page_number': 1, 'chunk_number': 0}, {'doc_id': 'aecf91d5-7927-4df5-98e9-5609fd628047', 'filename': 'bnhsmonsoon.pdf', 'page_number': 2, 'chunk_number': 0}]
+2025-07-03 15:54:02,672 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-03 15:54:02,676 - app.upload.service - INFO - Uploading 37 points to Qdrant collection 'quiz_chunks'
+2025-07-03 15:54:02,860 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-03 15:54:02,861 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-03 15:54:15,383 - httpx - INFO - HTTP Request: POST http://localhost:6333/collections/quiz_chunks/points/scroll "HTTP/1.1 200 OK"
+2025-07-03 15:54:16,921 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 15:54:18,374 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 15:54:19,413 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-03 15:54:19,596 - app.quiz.utils - INFO - Created quiz with ID: 34
+2025-07-03 15:54:19,639 - app.quiz.utils - INFO - Stored question with ID: 32
+2025-07-03 15:54:19,641 - app.quiz.utils - INFO - Stored question with ID: 33
+2025-07-03 15:54:19,644 - app.quiz.utils - INFO - Successfully stored 2 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 34)

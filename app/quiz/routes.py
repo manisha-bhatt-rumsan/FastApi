@@ -1,7 +1,7 @@
 from fastapi import File, HTTPException, APIRouter, UploadFile, Query
 import logging
 from app.upload.service import extract_chunks_with_metadata, store_chunks_in_qdrant
-from app.quiz.service import load_text_and_generate_question, store_quiz_results
+from app.quiz.service import generate_questions, save_quiz_to_db
 from app.quiz.schemas import (
     QuizSessionResponse,
     AnswerRequest,
@@ -24,154 +24,85 @@ logger = logging.getLogger(__name__)
 
 quiz_routes = APIRouter()
 
-# Stores session data by document ID
-upload_store = {}
-current_state = None
+doc_lookup: dict[str, str] = {}          # doc_id -> original filename
+latest_batch: dict[str, list] = {}       # remembers last questions per doc_id
 
 
 @quiz_routes.post("/upload_document", response_model=UploadResponse)
 async def upload_document(file: UploadFile = File(...)):
-    global current_state
     filename = file.filename or "unknown_file"
-    logger.info(f"Uploading document: {filename}")
+    logger.info("Uploading %s", filename)
 
     try:
-        # Step 1: Extract chunks and metadata
         chunks, metadata, doc_id = await extract_chunks_with_metadata(file)
-
-        # Step 2: Store in Qdrant
         store_chunks_in_qdrant(chunks, metadata)
 
         doc_id = metadata[0]["doc_id"]
-
-        # Step 3: Store session state using doc_id
-        state = {
-            "doc_id": doc_id,
-            "original_filename": filename,
-            "chunks": chunks,
-            "chunk_metadata": metadata,
-            "questions": [],
-            "chunk_indices_used": [],
-            "difficulty_by_type": {},
-            "error_message": None,
-        }
-        upload_store[doc_id] = state
-        current_state = state
+        doc_lookup[doc_id] = filename
 
         return UploadResponse(
-            message="Document uploaded and chunks stored in Qdrant",
+            message="Upload successful; chunks stored.",
             original_filename=filename,
-            uploaded_file_path="",
-            text_file_path="",
-            error_message=None,
-            document_id=doc_id
+            document_id=doc_id,
         )
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error in upload_document for '{filename}': {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Something went wrong: {str(e)}")
+    except Exception as exc:
+        logger.error("Upload failed: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail=str(exc))
 
 
-@quiz_routes.get("/get_question", response_model=QuizSessionResponse)
-async def get_question(
-    question_type: QuestionType,
-    document_id: str = Query(..., description="Unique document ID returned after upload"),
+
+@quiz_routes.post("/generate_question", response_model=QuizSessionResponse)
+async def generate_question(
+    document_id: str = Query(..., description="ID returned by /upload_document"),
+    question_type: QuestionType = Query(...),
     num_questions: QuestionCount = QuestionCount.THREE,
     difficulty_level: DifficultyLevel = DifficultyLevel.MEDIUM,
 ):
+    if document_id not in doc_lookup:
+        raise HTTPException(status_code=404, detail="Unknown document_id — upload first.")
+
     try:
-        if document_id not in upload_store:
-            raise HTTPException(status_code=404, detail="Document ID not found. Upload first.")
-
-        state = upload_store[document_id].copy()
-        filename = state["original_filename"]
-
-        state.setdefault("questions", [])
-        state.setdefault("chunk_indices_used", [])
-        state.setdefault("difficulty_by_type", {})
-        state.setdefault("error_message", None)
-
-        prev_difficulty = state["difficulty_by_type"].get(question_type.value.lower())
-        prev_type = state["questions"][0].type.lower() if state["questions"] else None
-
-        # Reset if new difficulty or type
-        if prev_type != question_type.value.lower() or prev_difficulty != difficulty_level.value:
-            logger.info("Regenerating due to question type or difficulty change.")
-            state["questions"] = []
-            state["chunk_indices_used"] = []
-
-        state["selected_question_type"] = question_type.value
-        state["difficulty_by_type"][question_type.value.lower()] = difficulty_level.value
-
-        # Trigger question generation if needed
-        existing = [q for q in state["questions"] if q.type.lower() == question_type.value.lower()]
-        if not existing or len(existing) < num_questions.value:
-            logger.info(f"Generating {num_questions.value} questions of type '{question_type.value}'...")
-            state = load_text_and_generate_question(
-                state=state,
-                question_type=question_type.value,
-                num_questions=num_questions.value,
-                difficulty=difficulty_level.value
-            )
-
-        # Save quiz results to DB
-        state = await store_quiz_results(state)
-
-        if state.get("error_message"):
-            raise HTTPException(status_code=400, detail=state["error_message"])
-
-        upload_store[document_id] = state  # Update global store
-
-        matching = [q for q in state["questions"] if q.type.lower() == question_type.value.lower()]
-        if not matching:
-            raise HTTPException(status_code=400, detail="No questions generated.")
-
-        if len(matching) < num_questions.value:
-            logger.warning(f"Only {len(matching)} questions generated out of requested {num_questions.value}")
-
-        if state.get("database_stored"):
-            logger.info(f"Questions stored in DB with quiz ID: {state.get('quiz_id')}")
-        elif state.get("database_error"):
-            logger.warning(f"Database storage failed: {state.get('database_error')}")
-
-        return QuizSessionResponse(
-            original_filename=state["original_filename"],
-            questions=matching[:num_questions.value],
+        questions = generate_questions(
+            doc_id=document_id,
+            question_type=question_type.value,
+            num=num_questions.value,
+            difficulty=difficulty_level.value,
         )
 
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error in get_question: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Something went wrong: {str(e)}")
+        if not questions:
+            raise HTTPException(status_code=400, detail="Could not generate questions.")
+
+        # Save to DB (optional but recommended)
+        await save_quiz_to_db(doc_lookup[document_id], questions)
+
+        # Remember this batch for /submit_answer
+        latest_batch[document_id] = questions
+
+        return QuizSessionResponse(
+            original_filename=doc_lookup[document_id],
+            questions=questions[: num_questions.value],
+        )
+
+    except Exception as exc:
+        logger.error("Generation failed: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail=str(exc))
+
 
 
 @quiz_routes.post("/submit_answer", response_model=AnswerResponse)
-async def submit_answer(request: AnswerRequest):
-    try:
-        if current_state is None or not current_state.get("questions"):
-            raise HTTPException(status_code=404, detail="No quiz found. Generate questions first.")
+async def submit_answer(request: AnswerRequest, document_id: str = Query(...)):
+    if document_id not in latest_batch or not latest_batch[document_id]:
+        raise HTTPException(status_code=404, detail="No active quiz for this document_id.")
 
-        if not request.answer.strip():
-            raise HTTPException(status_code=400, detail="Answer cannot be empty.")
+    latest_q = latest_batch[document_id][-1]
 
-        latest_question = current_state["questions"][-1]
-        if request.question != latest_question.question:
-            raise HTTPException(status_code=400, detail="Submitted question does not match the last question shown.")
+    if request.question != latest_q.question:
+        raise HTTPException(status_code=400, detail="Question mismatch.")
 
-        correct = latest_question.correct_answer.strip().lower()
-        submitted = request.answer.strip().lower()
+    is_correct = request.answer.strip().lower() == latest_q.correct_answer.strip().lower()
 
-        return AnswerResponse(
-            correct=(submitted == correct),
-            correct_answer=latest_question.correct_answer,
-            explanation=latest_question.explanation
-        )
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error in submit_answer: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Something went wrong: {str(e)}")
+    return AnswerResponse(
+        correct=is_correct,
+        correct_answer=latest_q.correct_answer,
+        explanation=latest_q.explanation,
+    )

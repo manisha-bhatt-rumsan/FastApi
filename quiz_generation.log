@@ -6281,3 +6281,120 @@ Traceback (most recent call last):
     payload={**meta, "text": chunk}
             ^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: 'str' object is not a mapping
+2025-07-02 22:55:17,977 - app.quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf
+2025-07-02 22:55:18,957 - app.upload.service - INFO - Extracted 37 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-02 22:55:18,959 - app.upload.service - INFO - Returning 37 chunks with metadata keys: dict_keys(['doc_id', 'filename', 'page_number', 'chunk_number']) and doc_id: 557fe85d-8fa3-4ad5-99fc-9db0d5a5c323
+2025-07-02 22:55:18,959 - app.upload.service - INFO - Generating embeddings for 37 chunks
+2025-07-02 22:55:18,960 - app.upload.service - INFO - Metadata sample: [{'doc_id': '557fe85d-8fa3-4ad5-99fc-9db0d5a5c323', 'filename': 'bnhsmonsoon.pdf', 'page_number': 1, 'chunk_number': 0}, {'doc_id': '557fe85d-8fa3-4ad5-99fc-9db0d5a5c323', 'filename': 'bnhsmonsoon.pdf', 'page_number': 2, 'chunk_number': 0}]
+2025-07-02 22:55:26,843 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-02 22:55:26,855 - app.upload.service - INFO - Uploading 37 points to Qdrant collection 'quiz_chunks'
+2025-07-02 22:55:27,284 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-02 22:55:27,289 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-02 22:58:20,997 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 22:58:21,017 - app.quiz.routes - INFO - Generating 2 questions of type 'mcq'...
+2025-07-02 22:58:21,023 - app.quiz.service - INFO - Starting generation of 2 'mcq' questions for doc_id '557fe85d-8fa3-4ad5-99fc-9db0d5a5c323' with difficulty 'Easy'
+2025-07-02 22:58:23,103 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 22:58:24,808 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 22:58:25,324 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 22:58:27,267 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 22:58:27,269 - app.quiz.service - INFO - Finished generation of 2 questions.
+2025-07-02 22:58:27,270 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 22:58:27,271 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 22:58:27,998 - app.quiz.utils - INFO - Created quiz with ID: 24
+2025-07-02 22:58:28,122 - app.quiz.utils - INFO - Stored question with ID: 10
+2025-07-02 22:58:28,128 - app.quiz.utils - INFO - Stored question with ID: 11
+2025-07-02 22:58:28,136 - app.quiz.utils - INFO - Successfully stored 2 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 24)
+2025-07-02 22:58:28,138 - app.quiz.routes - INFO - Questions stored in DB with quiz ID: 24
+2025-07-02 23:04:04,060 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 23:04:04,080 - app.quiz.routes - INFO - Generating 2 questions of type 'mcq'...
+2025-07-02 23:04:04,085 - app.quiz.service - INFO - Starting generation of 2 'mcq' questions for doc_id '557fe85d-8fa3-4ad5-99fc-9db0d5a5c323' with difficulty 'Hard'
+2025-07-02 23:04:08,194 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 23:04:09,681 - app.quiz.service - WARNING - Retry 1 failed: Expecting ',' delimiter: line 5 column 19 (char 578)
+2025-07-02 23:04:09,881 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 23:04:16,044 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 23:04:16,588 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 23:04:20,551 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-02 23:04:20,553 - app.quiz.service - INFO - Finished generation of 2 questions.
+2025-07-02 23:04:20,554 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 23:04:20,555 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 23:04:20,678 - app.quiz.utils - INFO - Created quiz with ID: 25
+2025-07-02 23:04:20,697 - app.quiz.utils - INFO - Stored question with ID: 12
+2025-07-02 23:04:20,703 - app.quiz.utils - INFO - Stored question with ID: 13
+2025-07-02 23:04:20,710 - app.quiz.utils - INFO - Successfully stored 2 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 25)
+2025-07-02 23:04:20,715 - app.quiz.routes - INFO - Questions stored in DB with quiz ID: 25
+2025-07-02 23:04:34,678 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 23:04:34,679 - app.quiz.routes - INFO - Generating 1 questions of type 'boolean'...
+2025-07-02 23:04:34,680 - app.quiz.service - INFO - Starting generation of 1 'boolean' questions for doc_id '557fe85d-8fa3-4ad5-99fc-9db0d5a5c323' with difficulty 'Hard'
+2025-07-02 23:04:35,611 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 23:04:37,593 - app.quiz.service - INFO - Generated 'boolean' question.
+2025-07-02 23:04:37,594 - app.quiz.service - INFO - Finished generation of 1 questions.
+2025-07-02 23:04:37,595 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 23:04:37,596 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 23:04:37,610 - app.quiz.utils - INFO - Created quiz with ID: 26
+2025-07-02 23:04:37,615 - app.quiz.utils - INFO - Stored question with ID: 14
+2025-07-02 23:04:37,618 - app.quiz.utils - INFO - Successfully stored 1 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 26)
+2025-07-02 23:04:37,621 - app.quiz.routes - INFO - Questions stored in DB with quiz ID: 26
+2025-07-02 23:20:00,218 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-02 23:20:00,223 - app.quiz.routes - INFO - Generating 2 questions of type 'faq'...
+2025-07-02 23:20:00,223 - app.quiz.service - INFO - Starting generation of 2 'faq' questions for doc_id '557fe85d-8fa3-4ad5-99fc-9db0d5a5c323' with difficulty 'Easy'
+2025-07-02 23:20:01,948 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 23:20:03,005 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 23:20:03,368 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-02 23:20:05,665 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-02 23:20:05,666 - app.quiz.service - INFO - Finished generation of 2 questions.
+2025-07-02 23:20:05,666 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-02 23:20:05,666 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-02 23:20:05,713 - app.quiz.utils - INFO - Created quiz with ID: 27
+2025-07-02 23:20:05,720 - app.quiz.utils - INFO - Stored question with ID: 15
+2025-07-02 23:20:05,722 - app.quiz.utils - INFO - Stored question with ID: 16
+2025-07-02 23:20:05,724 - app.quiz.utils - INFO - Successfully stored 2 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 27)
+2025-07-02 23:20:05,724 - app.quiz.routes - INFO - Questions stored in DB with quiz ID: 27
+2025-07-03 11:10:15,885 - app.quiz.routes - INFO - Uploading document: bnhsmonsoon.pdf
+2025-07-03 11:10:16,660 - app.upload.service - INFO - Extracted 37 chunks from 'bnhsmonsoon.pdf' with per-page splitting
+2025-07-03 11:10:16,661 - app.upload.service - INFO - Returning 37 chunks with metadata keys: dict_keys(['doc_id', 'filename', 'page_number', 'chunk_number']) and doc_id: e7399c44-d12c-42c9-8409-b5d585e9b807
+2025-07-03 11:10:16,663 - app.upload.service - INFO - Generating embeddings for 37 chunks
+2025-07-03 11:10:16,664 - app.upload.service - INFO - Metadata sample: [{'doc_id': 'e7399c44-d12c-42c9-8409-b5d585e9b807', 'filename': 'bnhsmonsoon.pdf', 'page_number': 1, 'chunk_number': 0}, {'doc_id': 'e7399c44-d12c-42c9-8409-b5d585e9b807', 'filename': 'bnhsmonsoon.pdf', 'page_number': 2, 'chunk_number': 0}]
+2025-07-03 11:10:25,954 - httpx - INFO - HTTP Request: GET http://localhost:6333/collections "HTTP/1.1 200 OK"
+2025-07-03 11:10:25,956 - app.upload.service - INFO - Creating Qdrant collection: quiz_chunks
+2025-07-03 11:10:26,221 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks "HTTP/1.1 200 OK"
+2025-07-03 11:10:26,227 - app.upload.service - INFO - Uploading 37 points to Qdrant collection 'quiz_chunks'
+2025-07-03 11:10:26,319 - httpx - INFO - HTTP Request: PUT http://localhost:6333/collections/quiz_chunks/points?wait=true "HTTP/1.1 200 OK"
+2025-07-03 11:10:26,321 - app.upload.service - INFO - Chunks successfully stored in Qdrant.
+2025-07-03 11:10:58,180 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-03 11:10:58,182 - app.quiz.routes - INFO - Generating 3 questions of type 'mcq'...
+2025-07-03 11:10:58,183 - app.quiz.service - INFO - Starting generation of 3 'mcq' questions for doc_id 'e7399c44-d12c-42c9-8409-b5d585e9b807' with difficulty 'Medium'
+2025-07-03 11:10:59,700 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 11:11:01,993 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-03 11:11:02,457 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 11:11:04,919 - app.quiz.service - WARNING - Retry 1 failed: Expecting ',' delimiter: line 5 column 19 (char 423)
+2025-07-03 11:11:05,061 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 11:11:08,252 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-03 11:11:08,707 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 11:11:11,380 - app.quiz.service - INFO - Generated 'mcq' question.
+2025-07-03 11:11:11,381 - app.quiz.service - INFO - Finished generation of 3 questions.
+2025-07-03 11:11:11,381 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-03 11:11:11,382 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-03 11:11:11,604 - app.quiz.utils - INFO - Created quiz with ID: 28
+2025-07-03 11:11:11,645 - app.quiz.utils - INFO - Stored question with ID: 17
+2025-07-03 11:11:11,646 - app.quiz.utils - INFO - Stored question with ID: 18
+2025-07-03 11:11:11,647 - app.quiz.utils - INFO - Stored question with ID: 19
+2025-07-03 11:11:11,650 - app.quiz.utils - INFO - Successfully stored 3 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 28)
+2025-07-03 11:11:11,650 - app.quiz.routes - INFO - Questions stored in DB with quiz ID: 28
+2025-07-03 11:17:37,920 - app.quiz.routes - INFO - Regenerating due to question type or difficulty change.
+2025-07-03 11:17:37,921 - app.quiz.routes - INFO - Generating 3 questions of type 'faq'...
+2025-07-03 11:17:37,921 - app.quiz.service - INFO - Starting generation of 3 'faq' questions for doc_id 'e7399c44-d12c-42c9-8409-b5d585e9b807' with difficulty 'Hard'
+2025-07-03 11:17:39,833 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 11:17:42,061 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-03 11:17:42,495 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 11:17:45,448 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-03 11:17:45,963 - httpx - INFO - HTTP Request: POST https://jo3m4y06rnnwhaz.askbhunte.com/api/generate "HTTP/1.1 200 OK"
+2025-07-03 11:17:48,309 - app.quiz.service - INFO - Generated 'faq' question.
+2025-07-03 11:17:48,311 - app.quiz.service - INFO - Finished generation of 3 questions.
+2025-07-03 11:17:48,311 - app.quiz.service - INFO - Storing quiz results for 'bnhsmonsoon.pdf'
+2025-07-03 11:17:48,312 - app.quiz.utils - INFO - Starting to store questions for 'bnhsmonsoon.pdf' in database
+2025-07-03 11:17:48,326 - app.quiz.utils - INFO - Created quiz with ID: 29
+2025-07-03 11:17:48,331 - app.quiz.utils - INFO - Stored question with ID: 20
+2025-07-03 11:17:48,333 - app.quiz.utils - INFO - Stored question with ID: 21
+2025-07-03 11:17:48,336 - app.quiz.utils - INFO - Stored question with ID: 22
+2025-07-03 11:17:48,337 - app.quiz.utils - INFO - Successfully stored 3 questions for quiz 'Quiz from bnhsmonsoon.pdf' (ID: 29)
+2025-07-03 11:17:48,338 - app.quiz.routes - INFO - Questions stored in DB with quiz ID: 29

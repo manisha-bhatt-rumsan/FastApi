@@ -23,7 +23,7 @@ def upgrade() -> None:
     """Upgrade schema."""
 
     # Create ENUM type for difficulty
-    difficulty_enum = sa.Enum("Easy", "Medium", "Hard", name="difficulty_level")
+    difficulty_enum = sa.Enum("EASY", "MEDIUM", "HARD", name="difficulty_level")
     difficulty_enum.create(op.get_bind())
 
     # Apply other schema changes
@@ -39,9 +39,9 @@ def upgrade() -> None:
                type_=sa.Text(),
                existing_nullable=False)
 
-    # Update null difficulty values to 'Medium' to prevent NOT NULL errors
-    op.execute("UPDATE questions SET difficulty='Medium' WHERE difficulty IS NULL")
 
+    op.execute("UPDATE questions SET difficulty = UPPER(difficulty) WHERE difficulty IN ('Easy', 'Medium', 'Hard')")
+    
     op.alter_column('questions', 'difficulty',
                existing_type=sa.VARCHAR(),
                type_=sa.Enum("Easy", "Medium", "Hard", name="difficulty_level"),
@@ -51,6 +51,7 @@ def upgrade() -> None:
                existing_type=sa.VARCHAR(),
                type_=sa.Text(),
                existing_nullable=False)
+    
 
     op.alter_column('questions', 'explanation',
                existing_type=sa.VARCHAR(),
@@ -77,6 +78,8 @@ def downgrade() -> None:
                type_=sa.VARCHAR(),
                existing_nullable=False)
 
+    op.execute("UPDATE questions SET difficulty = INITCAP(difficulty) WHERE difficulty IN ('EASY', 'MEDIUM', 'HARD')")
+    
     op.alter_column('questions', 'difficulty',
                existing_type=sa.Enum("Easy", "Medium", "Hard", name="difficulty_level"),
                type_=sa.VARCHAR(),

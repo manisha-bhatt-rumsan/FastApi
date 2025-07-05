@@ -18,9 +18,10 @@ class Settings(BaseSettings):
     ollama_host: str  
     qdrant_host: str 
     qdrant_port: int
-
+    
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        extra = "ignore"
 
 settings = Settings()

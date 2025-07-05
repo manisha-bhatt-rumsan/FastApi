@@ -21,3 +21,4 @@ langgraph
 psycopg[binary]
 greenlet
 openai
+qdrant-client

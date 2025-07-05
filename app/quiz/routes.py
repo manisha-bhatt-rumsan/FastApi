@@ -77,10 +77,10 @@ async def generate_question(
 
         # Save to DB (required for persistence)
         db_result = await save_quiz_to_db(doc_lookup[document_id], questions)
-        quiz_id = db_result.get("quiz_id")  
+        quiz_id = db_result.get("quiz_id")
 
         return QuizSessionResponse(
-            quiz_id=quiz_id, 
+            quiz_id=quiz_id,
             original_filename=doc_lookup[document_id],
             questions=questions[: num_questions.value],
         )
@@ -128,13 +128,15 @@ async def submit_answer(
         correct_answer = q_row.correct_answer.strip().lower()
         is_correct = False
 
-        if q_row.type == QuestionTypeEnum.MCQ:
+        # Ensure q_row.type is compared with string values, not Enum objects
+        # as per the previous discussion and model updates.
+        if q_row.type == QuestionTypeEnum.MCQ.value: # Compare with string value
             if submitted_answer not in [choice.lower() for choice in q_row.choices]:
                 raise HTTPException(status_code=400, detail=f"Answer for question {answer.question_id} not in choices.")
             is_correct = submitted_answer == correct_answer
-        elif q_row.type == QuestionTypeEnum.FAQ:
+        elif q_row.type == QuestionTypeEnum.FAQ.value: # Compare with string value
             is_correct = submitted_answer == correct_answer
-        elif q_row.type == QuestionTypeEnum.BOOLEAN:
+        elif q_row.type == QuestionTypeEnum.BOOLEAN.value: # Compare with string value
             true_values = {"true", "yes", "1", "t"}
             false_values = {"false", "no", "0", "f"}
             if submitted_answer in true_values:
@@ -145,14 +147,14 @@ async def submit_answer(
                 raise HTTPException(status_code=400, detail=f"Invalid boolean answer for question {answer.question_id}.")
             is_correct = normalized_answer == correct_answer
         else:
-            raise HTTPException(status_code=400, doc="Unknown question type for question {answer.question_id}.")
+            raise HTTPException(status_code=400, detail=f"Unknown question type for question {answer.question_id}.")
 
         if is_correct:
             score += 1
 
         # Store answer in database
         db_answer = Answer(
-            user_id=None,  
+            user_id=None,
             quiz_id=quiz_id,
             question_id=answer.question_id,
             submitted_answer=answer.submitted_answer,

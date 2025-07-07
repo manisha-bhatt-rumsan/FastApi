@@ -67,7 +67,7 @@ class QuizSessionResponse(BaseModel):
 
 class SubmittedAnswer(BaseModel):
     question_id: int = Field(..., gt=0)  
-    submitted_answer: str = Field(..., max_length=400) 
+    submitted_answer: str = Field(..., max_length=600) 
 
 class AnswerRequest(BaseModel):
     quiz_id: int = Field(..., gt=0)  

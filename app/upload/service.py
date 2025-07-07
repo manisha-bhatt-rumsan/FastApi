@@ -1,4 +1,3 @@
-# app/upload/service.py
 from fastapi import HTTPException, UploadFile
 from docx import Document
 from io import BytesIO
@@ -114,7 +113,7 @@ async def extract_chunks_with_metadata(file: UploadFile) -> tuple[str, list[str]
 
     logger.info(f"Extracted {len(all_chunks)} chunks from '{filename}' with per-page splitting")
     logger.info(f"Returning {len(all_chunks)} chunks with metadata keys: {chunk_metadata[0].keys()} and doc_id: {doc_id}")
-    return all_chunks, chunk_metadata, doc_id
+    return all_chunks, chunk_metadata, doc_id, uploaded_file_path
     
 
 def store_chunks_in_qdrant(chunks: list[str], metadata: list[dict]):

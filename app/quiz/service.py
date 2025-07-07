@@ -1,4 +1,3 @@
-# app/quiz/service.py
 import json
 import os
 import random

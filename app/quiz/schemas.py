@@ -1,4 +1,3 @@
-# app/quiz/schemas.py
 from pydantic import BaseModel, field_validator, ValidationInfo, Field
 from typing import Optional, List, TypedDict
 from enum import Enum
@@ -55,8 +54,8 @@ class Question(BaseModel):
 class UploadResponse(BaseModel):
     message: str
     original_filename: str
-    uploaded_file_path: Optional[str] = None
-    text_file_path: Optional[str] = None
+    uploaded_file_path: str
+    # text_file_path: Optional[str] = None
     error_message: Optional[str] = None
     document_id: Optional[str] = None
 
@@ -69,9 +68,8 @@ class SubmittedAnswer(BaseModel):
     question_id: int = Field(..., gt=0)  
     submitted_answer: str = Field(..., max_length=600) 
 
-class AnswerRequest(BaseModel):
-    quiz_id: int = Field(..., gt=0)  
-    answers: List[SubmittedAnswer] = Field(..., min_items=1) 
+class AnswerRequest(BaseModel): 
+    answers: List[SubmittedAnswer] = Field(..., min_items=1)
 
 class AnswerResult(BaseModel):
     question_id: int
@@ -102,6 +100,7 @@ class QuizSummary(BaseModel):
     id: int
     title: str
     owner_id: Optional[int] = None
+    difficulty: Optional[str] = None
 
 class QuestionDetail(BaseModel):
     id: int

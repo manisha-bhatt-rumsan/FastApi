@@ -1,23 +1,15 @@
 from fastapi import File, HTTPException, APIRouter, UploadFile, Query
-from fastapi import Depends
-from sqlalchemy import select
+from fastapi import Depends, Body
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.database import get_db
 from app.db.models import Question as DBQuestion, Quiz as DBQuiz, Answer, QuestionTypeEnum
 import logging
+from sqlalchemy.orm import selectinload
 from datetime import datetime
 from app.upload.service import extract_chunks_with_metadata, store_chunks_in_qdrant
 from app.quiz.service import generate_questions, save_quiz_to_db
-from app.quiz.schemas import (
-    QuizSessionResponse,
-    QuestionType,
-    UploadResponse,
-    QuestionCount,
-    DifficultyLevel,
-    AnswerRequest,
-    AnswerResponse,
-    AnswerResult
-)
+from app.quiz.schemas import (QuizSessionResponse, QuestionType, UploadResponse, QuestionCount, DifficultyLevel, AnswerRequest, AnswerResponse, AnswerResult, QuizDetailResponse, QuizDetail, QuestionDetail)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -39,7 +31,7 @@ async def upload_document(file: UploadFile = File(...)):
     logger.info("Uploading %s", filename)
 
     try:
-        chunks, metadata, doc_id = await extract_chunks_with_metadata(file)
+        chunks, metadata, doc_id, uploaded_file_path = await extract_chunks_with_metadata(file)
         store_chunks_in_qdrant(chunks, metadata)
 
         doc_id = metadata[0]["doc_id"]
@@ -49,12 +41,13 @@ async def upload_document(file: UploadFile = File(...)):
             message="Upload successful; chunks stored.",
             original_filename=filename,
             document_id=doc_id,
+            uploaded_file_path=uploaded_file_path
         )
     except Exception as exc:
         logger.error("Upload failed: %s", exc, exc_info=True)
         raise HTTPException(status_code=500, detail=str(exc))
 
-@quiz_routes.post("/generate_question", response_model=QuizSessionResponse)
+@quiz_routes.post("/quizzes/generate", response_model=QuizSessionResponse)
 async def generate_question(
     document_id: str = Query(..., description="ID returned by /upload_document"),
     question_type: QuestionType = Query(...),
@@ -88,102 +81,148 @@ async def generate_question(
     except Exception as exc:
         logger.error("Generation failed: %s", exc, exc_info=True)
         raise HTTPException(status_code=500, detail=str(exc))
-
-@quiz_routes.post("/submit_answer/{quiz_id}", response_model=AnswerResponse)
-async def submit_answer(
+    
+    
+@quiz_routes.get("/quizzes/{quiz_id}", response_model=QuizDetailResponse)
+async def get_quiz_by_id(
     quiz_id: int,
-    req: AnswerRequest,
     db: AsyncSession = Depends(get_db),
-    # user: User = Depends(get_current_user),  # Commented out
 ):
-    logger.info("Received request body: %s", req.dict())
-    # Verify quiz exists
+    # Fetch quiz and eagerly load related questions
+    result = await db.execute(
+        select(DBQuiz)
+        .options(selectinload(DBQuiz.questions))
+        .where(DBQuiz.id == quiz_id)
+    )
+    quiz = result.scalars().first()
+
+    if not quiz:
+        raise HTTPException(status_code=404, detail="Quiz not found")
+
+    # Serialize questions
+    questions = [
+        QuestionDetail(
+            id=q.id,
+            question=q.question,
+            type=q.type,
+            choices=q.choices or [],
+            correct_answer=q.correct_answer,
+            explanation=q.explanation or ""
+        )
+        for q in quiz.questions
+    ]
+
+    return QuizDetailResponse(
+        message="Quiz retrieved successfully",
+        quiz=QuizDetail(
+            id=quiz.id,
+            title=quiz.title,
+            owner_id=quiz.owner_id,
+            created_at=getattr(quiz, "created_at", None),  # optional
+            questions=questions
+        )
+    )
+
+
+@quiz_routes.post("/quizzes/{quiz_id}/submit_answers", response_model=AnswerResponse)
+async def submit_answers(
+    quiz_id: int,
+    req: AnswerRequest = Body(...),
+    db: AsyncSession = Depends(get_db)
+):
     quiz = await db.get(DBQuiz, quiz_id)
     if not quiz:
-        raise HTTPException(status_code=404, detail="Quiz ID not found.")
+        raise HTTPException(status_code=404, detail="Quiz not found")
 
-    # Fetch all questions for the quiz
-    rows = await db.execute(select(DBQuestion).where(DBQuestion.quiz_id == quiz_id))
+    rows = await db.execute(
+        select(DBQuestion).where(DBQuestion.quiz_id == quiz_id)
+    )
     questions = rows.scalars().all()
+
     if not questions:
         raise HTTPException(status_code=404, detail="No questions found for quiz.")
 
-    # Track results and score
+    question_map = {q.id: q for q in questions}
+    question_ids = set(question_map.keys())
+
     results = []
-    score = 0
-    question_ids = {q.id for q in questions}  # Valid question IDs
+    db_answers = []
 
     for answer in req.answers:
-        # Verify question_id
         if answer.question_id not in question_ids:
             raise HTTPException(status_code=400, detail=f"Invalid question ID: {answer.question_id}")
 
-        # Fetch question
-        q_row = await db.get(DBQuestion, answer.question_id)
-        if q_row is None:
-            raise HTTPException(status_code=404, detail=f"Question {answer.question_id} not found.")
-
-        # Type-specific validation
+        q = question_map[answer.question_id]
         submitted_answer = answer.submitted_answer.strip().lower()
-        correct_answer = q_row.correct_answer.strip().lower()
+        correct_answer = q.correct_answer.strip().lower()
         is_correct = False
 
-        # Ensure q_row.type is compared with string values, not Enum objects
-        # as per the previous discussion and model updates.
-        if q_row.type == QuestionTypeEnum.MCQ.value: # Compare with string value
-            if submitted_answer not in [choice.lower() for choice in q_row.choices]:
+        if q.type == QuestionTypeEnum.MCQ.value:
+            if submitted_answer not in [choice.lower() for choice in q.choices]:
                 raise HTTPException(status_code=400, detail=f"Answer for question {answer.question_id} not in choices.")
             is_correct = submitted_answer == correct_answer
-        elif q_row.type == QuestionTypeEnum.FAQ.value: # Compare with string value
+
+        elif q.type == QuestionTypeEnum.FAQ.value:
             is_correct = submitted_answer == correct_answer
-        elif q_row.type == QuestionTypeEnum.BOOLEAN.value: # Compare with string value
+
+        elif q.type == QuestionTypeEnum.BOOLEAN.value:
             true_values = {"true", "yes", "1", "t"}
             false_values = {"false", "no", "0", "f"}
             if submitted_answer in true_values:
-                normalized_answer = "true"
+                normalized = "true"
             elif submitted_answer in false_values:
-                normalized_answer = "false"
+                normalized = "false"
             else:
-                raise HTTPException(status_code=400, detail=f"Invalid boolean answer for question {answer.question_id}.")
-            is_correct = normalized_answer == correct_answer
+                raise HTTPException(status_code=400, detail=f"Invalid boolean answer for question {answer.question_id}")
+            is_correct = normalized == correct_answer
+
         else:
-            raise HTTPException(status_code=400, detail=f"Unknown question type for question {answer.question_id}.")
+            raise HTTPException(status_code=400, detail=f"Unknown question type for question {answer.question_id}")
 
-        if is_correct:
-            score += 1
-
-        # Store answer in database
-        db_answer = Answer(
-            user_id=None,
-            quiz_id=quiz_id,
-            question_id=answer.question_id,
-            submitted_answer=answer.submitted_answer,
-            is_correct=is_correct,
-            timestamp=datetime.utcnow()
+        db_answers.append(
+            Answer(
+                user_id=None,
+                quiz_id=quiz_id,
+                question_id=answer.question_id,
+                submitted_answer=answer.submitted_answer,
+                is_correct=is_correct,
+                timestamp=datetime.utcnow(),
+            )
         )
-        db.add(db_answer)
 
-        # Add to results
-        results.append(AnswerResult(
-            question_id=answer.question_id,
-            is_correct=is_correct,
-            submitted_answer=answer.submitted_answer,
-            correct_answer=q_row.correct_answer,
-            explanation=q_row.explanation or ""
-        ))
+        results.append(
+            AnswerResult(
+                question_id=answer.question_id,
+                is_correct=is_correct,
+                submitted_answer=answer.submitted_answer,
+                correct_answer=q.correct_answer,
+                explanation=q.explanation or ""
+            )
+        )
 
-    # Commit answers to database
+    db.add_all(db_answers)
     await db.commit()
 
-    # Calculate remaining questions
-    submitted_ids = {ans.question_id for ans in req.answers}
-    remaining = len(question_ids) - len(submitted_ids)
+    total_correct = await db.scalar(
+        select(func.count()).select_from(Answer).where(
+            Answer.quiz_id == quiz_id,
+            Answer.is_correct == True
+        )
+    )
+
+    answered_questions = await db.scalar(
+        select(func.count(func.distinct(Answer.question_id))).where(
+            Answer.quiz_id == quiz_id
+        )
+    )
+
+    remaining = len(question_ids) - answered_questions
     quiz_completed = remaining == 0
 
     return AnswerResponse(
         results=results,
         quiz_completed=quiz_completed,
-        score_so_far=score,
+        score_so_far=total_correct or 0,
         remaining=remaining,
         message="Answers processed successfully"
     )

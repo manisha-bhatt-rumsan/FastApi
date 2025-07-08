@@ -3,7 +3,7 @@ from fastapi import Depends, Body
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.database import get_db
-from app.db.models import Question as DBQuestion, Quiz as DBQuiz, Answer, QuestionTypeEnum
+from app.db.models import Question as DBQuestion, Quiz as DBQuiz, Answer, QuestionTypeEnum, Document
 import logging
 from sqlalchemy.orm import selectinload
 from datetime import datetime
@@ -23,19 +23,32 @@ logger = logging.getLogger(__name__)
 
 quiz_routes = APIRouter()
 
-doc_lookup: dict[str, str] = {}  # doc_id -> original filename
-
 @quiz_routes.post("/upload_document", response_model=UploadResponse)
-async def upload_document(file: UploadFile = File(...)):
+async def upload_document(
+    file: UploadFile = File(...),
+    db: AsyncSession = Depends(get_db)
+):
     filename = file.filename or "unknown_file"
     logger.info("Uploading %s", filename)
 
+    # Check if the document was already uploaded
+    existing_doc = await db.execute(select(Document).where(Document.title == filename))
+    if existing_doc.scalars().first():
+        raise HTTPException(status_code=409, detail="This document has already been uploaded.")
+
     try:
+        # Extract metadata and save file
         chunks, metadata, doc_id, uploaded_file_path = await extract_chunks_with_metadata(file)
         store_chunks_in_qdrant(chunks, metadata)
 
-        doc_id = metadata[0]["doc_id"]
-        doc_lookup[doc_id] = filename
+        # Save document metadata to DB
+        new_doc = Document(
+            document_id=doc_id,
+            title=filename,
+            uploaded_file_path=uploaded_file_path 
+        )
+        db.add(new_doc)
+        await db.commit()
 
         return UploadResponse(
             message="Upload successful; chunks stored.",
@@ -43,6 +56,7 @@ async def upload_document(file: UploadFile = File(...)):
             document_id=doc_id,
             uploaded_file_path=uploaded_file_path
         )
+
     except Exception as exc:
         logger.error("Upload failed: %s", exc, exc_info=True)
         raise HTTPException(status_code=500, detail=str(exc))
@@ -53,11 +67,17 @@ async def generate_question(
     question_type: QuestionType = Query(...),
     num_questions: QuestionCount = QuestionCount.THREE,
     difficulty_level: DifficultyLevel = DifficultyLevel.MEDIUM,
+    db: AsyncSession = Depends(get_db)
 ):
-    if document_id not in doc_lookup:
-        raise HTTPException(status_code=404, detail="Unknown document_id — upload first.")
+    # Fetch document from DB
+    result = await db.execute(select(Document).where(Document.document_id == document_id))
+    document = result.scalars().first()
+
+    if not document:
+        raise HTTPException(status_code=404, detail="Document ID not found. Please upload the document first.")
 
     try:
+        # Generate questions from Qdrant
         questions = generate_questions(
             doc_id=document_id,
             question_type=question_type.value,
@@ -68,13 +88,13 @@ async def generate_question(
         if not questions:
             raise HTTPException(status_code=400, detail="Could not generate questions.")
 
-        # Save to DB (required for persistence)
-        db_result = await save_quiz_to_db(doc_lookup[document_id], questions)
+        # Save quiz + questions in DB
+        db_result = await save_quiz_to_db(document.title, questions)
         quiz_id = db_result.get("quiz_id")
 
         return QuizSessionResponse(
             quiz_id=quiz_id,
-            original_filename=doc_lookup[document_id],
+            original_filename=document.title,
             questions=questions[: num_questions.value],
         )
 
@@ -118,7 +138,7 @@ async def get_quiz_by_id(
             id=quiz.id,
             title=quiz.title,
             owner_id=quiz.owner_id,
-            created_at=getattr(quiz, "created_at", None),  # optional
+            # created_at=getattr(quiz, "created_at", None)
             questions=questions
         )
     )
@@ -145,12 +165,32 @@ async def submit_answers(
     question_map = {q.id: q for q in questions}
     question_ids = set(question_map.keys())
 
+    # New: Prevent submission if quiz is already completed
+    answered_count = await db.scalar(
+        select(func.count(func.distinct(Answer.question_id)))
+        .where(Answer.quiz_id == quiz_id)
+    )
+    if answered_count == len(question_ids):
+        raise HTTPException(status_code=400, detail="Quiz has already been completed.")
+
     results = []
     db_answers = []
 
     for answer in req.answers:
         if answer.question_id not in question_ids:
             raise HTTPException(status_code=400, detail=f"Invalid question ID: {answer.question_id}")
+        
+        existing_answer = await db.scalar(
+            select(Answer).where(
+                Answer.quiz_id == quiz_id,
+                Answer.question_id == answer.question_id
+            )
+        )
+        if existing_answer:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Question {answer.question_id} has already been answered."
+            )
 
         q = question_map[answer.question_id]
         submitted_answer = answer.submitted_answer.strip().lower()
@@ -226,3 +266,4 @@ async def submit_answers(
         remaining=remaining,
         message="Answers processed successfully"
     )
+

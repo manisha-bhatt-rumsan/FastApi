@@ -11,13 +11,17 @@ class Settings(BaseSettings):
         "http://localhost:8080",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8080",
-        "*"  # Allow all origins (development only)
+        "*"
     ]
     debug: bool = True
-    database_url: str  # Loaded from .env
-
+    database_url: str
+    ollama_host: str  
+    qdrant_host: str 
+    qdrant_port: int
+    
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        extra = "ignore"
 
 settings = Settings()

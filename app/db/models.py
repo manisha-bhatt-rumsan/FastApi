@@ -27,11 +27,13 @@ class User(Base):
 
 class Document(Base):
     __tablename__ = "documents"
+
     id = Column(Integer, primary_key=True, index=True)
-    document_id = Column(String, unique=True, index=True)
-    title = Column(String, index=True)
-    content = Column(Text)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    document_id = Column(String, unique=True, index=True)  
+    title = Column(String, index=True)  
+    uploaded_file_path = Column(String, nullable=False)    
+    uploaded_at = Column(DateTime, default=datetime.utcnow)  
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     owner = relationship("User", back_populates="documents")
 
 
